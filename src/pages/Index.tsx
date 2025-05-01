@@ -1,9 +1,8 @@
-
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Package, CheckCircle, BarChart3, Users, Truck, Shield, Award } from "lucide-react";
+import { ArrowRight, Package, CheckCircle, BarChart3, Users, Truck, Shield, Award, Building } from "lucide-react";
 
 const Index = () => {
   const observerRef = useRef<IntersectionObserver | null>(null);
