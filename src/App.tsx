@@ -29,7 +29,7 @@ import Cart from "./pages/buyer/Cart";
 
 // Supplier Pages
 import SupplierDashboard from "./pages/supplier/SupplierDashboard";
-import ProductCatalog as SupplierProductCatalog from "./pages/supplier/ProductCatalog";
+import { default as SupplierProductCatalog } from "./pages/supplier/ProductCatalog";
 import SupplierAnalytics from "./pages/supplier/SupplierAnalytics";
 import Orders from "./pages/supplier/Orders";
 import Rfq from "./pages/supplier/Rfq";
