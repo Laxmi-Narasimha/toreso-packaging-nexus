@@ -1,566 +1,553 @@
-import React from "react";
+
+import React, { useState } from "react";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
+  CardFooter,
 } from "@/components/ui/card";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
-import {
-  BadgeCheck,
-  CheckCircle,
-  Calendar,
-  AlertTriangle,
-  Download,
-  Upload,
-  FileText,
-  ChevronRight,
-  Clock,
-  Users,
-} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  AlertCircle,
+  Calendar,
+  CheckCircle,
+  Clock,
+  Download,
+  FileText,
+  Info,
+  Upload,
+} from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 
-const Compliance = () => {
-  // Mock data for certifications
-  const certifications = [
-    {
-      id: 1,
-      name: "ISO 9001:2015",
-      status: "Active",
-      issueDate: "May 12, 2022",
-      expiryDate: "May 11, 2025",
-      issuedBy: "TÜV SÜD",
-      documents: ["ISO_9001_Certificate.pdf", "Quality_Manual.pdf"],
-    },
-    {
-      id: 2,
-      name: "ISO 14001:2015",
-      status: "Active",
-      issueDate: "June 23, 2022",
-      expiryDate: "June 22, 2025",
-      issuedBy: "Bureau Veritas",
-      documents: ["ISO_14001_Certificate.pdf", "Environmental_Policy.pdf"],
-    },
-    {
-      id: 3,
-      name: "OHSAS 18001",
-      status: "Expiring Soon",
-      issueDate: "August 05, 2021",
-      expiryDate: "August 04, 2023",
-      issuedBy: "SGS",
-      documents: ["OHSAS_18001_Certificate.pdf", "Safety_Manual.pdf"],
-    },
-    {
-      id: 4,
-      name: "FSSC 22000",
-      status: "Renewal in Progress",
-      issueDate: "March 15, 2020",
-      expiryDate: "March 14, 2023",
-      issuedBy: "DNV GL",
-      documents: ["FSSC_22000_Certificate.pdf", "Food_Safety_Manual.pdf"],
-    },
-  ];
+const certifications = [
+  {
+    id: 1,
+    name: "ISO 9001:2015",
+    description: "Quality Management System",
+    status: "verified",
+    progress: 100,
+    expiryDate: "2025-06-30",
+    verificationDate: "2023-06-25",
+    documentUrl: "#",
+  },
+  {
+    id: 2,
+    name: "ISO 14001:2015",
+    description: "Environmental Management System",
+    status: "verified",
+    progress: 100,
+    expiryDate: "2025-04-22",
+    verificationDate: "2023-04-15",
+    documentUrl: "#",
+  },
+  {
+    id: 3,
+    name: "FSC Chain of Custody",
+    description: "Forest Stewardship Council Certification",
+    status: "pending",
+    progress: 60,
+    expiryDate: "N/A",
+    verificationDate: "In Progress",
+    documentUrl: "#",
+  },
+  {
+    id: 4,
+    name: "REACH Compliance",
+    description: "EU Chemical Regulation",
+    status: "expired",
+    progress: 100,
+    expiryDate: "2023-02-15",
+    verificationDate: "2022-02-10",
+    documentUrl: "#",
+  },
+  {
+    id: 5,
+    name: "BRC Packaging",
+    description: "Global Standard for Packaging Materials",
+    status: "in_progress",
+    progress: 25,
+    expiryDate: "N/A",
+    verificationDate: "Not Started",
+    documentUrl: "#",
+  },
+];
 
-  // Mock data for audits
-  const audits = [
-    {
-      id: 1,
-      type: "Quality Audit",
-      status: "Scheduled",
-      date: "July 25, 2023",
-      auditor: "TÜV SÜD",
-      score: null,
-    },
-    {
-      id: 2,
-      type: "Environmental Compliance",
-      status: "Completed",
-      date: "May 10, 2023",
-      auditor: "Bureau Veritas",
-      score: 92,
-    },
-    {
-      id: 3,
-      type: "Social Compliance",
-      status: "Completed",
-      date: "April 05, 2023",
-      auditor: "SGS",
-      score: 88,
-    },
-    {
-      id: 4,
-      type: "Quality Management System",
-      status: "Failed",
-      date: "February 18, 2023",
-      auditor: "TÜV SÜD",
-      score: 65,
-    },
-    {
-      id: 5,
-      type: "Quality Audit",
-      status: "Completed",
-      date: "November 22, 2022",
-      auditor: "DNV GL",
-      score: 95,
-    },
-  ];
+const audits = [
+  {
+    id: 1,
+    name: "Annual Quality Audit",
+    date: "2023-09-15",
+    status: "completed",
+    score: 92,
+    auditor: "Quality Assurance International",
+    report: "#",
+  },
+  {
+    id: 2,
+    name: "Environmental Compliance Audit",
+    date: "2023-11-22",
+    status: "completed",
+    score: 88,
+    auditor: "EcoVeritas Certification",
+    report: "#",
+  },
+  {
+    id: 3,
+    name: "Supplier Production Facility Audit",
+    date: "2024-03-10",
+    status: "scheduled",
+    score: null,
+    auditor: "Supply Chain Verifiers Ltd.",
+    report: null,
+  },
+  {
+    id: 4,
+    name: "Packaging Material Safety Audit",
+    date: "2024-06-18",
+    status: "scheduled",
+    score: null,
+    auditor: "SafePack Standards",
+    report: null,
+  },
+];
 
-  // Mock data for compliance tasks
-  const complianceTasks = [
-    {
-      id: 1,
-      title: "Prepare for upcoming Quality Audit",
-      dueDate: "July 20, 2023",
-      priority: "High",
-      status: "In Progress",
-      progress: 65,
-    },
-    {
-      id: 2,
-      title: "Renew OHSAS 18001 Certificate",
-      dueDate: "July 15, 2023",
-      priority: "High",
-      status: "Not Started",
-      progress: 0,
-    },
-    {
-      id: 3,
-      title: "Update Safety Manual",
-      dueDate: "July 30, 2023",
-      priority: "Medium",
-      status: "In Progress",
-      progress: 40,
-    },
-    {
-      id: 4,
-      title: "Complete Environmental Compliance Report",
-      dueDate: "August 10, 2023",
-      priority: "Medium",
-      status: "Not Started",
-      progress: 0,
-    },
-  ];
+const requirements = [
+  {
+    id: 1,
+    name: "RoHS Compliance Declaration",
+    description: "Restriction of Hazardous Substances",
+    status: "completed",
+    progress: 100,
+    dueDate: "2023-08-15",
+    submissionDate: "2023-08-10",
+  },
+  {
+    id: 2,
+    name: "Child Labor Policy",
+    description: "Declaration of company policy against child labor",
+    status: "completed",
+    progress: 100,
+    dueDate: "2023-08-01",
+    submissionDate: "2023-07-28",
+  },
+  {
+    id: 3,
+    name: "Material Data Safety Sheets",
+    description: "Safety documentation for all materials",
+    status: "in_progress",
+    progress: 65,
+    dueDate: "2024-02-28",
+    submissionDate: null,
+  },
+  {
+    id: 4,
+    name: "Carbon Footprint Report",
+    description: "Annual carbon emissions assessment",
+    status: "not_started",
+    progress: 0,
+    dueDate: "2024-04-30",
+    submissionDate: null,
+  },
+  {
+    id: 5,
+    name: "Fair Labor Practices Audit",
+    description: "Assessment of labor conditions",
+    status: "not_started",
+    progress: 0,
+    dueDate: "2024-05-15",
+    submissionDate: null,
+  },
+];
+
+const getStatusColor = (status: string) => {
+  switch (status) {
+    case "verified":
+    case "completed":
+      return "bg-green-500 hover:bg-green-600";
+    case "pending":
+    case "in_progress":
+      return "bg-blue-500 hover:bg-blue-600";
+    case "scheduled":
+      return "bg-purple-500 hover:bg-purple-600";
+    case "expired":
+      return "bg-red-500 hover:bg-red-600";
+    case "not_started":
+      return "bg-gray-500 hover:bg-gray-600";
+    default:
+      return "bg-gray-500 hover:bg-gray-600";
+  }
+};
+
+const getProgressColor = (progress: number) => {
+  if (progress >= 80) return "bg-green-500";
+  if (progress >= 40) return "bg-blue-500";
+  return "bg-red-500";
+};
+
+const getStatusIcon = (status: string) => {
+  switch (status) {
+    case "verified":
+    case "completed":
+      return <CheckCircle size={16} className="text-green-500" />;
+    case "pending":
+    case "in_progress":
+      return <Clock size={16} className="text-blue-500" />;
+    case "scheduled":
+      return <Calendar size={16} className="text-purple-500" />;
+    case "expired":
+      return <AlertCircle size={16} className="text-red-500" />;
+    case "not_started":
+      return <Info size={16} className="text-gray-500" />;
+    default:
+      return null;
+  }
+};
+
+const ComplianceDashboard = () => {
+  const [activeTab, setActiveTab] = useState("certifications");
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Audit & Compliance Management</h1>
-        <p className="text-gray-500">
-          Manage your certifications, audits, and compliance requirements
-        </p>
+      <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4 mb-6">
+        <div>
+          <h1 className="text-3xl font-bold mb-2">Compliance & Certifications</h1>
+          <p className="text-gray-500">Manage your certifications, audits, and compliance requirements</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Button variant="default">
+            <Upload size={16} className="mr-2" />
+            Upload Document
+          </Button>
+          <Button variant="outline">
+            <Calendar size={16} className="mr-2" />
+            Schedule Audit
+          </Button>
+        </div>
       </div>
 
-      {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <Card>
-          <CardContent className="pt-6">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-sm font-medium text-gray-500">Active Certifications</p>
-                <p className="text-3xl font-bold mt-2">4</p>
-              </div>
-              <div className="bg-green-100 p-3 rounded-full">
-                <BadgeCheck className="h-6 w-6 text-green-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-sm font-medium text-gray-500">Upcoming Audits</p>
-                <p className="text-3xl font-bold mt-2">1</p>
-              </div>
-              <div className="bg-blue-100 p-3 rounded-full">
-                <Calendar className="h-6 w-6 text-blue-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-sm font-medium text-gray-500">Expiring Certifications</p>
-                <p className="text-3xl font-bold mt-2">1</p>
-              </div>
-              <div className="bg-yellow-100 p-3 rounded-full">
-                <AlertTriangle className="h-6 w-6 text-yellow-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="pt-6">
-            <div className="flex justify-between items-start">
-              <div>
-                <p className="text-sm font-medium text-gray-500">Overall Compliance Score</p>
-                <p className="text-3xl font-bold mt-2">92%</p>
-              </div>
-              <div className="bg-purple-100 p-3 rounded-full">
-                <CheckCircle className="h-6 w-6 text-purple-600" />
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Tabs defaultValue="certifications" className="mb-8">
-        <TabsList className="mb-6">
-          <TabsTrigger value="certifications" className="flex items-center">
-            <BadgeCheck size={18} className="mr-2" /> Certifications
-          </TabsTrigger>
-          <TabsTrigger value="audits" className="flex items-center">
-            <FileText size={18} className="mr-2" /> Audits
-          </TabsTrigger>
-          <TabsTrigger value="compliance-tasks" className="flex items-center">
-            <CheckCircle size={18} className="mr-2" /> Compliance Tasks
-          </TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="certifications">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>Certifications & Standards</CardTitle>
-                <CardDescription>Manage all your quality and compliance certifications</CardDescription>
-              </div>
-              <Button>
-                <Upload size={16} className="mr-2" /> Upload Certificate
-              </Button>
-            </CardHeader>
-            <CardContent>
-              {certifications.map((cert) => (
-                <div
-                  key={cert.id}
-                  className="mb-6 pb-6 border-b border-gray-200 last:border-0 last:mb-0 last:pb-0"
-                >
-                  <div className="flex flex-col md:flex-row md:items-center justify-between">
-                    <div>
-                      <div className="flex items-center">
-                        <h3 className="text-lg font-semibold">{cert.name}</h3>
-                        <Badge
-                          className={`ml-3 ${
-                            cert.status === "Active"
-                              ? "bg-green-100 text-green-800 hover:bg-green-100"
-                              : cert.status === "Expiring Soon"
-                              ? "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
-                              : "bg-blue-100 text-blue-800 hover:bg-blue-100"
-                          }`}
-                        >
-                          {cert.status}
-                        </Badge>
-                      </div>
-                      <div className="flex mt-2 text-sm text-gray-500">
-                        <div className="mr-6">
-                          <span className="font-medium">Issued:</span> {cert.issueDate}
-                        </div>
-                        <div className="mr-6">
-                          <span className="font-medium">Expires:</span>{" "}
-                          <span
-                            className={
-                              cert.status === "Expiring Soon" ? "text-yellow-600" : ""
-                            }
-                          >
-                            {cert.expiryDate}
-                          </span>
-                        </div>
-                        <div>
-                          <span className="font-medium">Issued by:</span> {cert.issuedBy}
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center mt-4 md:mt-0">
-                      <Button variant="outline" size="sm" className="mr-2">
-                        <Download size={16} className="mr-1" /> Download
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Upload size={16} className="mr-1" /> Update
-                      </Button>
-                    </div>
-                  </div>
-                  <div className="mt-3 space-y-1">
-                    {cert.documents.map((doc, idx) => (
-                      <div
-                        key={idx}
-                        className="flex items-center text-sm text-gray-600 hover:text-toreso-teal cursor-pointer"
-                      >
-                        <FileText size={14} className="mr-1" /> {doc}
-                      </div>
-                    ))}
-                  </div>
+          <CardHeader className="pb-3">
+            <CardTitle>Compliance Score</CardTitle>
+            <CardDescription>Overall compliance rating</CardDescription>
+          </CardHeader>
+          <CardContent className="pb-2">
+            <div className="flex items-center justify-center mb-2">
+              <div className="relative w-32 h-32">
+                <svg className="w-full h-full" viewBox="0 0 100 100">
+                  <circle
+                    className="text-gray-200"
+                    strokeWidth="8"
+                    stroke="currentColor"
+                    fill="transparent"
+                    r="42"
+                    cx="50"
+                    cy="50"
+                  />
+                  <circle
+                    className="text-green-500"
+                    strokeWidth="8"
+                    strokeDasharray={264}
+                    strokeDashoffset={264 - (264 * 87) / 100}
+                    strokeLinecap="round"
+                    stroke="currentColor"
+                    fill="transparent"
+                    r="42"
+                    cx="50"
+                    cy="50"
+                  />
+                </svg>
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <span className="text-3xl font-bold">87%</span>
                 </div>
-              ))}
-            </CardContent>
-          </Card>
-        </TabsContent>
+              </div>
+            </div>
+          </CardContent>
+          <CardFooter>
+            <p className="text-sm text-gray-500 text-center w-full">
+              <span className="inline-flex items-center mr-2">
+                <span className="w-2 h-2 rounded-full bg-green-500 mr-1"></span>
+                Last updated: Jan 25, 2024
+              </span>
+            </p>
+          </CardFooter>
+        </Card>
 
-        <TabsContent value="audits">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>Audit History</CardTitle>
-                <CardDescription>Records of all quality and compliance audits</CardDescription>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle>Certification Status</CardTitle>
+            <CardDescription>Active and pending certifications</CardDescription>
+          </CardHeader>
+          <CardContent className="pb-2">
+            <div className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span>Active</span>
+                <span className="font-semibold">2</span>
               </div>
-              <Button>
-                <Calendar size={16} className="mr-2" /> Schedule Audit
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <Table>
-                  <TableHeader>
-                    <tr className="bg-gray-50 text-gray-600">
-                      <th className="px-4 py-3 font-medium">Audit Type</th>
-                      <th className="px-4 py-3 font-medium">Date</th>
-                      <th className="px-4 py-3 font-medium">Auditor</th>
-                      <th className="px-4 py-3 font-medium">Status</th>
-                      <th className="px-4 py-3 font-medium">Score</th>
-                      <th className="px-4 py-3 font-medium">Actions</th>
-                    </tr>
-                  </TableHeader>
-                  <TableBody>
-                    {audits.map((audit) => (
-                      <tr key={audit.id} className="border-b">
-                        <td className="px-4 py-3 font-medium">{audit.type}</td>
-                        <td className="px-4 py-3">{audit.date}</td>
-                        <td className="px-4 py-3">{audit.auditor}</td>
-                        <td className="px-4 py-3">
-                          <Badge
-                            className={
-                              audit.status === "Scheduled"
-                                ? "bg-blue-100 text-blue-800 hover:bg-blue-100"
-                                : audit.status === "Completed" && audit.score >= 70
-                                ? "bg-green-100 text-green-800 hover:bg-green-100"
-                                : "bg-red-100 text-red-800 hover:bg-red-100"
-                            }
-                          >
-                            {audit.status}
-                          </Badge>
-                        </td>
-                        <td className="px-4 py-3">
-                          {audit.score ? (
-                            <div className="flex items-center">
-                              {audit.score}
-                              <Progress
-                                value={audit.score}
-                                className={cn(
-                                  "w-16 h-2 ml-2",
-                                  audit.score >= 90
-                                    ? "bg-secondary [&>div]:bg-green-500"
-                                    : audit.score >= 70
-                                    ? "bg-secondary [&>div]:bg-yellow-500"
-                                    : "bg-secondary [&>div]:bg-red-500"
-                                )}
-                              />
-                            </div>
-                          ) : (
-                            "Pending"
-                          )}
-                        </td>
-                        <td className="px-4 py-3">
-                          <Button variant="link" size="sm">
-                            View Details
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </TableBody>
-                </Table>
+              <Progress 
+                value={40} 
+                className="h-2 bg-gray-200" 
+                // Fix: Use className and cn to conditionally style the indicator
+                className={cn("h-2 bg-gray-200")}
+              />
+              <div className="flex justify-between items-center">
+                <span>Pending</span>
+                <span className="font-semibold">2</span>
               </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+              <Progress 
+                value={40} 
+                // Fix: Use className and cn to conditionally style the indicator
+                className={cn("h-2 bg-gray-200")}
+              />
+              <div className="flex justify-between items-center">
+                <span>Expired</span>
+                <span className="font-semibold">1</span>
+              </div>
+              <Progress 
+                value={20} 
+                // Fix: Use className and cn to conditionally style the indicator
+                className={cn("h-2 bg-gray-200")}
+              />
+            </div>
+          </CardContent>
+        </Card>
 
-        <TabsContent value="compliance-tasks">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between">
-              <div>
-                <CardTitle>Compliance Tasks</CardTitle>
-                <CardDescription>Tasks to maintain your compliance status</CardDescription>
-              </div>
-              <Button>
-                <CheckCircle size={16} className="mr-2" /> Add Task
-              </Button>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {complianceTasks.map((task) => (
-                  <div
-                    key={task.id}
-                    className="border rounded-lg p-4 hover:shadow-sm transition-shadow"
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-medium">{task.title}</h3>
-                      <Badge
-                        className={
-                          task.priority === "High"
-                            ? "bg-red-100 text-red-800 hover:bg-red-100"
-                            : "bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
-                        }
-                      >
-                        {task.priority} Priority
-                      </Badge>
+        <Card>
+          <CardHeader className="pb-3">
+            <CardTitle>Upcoming Requirements</CardTitle>
+            <CardDescription>Action items needed soon</CardDescription>
+          </CardHeader>
+          <CardContent className="pb-2">
+            <ul className="space-y-3">
+              <li className="flex justify-between items-center">
+                <span className="flex items-center">
+                  <Calendar size={16} className="text-blue-500 mr-2" />
+                  Audit (March 10)
+                </span>
+                <Badge className="bg-purple-500 hover:bg-purple-600">Scheduled</Badge>
+              </li>
+              <li className="flex justify-between items-center">
+                <span className="flex items-center">
+                  <FileText size={16} className="text-orange-500 mr-2" />
+                  Material Safety Sheets
+                </span>
+                <Badge className="bg-blue-500 hover:bg-blue-600">In Progress</Badge>
+              </li>
+              <li className="flex justify-between items-center">
+                <span className="flex items-center">
+                  <AlertCircle size={16} className="text-red-500 mr-2" />
+                  ISO 14001 (Expires Apr 22)
+                </span>
+                <Badge className="bg-orange-500 hover:bg-orange-600">Soon</Badge>
+              </li>
+            </ul>
+          </CardContent>
+          <CardFooter>
+            <Button variant="ghost" className="w-full">View All</Button>
+          </CardFooter>
+        </Card>
+      </div>
+
+      <Tabs value={activeTab} onValueChange={setActiveTab}>
+        <TabsList className="mb-6 bg-gray-100 dark:bg-gray-800">
+          <TabsTrigger value="certifications">Certifications</TabsTrigger>
+          <TabsTrigger value="audits">Audits</TabsTrigger>
+          <TabsTrigger value="requirements">Requirements</TabsTrigger>
+        </TabsList>
+        <TabsContent value="certifications">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {certifications.map((cert) => (
+              <Card key={cert.id}>
+                <CardHeader>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle>{cert.name}</CardTitle>
+                      <CardDescription>{cert.description}</CardDescription>
                     </div>
-                    <div className="flex items-center text-sm text-gray-500 mb-3">
-                      <div className="flex items-center mr-4">
-                        <Calendar size={14} className="mr-1" /> Due: {task.dueDate}
-                      </div>
-                      <div className="flex items-center">
-                        <Clock size={14} className="mr-1" /> Status: {task.status}
-                      </div>
-                    </div>
-                    <div className="flex items-center">
-                      <div className="w-full mr-4">
-                        <div className="flex justify-between text-xs mb-1">
-                          <span>Progress</span>
-                          <span>{task.progress}%</span>
-                        </div>
-                        <Progress
-                          value={task.progress}
-                          className={cn(
-                            "h-2",
-                            task.progress >= 75
-                              ? "bg-secondary [&>div]:bg-green-500"
-                              : task.progress >= 25
-                              ? "bg-secondary [&>div]:bg-yellow-500"
-                              : "bg-secondary [&>div]:bg-red-500"
-                          )}
+                    <Badge className={getStatusColor(cert.status)}>
+                      {cert.status.charAt(0).toUpperCase() + cert.status.slice(1)}
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-sm text-gray-500 mb-1">Completion Status</p>
+                      <div className="flex items-center gap-2">
+                        <Progress 
+                          value={cert.progress} 
+                          className={cn("h-2 bg-gray-200")}
                         />
+                        <span className="text-sm font-medium">{cert.progress}%</span>
                       </div>
-                      <Button variant="outline" size="sm">
-                        Update
-                      </Button>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm text-gray-500 mb-1">Expiry Date</p>
+                        <p className="text-sm font-medium flex items-center">
+                          <Calendar size={14} className="mr-1" />
+                          {cert.expiryDate}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500 mb-1">Verification Date</p>
+                        <p className="text-sm font-medium flex items-center">
+                          <CheckCircle size={14} className="mr-1" />
+                          {cert.verificationDate}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                </CardContent>
+                <CardFooter className="flex justify-between border-t pt-4">
+                  <Button variant="ghost" size="sm" asChild>
+                    <a href={cert.documentUrl}>
+                      <FileText size={14} className="mr-1" />
+                      View Document
+                    </a>
+                  </Button>
+                  <Button variant="ghost" size="sm">
+                    <Download size={14} className="mr-1" />
+                    Download
+                  </Button>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+        <TabsContent value="audits">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {audits.map((audit) => (
+              <Card key={audit.id}>
+                <CardHeader>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle>{audit.name}</CardTitle>
+                      <CardDescription>By {audit.auditor}</CardDescription>
+                    </div>
+                    <Badge className={getStatusColor(audit.status)}>
+                      {audit.status.charAt(0).toUpperCase() + audit.status.slice(1)}
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2">
+                      <Calendar size={16} className="text-gray-500" />
+                      <span>{audit.date}</span>
+                    </div>
+                    {audit.score !== null && (
+                      <div>
+                        <p className="text-sm text-gray-500 mb-1">Audit Score</p>
+                        <div className="flex items-center gap-2">
+                          <Progress 
+                            value={audit.score} 
+                            className={cn("h-2 bg-gray-200")}
+                          />
+                          <span className="text-sm font-medium">{audit.score}%</span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+                <CardFooter className="flex justify-end border-t pt-4">
+                  {audit.report && (
+                    <Button variant="ghost" size="sm">
+                      <FileText size={14} className="mr-1" />
+                      View Report
+                    </Button>
+                  )}
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        </TabsContent>
+        <TabsContent value="requirements">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {requirements.map((req) => (
+              <Card key={req.id}>
+                <CardHeader>
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <CardTitle>{req.name}</CardTitle>
+                      <CardDescription>{req.description}</CardDescription>
+                    </div>
+                    <Badge className={getStatusColor(req.status)}>
+                      <div className="flex items-center space-x-1">
+                        {getStatusIcon(req.status)}
+                        <span>
+                          {req.status
+                            .split("_")
+                            .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                            .join(" ")}
+                        </span>
+                      </div>
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div>
+                      <p className="text-sm text-gray-500 mb-1">Completion Status</p>
+                      <div className="flex items-center gap-2">
+                        <Progress 
+                          value={req.progress} 
+                          className={cn("h-2 bg-gray-200")}
+                        />
+                        <span className="text-sm font-medium">{req.progress}%</span>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm text-gray-500 mb-1">Due Date</p>
+                        <p className="text-sm font-medium flex items-center">
+                          <Calendar size={14} className="mr-1" />
+                          {req.dueDate}
+                        </p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-500 mb-1">Submission Date</p>
+                        <p className="text-sm font-medium flex items-center">
+                          {req.submissionDate ? (
+                            <>
+                              <CheckCircle size={14} className="mr-1 text-green-500" />
+                              {req.submissionDate}
+                            </>
+                          ) : (
+                            <>
+                              <Clock size={14} className="mr-1 text-gray-500" />
+                              Pending
+                            </>
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+                <CardFooter className="flex justify-between border-t pt-4">
+                  <Button variant="ghost" size="sm" disabled={req.status === "not_started"}>
+                    <FileText size={14} className="mr-1" />
+                    View Details
+                  </Button>
+                  {req.status !== "completed" && (
+                    <Button variant="outline" size="sm">
+                      <Upload size={14} className="mr-1" />
+                      Upload
+                    </Button>
+                  )}
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
         </TabsContent>
       </Tabs>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center">
-              <Users size={20} className="mr-2 text-toreso-teal" /> 
-              Audit Contacts
-            </CardTitle>
-            <CardDescription>Key contacts for audit and compliance matters</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center">
-                <Avatar className="h-10 w-10 mr-3">
-                  <AvatarImage src="/placeholder.svg" />
-                  <AvatarFallback>JD</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="font-medium">John Doe</p>
-                  <p className="text-sm text-gray-500">Quality Manager</p>
-                  <p className="text-xs text-gray-500">john.doe@example.com | +91 98765 43210</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center">
-                <Avatar className="h-10 w-10 mr-3">
-                  <AvatarImage src="/placeholder.svg" />
-                  <AvatarFallback>PS</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="font-medium">Priya Sharma</p>
-                  <p className="text-sm text-gray-500">Compliance Director</p>
-                  <p className="text-xs text-gray-500">priya.sharma@example.com | +91 87654 32109</p>
-                </div>
-              </div>
-              
-              <div className="flex items-center">
-                <Avatar className="h-10 w-10 mr-3">
-                  <AvatarImage src="/placeholder.svg" />
-                  <AvatarFallback>AR</AvatarFallback>
-                </Avatar>
-                <div>
-                  <p className="font-medium">Amit Rao</p>
-                  <p className="text-sm text-gray-500">Environmental Officer</p>
-                  <p className="text-xs text-gray-500">amit.rao@example.com | +91 76543 21098</p>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Compliance Resources</CardTitle>
-            <CardDescription>Helpful guides and documentation</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <a href="#" className="flex items-center p-3 border rounded-md hover:bg-gray-50 transition-colors">
-                <FileText size={20} className="text-blue-600 mr-3" />
-                <div>
-                  <p className="font-medium">ISO 9001:2015 Requirements Guide</p>
-                  <p className="text-sm text-gray-500">Complete breakdown of requirements</p>
-                </div>
-                <ChevronRight size={18} className="ml-auto text-gray-400" />
-              </a>
-              
-              <a href="#" className="flex items-center p-3 border rounded-md hover:bg-gray-50 transition-colors">
-                <FileText size={20} className="text-green-600 mr-3" />
-                <div>
-                  <p className="font-medium">Environmental Compliance Checklist</p>
-                  <p className="text-sm text-gray-500">Ensure you meet all requirements</p>
-                </div>
-                <ChevronRight size={18} className="ml-auto text-gray-400" />
-              </a>
-              
-              <a href="#" className="flex items-center p-3 border rounded-md hover:bg-gray-50 transition-colors">
-                <FileText size={20} className="text-purple-600 mr-3" />
-                <div>
-                  <p className="font-medium">Audit Preparation Guide</p>
-                  <p className="text-sm text-gray-500">Step-by-step preparation process</p>
-                </div>
-                <ChevronRight size={18} className="ml-auto text-gray-400" />
-              </a>
-              
-              <a href="#" className="flex items-center p-3 border rounded-md hover:bg-gray-50 transition-colors">
-                <FileText size={20} className="text-orange-600 mr-3" />
-                <div>
-                  <p className="font-medium">Health & Safety Documentation</p>
-                  <p className="text-sm text-gray-500">OHSAS 18001 requirements</p>
-                </div>
-                <ChevronRight size={18} className="ml-auto text-gray-400" />
-              </a>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
     </div>
   );
 };
 
-export default Compliance;
+export default ComplianceDashboard;

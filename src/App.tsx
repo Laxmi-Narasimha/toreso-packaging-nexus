@@ -21,10 +21,13 @@ import RegistrationSuccess from "./pages/RegistrationSuccess";
 // Admin Pages
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import UserManagement from "./pages/admin/UserManagement";
+import ProductCatalog from "./pages/admin/ProductCatalog";
+import CompanyManagement from "./pages/admin/CompanyManagement";
+import SupplierVerification from "./pages/admin/SupplierVerification";
 
 // Buyer Pages
 import BuyerDashboard from "./pages/buyer/BuyerDashboard";
-import ProductCatalog from "./pages/buyer/ProductCatalog";
+import { default as BuyerProductCatalog } from "./pages/buyer/ProductCatalog";
 import Suppliers from "./pages/buyer/Suppliers";
 import Cart from "./pages/buyer/Cart";
 
@@ -58,10 +61,10 @@ const App = () => (
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
             <Route path="users" element={<UserManagement />} />
-            <Route path="companies" element={<div>Company Management</div>} />
-            <Route path="supplier-verification" element={<div>Supplier Verification</div>} />
+            <Route path="companies" element={<CompanyManagement />} />
+            <Route path="supplier-verification" element={<SupplierVerification />} />
             <Route path="audit-management" element={<div>Audit Management</div>} />
-            <Route path="products" element={<div>Product Catalog</div>} />
+            <Route path="products" element={<ProductCatalog />} />
             <Route path="orders" element={<div>Order Management</div>} />
             <Route path="financials" element={<div>Financial Management</div>} />
             <Route path="analytics" element={<div>Reports & Analytics</div>} />
@@ -72,7 +75,7 @@ const App = () => (
           {/* Buyer Routes */}
           <Route path="/buyer" element={<BuyerLayout />}>
             <Route index element={<BuyerDashboard />} />
-            <Route path="products" element={<ProductCatalog />} />
+            <Route path="products" element={<BuyerProductCatalog />} />
             <Route path="suppliers" element={<Suppliers />} />
             <Route path="cart" element={<Cart />} />
             <Route path="orders" element={<div>Orders</div>} />
