@@ -1,21 +1,34 @@
 
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  CardFooter,
+} from "@/components/ui/card";
 import {
   ShoppingCart,
   Trash2,
+  ChevronRight,
   Plus,
   Minus,
   Building,
+  MapPin,
   Truck,
   Calendar,
-  ArrowRight,
   AlertCircle,
   Check,
+  CheckCircle2,
+  CreditCard,
+  Clock,
+  Box,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
 import {
   Select,
   SelectContent,
@@ -23,143 +36,140 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Progress } from "@/components/ui/progress";
-import { motion } from "framer-motion";
 import {
-  Alert,
-  AlertDescription,
-  AlertTitle,
-} from "@/components/ui/alert";
-
-// Sample cart items
-const initialCartItems = [
-  {
-    id: 1,
-    name: "Premium Corrugated Boxes",
-    description: "Heavy-duty corrugated boxes perfect for shipping and storage",
-    image: "https://images.unsplash.com/photo-1610411083065-7c747892e9c1?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80",
-    basePrice: 120,
-    currentPrice: 96,
-    quantity: 500,
-    unit: "boxes",
-    supplier: "EcoBox Solutions",
-    locations: ["Mumbai Plant", "Pune Plant"],
-    deliveryDate: "3-5 business days",
-    inStock: true,
-    nextTier: {
-      quantity: 1000,
-      price: 90,
-    },
-    selectedLocation: "Mumbai Plant",
-  },
-  {
-    id: 2,
-    name: "Kraft Paper Rolls",
-    description: "Recyclable kraft paper rolls for wrapping and void filling",
-    image: "https://images.unsplash.com/photo-1595410881274-8cec5816ba96?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80",
-    basePrice: 85,
-    currentPrice: 72,
-    quantity: 50,
-    unit: "rolls",
-    supplier: "PaperCraft Co.",
-    locations: ["Mumbai Plant", "Chennai Plant", "Delhi Plant"],
-    deliveryDate: "2-4 business days",
-    inStock: true,
-    nextTier: {
-      quantity: 100,
-      price: 68,
-    },
-    selectedLocation: "Mumbai Plant",
-  },
-  {
-    id: 3,
-    name: "Packaging Tapes (Clear)",
-    description: "Strong adhesive tape for sealing packages securely",
-    image: "https://images.unsplash.com/photo-1622467827417-bbe6d425f2a1?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&h=200&q=80",
-    basePrice: 35,
-    currentPrice: 28,
-    quantity: 100,
-    unit: "rolls",
-    supplier: "SecurePack Ltd.",
-    locations: ["Chennai Plant", "Pune Plant"],
-    deliveryDate: "2-3 business days",
-    inStock: true,
-    nextTier: {
-      quantity: 200,
-      price: 25,
-    },
-    selectedLocation: "Chennai Plant",
-  },
-];
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { motion, AnimatePresence } from "framer-motion";
+import { Separator } from "@/components/ui/separator";
 
 const Cart = () => {
-  const [cartItems, setCartItems] = useState(initialCartItems);
-  const [subtotal, setSubtotal] = useState(0);
-  const [savings, setSavings] = useState(0);
+  // State management
+  const [cartItems, setCartItems] = useState([
+    {
+      id: 1,
+      name: "Bubble Wrap Roll (Large)",
+      description: "Premium quality bubble wrap with air-filled bubbles for cushioning and protection.",
+      image: "https://5.imimg.com/data5/YN/PT/CP/ANDROID-27589775/product-jpeg-500x500.jpg",
+      basePrice: 350,
+      currentPrice: 320,
+      quantity: 20,
+      unit: "rolls",
+      supplier: "Benz Packaging Solutions",
+      locations: ["Mumbai", "Delhi", "Bangalore"],
+      deliveryDate: "Jul 28, 2023",
+      inStock: true,
+      nextTier: {
+        quantity: 50,
+        price: 290,
+      },
+      selectedLocation: "Mumbai"
+    },
+    {
+      id: 2,
+      name: "Corrugated Boxes (5-ply)",
+      description: "Strong and durable corrugated shipping boxes. Available in multiple sizes.",
+      image: "https://5.imimg.com/data5/ANDROID/Default/2022/1/SZ/AN/FP/40524380/product-jpeg-500x500.jpg",
+      basePrice: 25,
+      currentPrice: 20,
+      quantity: 100,
+      unit: "boxes",
+      supplier: "EcoPack Industries",
+      locations: ["Gurugram", "Chennai", "Pune"],
+      deliveryDate: "Jul 30, 2023",
+      inStock: true,
+      nextTier: {
+        quantity: 500,
+        price: 18,
+      },
+      selectedLocation: "Chennai"
+    },
+    {
+      id: 3,
+      name: "Kraft Paper Sheets (Large)",
+      description: "Eco-friendly kraft paper for wrapping, void fill, and product protection.",
+      image: "https://5.imimg.com/data5/SELLER/Default/2021/1/FX/CO/BD/121686138/kraft-paper-500x500.jpg",
+      basePrice: 8,
+      currentPrice: 7,
+      quantity: 200,
+      unit: "sheets",
+      supplier: "GreenWrap Co.",
+      locations: ["Hyderabad", "Kolkata", "Ahmedabad"],
+      deliveryDate: "Aug 2, 2023",
+      inStock: true,
+      nextTier: {
+        quantity: 500,
+        price: 6,
+      },
+      selectedLocation: "Hyderabad"
+    },
+  ]);
+  
+  const [promoCode, setPromoCode] = useState("");
+  const [promoApplied, setPromoApplied] = useState(false);
   const [addingMore, setAddingMore] = useState(false);
-  const [consolidationSavings, setConsolidationSavings] = useState(0);
+
+  // Calculate totals
+  const subtotal = cartItems.reduce((acc, item) => acc + (item.currentPrice * item.quantity), 0);
+  const shipping = subtotal > 10000 ? 0 : 500;
+  const discount = promoApplied ? subtotal * 0.1 : 0;
+  const tax = (subtotal - discount) * 0.18;
+  const total = subtotal + shipping + tax - discount;
   
-  // Calculate totals when cart items change
-  useEffect(() => {
-    let newSubtotal = 0;
-    let newSavings = 0;
-    let newConsolidationSavings = 0;
-    
-    cartItems.forEach(item => {
-      const itemTotal = item.currentPrice * item.quantity;
-      const baseTotal = item.basePrice * item.quantity;
-      
-      newSubtotal += itemTotal;
-      newSavings += (baseTotal - itemTotal);
-      
-      // Calculate potential consolidation savings
-      if (item.nextTier) {
-        const potentialSavings = (item.currentPrice - item.nextTier.price) * item.quantity;
-        newConsolidationSavings += potentialSavings;
-      }
-    });
-    
-    setSubtotal(newSubtotal);
-    setSavings(newSavings);
-    setConsolidationSavings(newConsolidationSavings);
-  }, [cartItems]);
-  
-  const updateQuantity = (id, newQuantity) => {
+  // Calculate potential savings
+  const regularTotal = cartItems.reduce((acc, item) => acc + (item.basePrice * item.quantity), 0);
+  const currentSavings = regularTotal - subtotal;
+  const nextTierSavings = cartItems.reduce((acc, item) => {
+    if (item.nextTier) {
+      const potentialSavings = (item.currentPrice - item.nextTier.price) * item.quantity;
+      return acc + potentialSavings;
+    }
+    return acc;
+  }, 0);
+
+  // Handle quantity change
+  const updateQuantity = (id: number, newQuantity: number) => {
     if (newQuantity < 1) return;
     
-    setCartItems(prevItems =>
-      prevItems.map(item =>
-        item.id === id 
-          ? { ...item, quantity: newQuantity } 
-          : item
+    setCartItems(prev => 
+      prev.map(item => 
+        item.id === id ? { ...item, quantity: newQuantity } : item
       )
     );
   };
-  
-  const updateLocation = (id, location) => {
-    setCartItems(prevItems =>
-      prevItems.map(item =>
-        item.id === id 
-          ? { ...item, selectedLocation: location } 
-          : item
+
+  // Handle remove item
+  const removeItem = (id: number) => {
+    setCartItems(prev => prev.filter(item => item.id !== id));
+  };
+
+  // Apply promo code
+  const applyPromoCode = () => {
+    if (promoCode.toUpperCase() === "SAVE10") {
+      setPromoApplied(true);
+    }
+  };
+
+  // Update delivery location
+  const updateLocation = (id: number, location: string) => {
+    setCartItems(prev => 
+      prev.map(item => 
+        item.id === id ? { ...item, selectedLocation: location } : item
       )
     );
   };
-  
-  const removeItem = (id) => {
-    setCartItems(prevItems => prevItems.filter(item => item.id !== id));
-  };
-  
-  const consolidateOrders = () => {
-    // In a real implementation, this would contact the supplier for consolidated pricing
-    // For now, we'll simulate by updating prices to the next tier
-    setCartItems(prevItems =>
-      prevItems.map(item => ({
-        ...item,
-        currentPrice: item.nextTier ? item.nextTier.price : item.currentPrice
-      }))
-    );
-    
+
+  const handleAddMore = () => {
     setAddingMore(true);
     setTimeout(() => setAddingMore(false), 2000);
   };
@@ -170,7 +180,8 @@ const Cart = () => {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1
+        staggerChildren: 0.1,
+        delayChildren: 0.2
       }
     }
   };
@@ -182,30 +193,12 @@ const Cart = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <motion.h1 
-        className="text-3xl font-bold mb-8 flex items-center"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <ShoppingCart className="mr-3" /> Your Cart <span className="ml-2 text-gray-500">({cartItems.length} items)</span>
-      </motion.h1>
-      
-      {cartItems.length === 0 ? (
-        <motion.div
-          className="bg-white rounded-xl shadow-sm p-10 text-center"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-        >
-          <ShoppingCart size={64} className="mx-auto text-gray-300 mb-4" />
-          <h3 className="text-xl font-medium mb-2">Your cart is empty</h3>
-          <p className="text-gray-500 mb-6">Looks like you haven't added any products to your cart yet.</p>
-          <Button asChild>
-            <Link to="/buyer/products">Browse Products</Link>
-          </Button>
-        </motion.div>
-      ) : (
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold mb-2">Your Cart</h1>
+        <p className="text-gray-600">Review your items and proceed to checkout.</p>
+      </div>
+
+      {cartItems.length > 0 ? (
         <div className="flex flex-col md:flex-row gap-6">
           {/* Cart items */}
           <motion.div 
@@ -220,127 +213,119 @@ const Cart = () => {
                   <Card className="overflow-hidden">
                     <CardContent className="p-0">
                       <div className="flex flex-col sm:flex-row">
-                        <div className="w-full sm:w-36 h-36 flex-shrink-0">
+                        {/* Product image */}
+                        <div className="sm:w-1/4 h-32 sm:h-auto bg-gray-100">
                           <img 
                             src={item.image} 
-                            alt={item.name} 
+                            alt={item.name}
                             className="w-full h-full object-cover object-center"
                           />
                         </div>
                         
+                        {/* Product details */}
                         <div className="flex-1 p-4">
-                          <div className="flex justify-between">
+                          <div className="flex flex-col sm:flex-row justify-between">
                             <div>
-                              <h3 className="font-medium text-lg">{item.name}</h3>
-                              <div className="flex items-center text-sm text-gray-500 mb-2">
-                                <Building size={14} className="mr-1" />
-                                {item.supplier}
+                              <h3 className="font-semibold text-lg mb-1">{item.name}</h3>
+                              <p className="text-gray-500 text-sm mb-2">{item.description}</p>
+                              
+                              <div className="flex items-center text-sm mb-3">
+                                <Building size={14} className="text-gray-500 mr-1" />
+                                <span>{item.supplier}</span>
+                                <span className="mx-1.5 text-gray-300">|</span>
+                                <MapPin size={14} className="text-gray-500 mr-1" />
+                                <Select 
+                                  defaultValue={item.selectedLocation}
+                                  onValueChange={(value) => updateLocation(item.id, value)}
+                                >
+                                  <SelectTrigger className="h-6 w-auto min-w-0 px-2 border-none focus:ring-0">
+                                    <SelectValue placeholder="Select location" />
+                                  </SelectTrigger>
+                                  <SelectContent>
+                                    {item.locations.map(location => (
+                                      <SelectItem key={location} value={location}>{location}</SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
                               </div>
-                              <p className="text-sm text-gray-500 line-clamp-1">{item.description}</p>
+                              
+                              <div className="flex items-center text-sm">
+                                <Truck size={14} className="text-gray-500 mr-1" />
+                                <span>Delivery by </span>
+                                <span className="font-medium ml-1">{item.deliveryDate}</span>
+                                <span className="mx-1.5 text-gray-300">|</span>
+                                {item.inStock ? (
+                                  <span className="text-green-600 flex items-center">
+                                    <CheckCircle2 size={14} className="mr-1" />
+                                    In Stock
+                                  </span>
+                                ) : (
+                                  <span className="text-red-500 flex items-center">
+                                    <AlertCircle size={14} className="mr-1" />
+                                    Out of Stock
+                                  </span>
+                                )}
+                              </div>
                             </div>
                             
-                            <div>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="text-gray-500 hover:text-red-500"
-                                onClick={() => removeItem(item.id)}
-                              >
-                                <Trash2 size={18} />
-                              </Button>
+                            <div className="flex flex-col items-end mt-4 sm:mt-0">
+                              <div className="flex items-center mb-2">
+                                <Button 
+                                  variant="outline" 
+                                  size="icon"
+                                  className="h-7 w-7"
+                                  onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                >
+                                  <Minus size={14} />
+                                </Button>
+                                <Input 
+                                  type="number" 
+                                  min={1}
+                                  value={item.quantity}
+                                  onChange={(e) => updateQuantity(item.id, parseInt(e.target.value) || 1)}
+                                  className="h-7 w-16 mx-1 px-2 text-center"
+                                />
+                                <Button 
+                                  variant="outline" 
+                                  size="icon"
+                                  className="h-7 w-7"
+                                  onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                >
+                                  <Plus size={14} />
+                                </Button>
+                              </div>
+                              <div className="text-right">
+                                <div className="font-semibold text-lg">₹{(item.currentPrice * item.quantity).toLocaleString()}</div>
+                                <div className="text-sm text-gray-500">
+                                  <span className="line-through">₹{item.basePrice}/unit</span>
+                                  <span className="mx-1">→</span>
+                                  <span className="text-toreso-blue font-medium">₹{item.currentPrice}/unit</span>
+                                </div>
+                              </div>
                             </div>
                           </div>
                           
-                          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between mt-4 space-y-3 sm:space-y-0">
-                            <div className="flex items-center">
-                              <Button
-                                variant="outline"
-                                size="icon"
-                                className="h-8 w-8 rounded-l-md"
-                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                              >
-                                <Minus size={14} />
-                              </Button>
-                              <input
-                                type="number"
-                                value={item.quantity}
-                                onChange={(e) => updateQuantity(item.id, parseInt(e.target.value) || 0)}
-                                className="h-8 w-16 text-center border-y outline-none"
-                              />
-                              <Button
-                                variant="outline"
-                                size="icon"
-                                className="h-8 w-8 rounded-r-md"
-                                onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                              >
-                                <Plus size={14} />
-                              </Button>
-                              <span className="ml-2 text-gray-500 text-sm">{item.unit}</span>
-                            </div>
-                            
-                            <div className="text-right">
-                              <div className="text-lg font-bold">₹{(item.currentPrice * item.quantity).toLocaleString()}</div>
-                              <div className="flex items-center justify-end text-sm">
-                                <span className="text-gray-400 line-through mr-2">₹{item.basePrice}</span>
-                                <span className="text-toreso-blue">₹{item.currentPrice}</span>
-                                <span className="text-gray-500 ml-1">per {item.unit === 'boxes' ? 'box' : 'roll'}</span>
-                              </div>
-                            </div>
-                          </div>
-                          
-                          <div className="flex flex-col sm:flex-row sm:items-center justify-between mt-4 pt-4 border-t border-gray-100">
+                          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mt-4 pt-4 border-t">
                             <div>
-                              <div className="text-sm font-medium mb-1">Deliver to:</div>
-                              <Select
-                                value={item.selectedLocation}
-                                onValueChange={(value) => updateLocation(item.id, value)}
-                              >
-                                <SelectTrigger className="h-8 w-[200px]">
-                                  <SelectValue placeholder="Select plant" />
-                                </SelectTrigger>
-                                <SelectContent>
-                                  {item.locations.map(location => (
-                                    <SelectItem key={location} value={location}>{location}</SelectItem>
-                                  ))}
-                                </SelectContent>
-                              </Select>
-                            </div>
-                            
-                            <div className="flex items-center mt-2 sm:mt-0">
-                              <div className="flex items-center text-sm text-gray-500">
-                                <Truck size={14} className="mr-1" />
-                                <span>Delivery: {item.deliveryDate}</span>
-                              </div>
-                              {item.inStock ? (
-                                <Badge className="ml-3 bg-green-500">In Stock</Badge>
-                              ) : (
-                                <Badge className="ml-3 bg-amber-500">On Backorder</Badge>
+                              {item.nextTier && (
+                                <div className="flex items-center text-sm">
+                                  <Box size={14} className="text-amber-500 mr-1" />
+                                  <span className="text-amber-600">
+                                    Add {item.nextTier.quantity - item.quantity} more to get <span className="font-semibold">₹{item.nextTier.price}/unit</span>
+                                  </span>
+                                </div>
                               )}
                             </div>
+                            <Button 
+                              variant="ghost" 
+                              size="sm" 
+                              className="text-red-500 hover:text-red-700 hover:bg-red-50 mt-2 sm:mt-0"
+                              onClick={() => removeItem(item.id)}
+                            >
+                              <Trash2 size={14} className="mr-1" />
+                              Remove
+                            </Button>
                           </div>
-                          
-                          {/* Volume discount hint */}
-                          {item.nextTier && (
-                            <div className="mt-3 pt-3 border-t border-gray-100">
-                              <div className="flex items-start">
-                                <div className="mr-2 mt-0.5">
-                                  <AlertCircle size={14} className="text-toreso-blue" />
-                                </div>
-                                <div className="text-sm text-gray-600">
-                                  <p>
-                                    <span className="font-medium">Volume discount available!</span> Increase your order to {item.nextTier.quantity} {item.unit} to pay only <span className="text-toreso-blue font-medium">₹{item.nextTier.price}</span> per {item.unit === 'boxes' ? 'box' : 'roll'}.
-                                  </p>
-                                  <div className="mt-2">
-                                    <Progress value={(item.quantity / item.nextTier.quantity) * 100} className="h-2" />
-                                    <div className="flex justify-between text-xs mt-1">
-                                      <span>{item.quantity} {item.unit}</span>
-                                      <span className="text-toreso-blue">{item.nextTier.quantity} {item.unit}</span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          )}
                         </div>
                       </div>
                     </CardContent>
@@ -349,116 +334,243 @@ const Cart = () => {
               ))}
             </div>
             
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              className="mt-6"
+            <motion.div
+              variants={itemVariants}
+              className="mt-8"
             >
-              <Alert variant="default" className="border-toreso-blue bg-blue-50">
-                <AlertCircle className="h-4 w-4 text-toreso-blue" />
-                <AlertTitle className="text-toreso-blue">Volume Discount Opportunity</AlertTitle>
-                <AlertDescription className="text-gray-600">
-                  Consolidate your orders across plants to unlock an additional savings of <span className="font-bold">₹{consolidationSavings.toLocaleString()}</span>. Maximize your procurement power!
-                </AlertDescription>
-              </Alert>
-              
-              {addingMore && (
-                <Alert variant="default" className="border-green-500 bg-green-50 mt-3">
-                  <Check className="h-4 w-4 text-green-500" />
-                  <AlertTitle className="text-green-700">Volume discount applied!</AlertTitle>
-                  <AlertDescription className="text-gray-600">
-                    You've successfully unlocked volume-based pricing across all your plants.
-                  </AlertDescription>
-                </Alert>
-              )}
+              <Button
+                variant="outline"
+                className="w-full flex items-center justify-center py-6"
+                onClick={handleAddMore}
+                disabled={addingMore}
+              >
+                {addingMore ? (
+                  <span className="flex items-center">
+                    <Check className="h-5 w-5 mr-2 text-green-500" />
+                    Redirecting to Products...
+                  </span>
+                ) : (
+                  <span className="flex items-center">
+                    <Plus className="h-5 w-5 mr-2" />
+                    Add More Items
+                  </span>
+                )}
+              </Button>
             </motion.div>
           </motion.div>
           
           {/* Order summary */}
           <motion.div 
-            className="w-full md:w-80 flex-shrink-0"
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
+            transition={{ delay: 0.4, duration: 0.6 }}
+            className="w-full md:w-1/3"
           >
-            <Card>
-              <CardContent className="p-6">
-                <h3 className="font-bold text-xl mb-4">Order Summary</h3>
-                
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Subtotal ({cartItems.length} items)</span>
-                    <span>₹{subtotal.toLocaleString()}</span>
-                  </div>
-                  
-                  <div className="flex justify-between text-green-600">
-                    <span>Volume Discount Savings</span>
-                    <span>- ₹{savings.toLocaleString()}</span>
-                  </div>
-                  
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Shipping Fee</span>
-                    <span>₹0</span>
-                  </div>
-                  
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Tax (18% GST)</span>
-                    <span>₹{Math.round(subtotal * 0.18).toLocaleString()}</span>
-                  </div>
-                  
-                  <div className="border-t border-gray-200 pt-3 mt-3">
+            <div className="space-y-6 sticky top-24">
+              <Card className="border-none shadow-lg">
+                <CardHeader>
+                  <CardTitle>Order Summary</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Subtotal</span>
+                      <span>₹{subtotal.toLocaleString()}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Shipping</span>
+                      <span>{shipping > 0 ? `₹${shipping.toLocaleString()}` : 'Free'}</span>
+                    </div>
+                    {promoApplied && (
+                      <div className="flex justify-between text-green-600">
+                        <span>Discount (SAVE10)</span>
+                        <span>- ₹{discount.toLocaleString()}</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">GST (18%)</span>
+                      <span>₹{tax.toLocaleString()}</span>
+                    </div>
+                    <Separator className="my-2" />
                     <div className="flex justify-between font-bold text-lg">
                       <span>Total</span>
-                      <span>₹{Math.round(subtotal * 1.18).toLocaleString()}</span>
+                      <span>₹{total.toLocaleString()}</span>
                     </div>
-                    <div className="text-green-600 text-sm mt-1">
-                      You saved ₹{savings.toLocaleString()} on this order!
+                    
+                    <div className="bg-blue-50 text-blue-700 p-3 rounded-md flex items-start mt-2">
+                      <Check className="h-4 w-4 mr-2 mt-0.5" />
+                      <span className="text-sm">
+                        You're saving <span className="font-semibold">₹{currentSavings.toLocaleString()}</span> on this order compared to standard pricing.
+                      </span>
                     </div>
                   </div>
-                </div>
-              </CardContent>
-              
-              <CardFooter className="flex flex-col px-6 pt-0 pb-6">
-                <Button 
-                  variant="outline" 
-                  className="w-full mb-3" 
-                  onClick={consolidateOrders}
-                >
-                  <Building className="mr-2 h-4 w-4" /> Consolidate Multi-Plant Order
-                </Button>
-                <Button className="w-full">
-                  Proceed to Checkout <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </CardFooter>
-            </Card>
-            
-            <Card className="mt-4">
-              <CardContent className="p-6">
-                <h3 className="font-bold text-lg mb-3">Estimated Delivery</h3>
-                <div className="flex items-start">
-                  <Calendar className="h-5 w-5 mr-2 text-gray-500 mt-0.5 flex-shrink-0" />
+                  
+                  <div className="pt-2">
+                    <p className="text-sm font-medium mb-2">Promo Code</p>
+                    <div className="flex space-x-2">
+                      <Input 
+                        placeholder="Enter promo code"
+                        value={promoCode}
+                        onChange={(e) => setPromoCode(e.target.value)}
+                        disabled={promoApplied}
+                      />
+                      <Button 
+                        onClick={applyPromoCode}
+                        disabled={promoApplied || promoCode.length === 0}
+                        variant={promoApplied ? "ghost" : "default"}
+                        className={promoApplied ? "text-green-600" : ""}
+                      >
+                        {promoApplied ? 'Applied' : 'Apply'}
+                      </Button>
+                    </div>
+                    {promoApplied && (
+                      <p className="text-sm text-green-600 mt-1 flex items-center">
+                        <Check size={12} className="mr-1" />
+                        10% discount applied successfully!
+                      </p>
+                    )}
+                  </div>
+                  
+                  <Separator />
+                  
                   <div>
-                    <p className="font-medium">May 5 - May 10, 2025</p>
-                    <p className="text-sm text-gray-500">Delivery times may vary by location</p>
+                    <p className="text-sm font-medium mb-1">Estimated Delivery</p>
+                    <div className="flex items-center">
+                      <Calendar className="h-4 w-4 text-gray-500 mr-2" />
+                      <span>Jul 28 - Aug 2, 2023</span>
+                    </div>
                   </div>
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card className="mt-4">
-              <CardContent className="p-6">
-                <h3 className="font-bold text-lg mb-3">Need Help?</h3>
-                <div className="space-y-4 text-sm">
-                  <Button variant="link" className="h-auto p-0">Request Bulk Quote</Button>
-                  <Button variant="link" className="h-auto p-0">Shipping Policies</Button>
-                  <Button variant="link" className="h-auto p-0">Contact Support</Button>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+                <CardFooter className="flex-col space-y-4">
+                  <Button className="w-full bg-toreso-blue py-6 text-lg">
+                    Proceed to Checkout
+                  </Button>
+                  
+                  <div className="flex items-center justify-center text-sm text-gray-500 w-full">
+                    <CreditCard size={14} className="mr-2" />
+                    <span>Secure payment processing</span>
+                  </div>
+                </CardFooter>
+              </Card>
+              
+              {nextTierSavings > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.8 }}
+                >
+                  <Card className="border-none shadow-md bg-gradient-to-r from-amber-50 to-orange-50 border-amber-100">
+                    <CardContent className="p-4">
+                      <div className="flex items-start">
+                        <div className="bg-amber-100 p-2 rounded-full mr-3">
+                          <TrendingUp className="h-5 w-5 text-amber-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-amber-800">Unlock More Savings!</h4>
+                          <p className="text-sm text-amber-700 mt-1">
+                            Add more quantity to save an additional ₹{nextTierSavings.toLocaleString()} on your current items.
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              )}
+            </div>
           </motion.div>
         </div>
+      ) : (
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-center py-20"
+        >
+          <div className="inline-block p-6 bg-gray-100 rounded-full mb-6">
+            <ShoppingCart className="h-16 w-16 text-gray-400" />
+          </div>
+          <h2 className="text-2xl font-bold mb-2">Your cart is empty</h2>
+          <p className="text-gray-600 mb-8">Start shopping to add packaging materials to your cart.</p>
+          <Button className="bg-toreso-blue">
+            Browse Products
+          </Button>
+        </motion.div>
       )}
+      
+      {/* Recently Viewed Items */}
+      <div className="mt-16">
+        <h2 className="text-xl font-bold mb-6">Recently Viewed Items</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {[1, 2, 3, 4].map(i => (
+            <Card key={i} className="overflow-hidden hover:shadow-lg transition-shadow border-none shadow-md">
+              <div className="h-40 bg-gray-100">
+                <img 
+                  src={`https://5.imimg.com/data5/SELLER/Default/2021/1/FX/CO/BD/121686138/kraft-paper-500x500.jpg`}
+                  alt="Product"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <CardContent className="p-4">
+                <Badge variant="outline" className="mb-2">Sustainable Options</Badge>
+                <h3 className="font-semibold">Kraft Paper Roll</h3>
+                <div className="flex justify-between items-center mt-2">
+                  <div className="font-bold">₹180/roll</div>
+                  <Button size="sm" className="bg-toreso-blue">Add to Cart</Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+      
+      {/* Volume Pricing Information */}
+      <div className="mt-16">
+        <Card className="border-none shadow-md">
+          <CardHeader>
+            <CardTitle>Volume-Based Pricing</CardTitle>
+            <CardDescription>Get better prices when you order larger quantities</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Product</TableHead>
+                  <TableHead>Standard Price</TableHead>
+                  <TableHead>10+ Units</TableHead>
+                  <TableHead>50+ Units</TableHead>
+                  <TableHead>100+ Units</TableHead>
+                  <TableHead>500+ Units</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="font-medium">Bubble Wrap Rolls</TableCell>
+                  <TableCell>₹350/roll</TableCell>
+                  <TableCell>₹320/roll</TableCell>
+                  <TableCell>₹290/roll</TableCell>
+                  <TableCell>₹270/roll</TableCell>
+                  <TableCell>₹250/roll</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Corrugated Boxes (5-ply)</TableCell>
+                  <TableCell>₹25/box</TableCell>
+                  <TableCell>₹22/box</TableCell>
+                  <TableCell>₹20/box</TableCell>
+                  <TableCell>₹18/box</TableCell>
+                  <TableCell>₹15/box</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Kraft Paper Sheets</TableCell>
+                  <TableCell>₹8/sheet</TableCell>
+                  <TableCell>₹7.5/sheet</TableCell>
+                  <TableCell>₹7/sheet</TableCell>
+                  <TableCell>₹6/sheet</TableCell>
+                  <TableCell>₹5/sheet</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };

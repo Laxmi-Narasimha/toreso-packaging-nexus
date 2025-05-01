@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import {
   Card,
   CardContent,
@@ -21,13 +21,92 @@ import {
   FileText,
   Building,
   Star,
+  Box,
+  PackageCheck,
+  Layers,
+  ArrowDown,
+  Filter,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const BuyerDashboard = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
+  
+  const [popularPackaging, setPopularPackaging] = useState([
+    {
+      id: 1,
+      name: "Bubble Wrap Rolls",
+      description: "Premium quality bubble wrap with air-filled bubbles for cushioning and protection.",
+      image: "https://5.imimg.com/data5/YN/PT/CP/ANDROID-27589775/product-jpeg-500x500.jpg",
+      price: 350,
+      unit: "per roll",
+      supplier: "Benz Packaging Solutions",
+      rating: 4.8,
+      category: "Protective Packaging"
+    },
+    {
+      id: 2,
+      name: "Corrugated Boxes",
+      description: "Strong and durable corrugated shipping boxes available in multiple sizes.",
+      image: "https://5.imimg.com/data5/ANDROID/Default/2022/1/SZ/AN/FP/40524380/product-jpeg-500x500.jpg",
+      price: 12,
+      unit: "per box",
+      supplier: "EcoPack Industries",
+      rating: 4.7,
+      category: "Shipping Supplies"
+    },
+    {
+      id: 3,
+      name: "Air Pillow Cushioning",
+      description: "On-demand air pillows perfect for void fill and protecting products during shipping.",
+      image: "https://5.imimg.com/data5/SELLER/Default/2021/1/UO/BU/BZ/121686138/packair-air-pillows-make-machine-500x500.jpg",
+      price: 500,
+      unit: "per roll",
+      supplier: "SecurePack Ltd.",
+      rating: 4.6,
+      category: "Protective Packaging"
+    },
+    {
+      id: 4,
+      name: "Kraft Paper Sheets",
+      description: "Eco-friendly kraft paper for wrapping, void fill, and product protection.",
+      image: "https://5.imimg.com/data5/SELLER/Default/2021/1/FX/CO/BD/121686138/kraft-paper-500x500.jpg",
+      price: 8,
+      unit: "per sheet",
+      supplier: "GreenWrap Co.",
+      rating: 4.9,
+      category: "Sustainable Packaging"
+    }
+  ]);
+
+  // Video parallax effect
+  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.5], [1, 1.2]);
+  
+  // Animation for content sections
+  const fadeInUp = {
+    initial: { opacity: 0, y: 60 },
+    animate: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: 0.05 * i,
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    })
+  };
+
   // Sample data for charts
   const spendingData = [
     { name: "Jan", amount: 12000 },
@@ -107,409 +186,339 @@ const BuyerDashboard = () => {
     },
   ];
 
-  // Sample data for RFQ responses
-  const rfqResponses = [
-    {
-      id: "RFQ-392",
-      item: "Pallets (Standard Size)",
-      supplier: "WoodWorks Solutions",
-      quote: "₹750 per unit",
-      expires: "in 3 days",
-    },
-    {
-      id: "RFQ-385",
-      item: "Custom Printed Boxes",
-      supplier: "ColorPrint Packaging",
-      quote: "₹35 per unit",
-      expires: "in 5 days",
-    },
-    {
-      id: "RFQ-379",
-      item: "Anti-Static Bags (Large)",
-      supplier: "TechPack Industries",
-      quote: "₹12 per unit",
-      expires: "today",
-    },
+  // Package categories from IndiaMART
+  const packageCategories = [
+    { name: "Protective Packaging", icon: <PackageCheck size={24} /> },
+    { name: "Corrugated Boxes", icon: <Box size={24} /> },
+    { name: "Void Fill Solutions", icon: <Layers size={24} /> },
+    { name: "Packaging Machines", icon: <Package size={24} /> },
+    { name: "Sustainable Options", icon: <Package size={24} /> },
   ];
 
-  // Sample data for volume savings
-  const volumeSavings = [
-    {
-      product: "Corrugated Boxes",
-      standardPrice: 120,
-      currentPrice: 92,
-      volume: 15000,
-      savings: 420000,
-    },
-    {
-      product: "Packaging Tapes",
-      standardPrice: 45,
-      currentPrice: 36,
-      volume: 5000,
-      savings: 45000,
-    },
-    {
-      product: "Stretch Films",
-      standardPrice: 85,
-      currentPrice: 68,
-      volume: 8000,
-      savings: 136000,
-    },
-  ];
-
-  // Sample data for upcoming deliveries
-  const upcomingDeliveries = [
-    {
-      id: "DEL-4283",
-      order: "ORD-7712",
-      product: "Corrugated Boxes (Large)",
-      quantity: "5,000 units",
-      delivery: "Tomorrow",
-      plant: "Gurugram",
-    },
-    {
-      id: "DEL-4280",
-      order: "ORD-7708",
-      product: "Cushioning Materials",
-      quantity: "200 rolls",
-      delivery: "Jul 27, 2023",
-      plant: "Chennai",
-    },
-    {
-      id: "DEL-4275",
-      order: "ORD-7698",
-      product: "Void Fillers",
-      quantity: "300 bags",
-      delivery: "Jul 29, 2023",
-      plant: "Pune",
-    },
-  ];
-
-  // Sample data for recommended suppliers
-  const recommendedSuppliers = [
-    {
-      name: "Premium Packaging Ltd.",
-      category: "Corrugated Boxes",
-      rating: 4.8,
-      plants: "Near your Gurugram plant",
-      savings: "Avg. 18% below market",
-    },
-    {
-      name: "EcoWrap Solutions",
-      category: "Sustainable Packaging",
-      rating: 4.7,
-      plants: "Near your Chennai plant",
-      savings: "Avg. 12% below market",
-    },
-    {
-      name: "IndusPack Co.",
-      category: "Industrial Packaging",
-      rating: 4.9,
-      plants: "Near your Pune plant",
-      savings: "Avg. 15% below market",
-    },
-  ];
+  // Simulating automatic video play on load
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(error => {
+        console.error("Video autoplay failed:", error);
+      });
+    }
+  }, []);
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold mb-1">Buyer Dashboard</h1>
-        <p className="text-gray-500">
-          Welcome back, John! Here's an overview of your procurement activities.
-        </p>
+    <div ref={containerRef} className="relative">
+      {/* Video hero section with parallax effect */}
+      <div className="relative h-[80vh] overflow-hidden">
+        <motion.div 
+          style={{ opacity, scale }}
+          className="absolute inset-0 w-full h-full"
+        >
+          <video 
+            ref={videoRef}
+            className="object-cover w-full h-full"
+            autoPlay 
+            muted 
+            loop 
+            playsInline
+            src="https://videos.pexels.com/video-files/7955998/7955998-uhd_2560_1440_25fps.mp4"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/90" />
+        </motion.div>
+        
+        <div className="container mx-auto relative z-10 h-full flex flex-col justify-center items-start px-4">
+          <motion.div 
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="max-w-2xl"
+          >
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">Optimize Your Packaging Solutions</h1>
+            <p className="text-xl text-gray-200 mb-8">Discover efficient, sustainable, and cost-effective packaging materials for your business.</p>
+            <div className="flex flex-wrap gap-4">
+              <Button size="lg" className="bg-toreso-blue hover:bg-toreso-darkBlue text-white">
+                Explore Products
+              </Button>
+              <Button size="lg" variant="outline" className="bg-white/10 text-white border-white/30 hover:bg-white/20">
+                Request Quote
+              </Button>
+            </div>
+          </motion.div>
+        </div>
+        
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 1.2 }}
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
+        >
+          <ArrowDown className="h-8 w-8 text-white animate-bounce" />
+        </motion.div>
       </div>
-
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {stats.map((stat, index) => (
-          <Card key={index}>
-            <CardContent className="p-6">
-              <div className="flex justify-between items-start">
-                <div>
-                  <p className="text-sm font-medium text-gray-500">{stat.title}</p>
-                  <p className="text-3xl font-bold mt-2">{stat.value}</p>
-                </div>
-                <div className="bg-gray-100 p-3 rounded-full">
-                  {stat.icon}
-                </div>
+      
+      {/* Main content container */}
+      <div className="bg-gradient-to-b from-gray-50 to-white">
+        <div className="container mx-auto px-4 py-12">
+          {/* Overview section */}
+          <section className="mb-16">
+            <motion.div 
+              className="flex flex-col md:flex-row justify-between items-start md:items-end mb-8"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <div>
+                <h2 className="text-2xl md:text-3xl font-bold mb-2">Dashboard Overview</h2>
+                <p className="text-gray-600">Welcome back, John! Here's what's happening with your procurement.</p>
               </div>
-              <div className="flex items-center mt-4">
-                {stat.trend === "up" ? (
-                  <TrendingUp className="h-4 w-4 text-green-500 mr-2" />
-                ) : (
-                  <TrendingDown className="h-4 w-4 text-red-500 mr-2" />
-                )}
-                <span
-                  className={`text-sm ${
-                    (stat.trend === "up" && stat.title !== "Avg. Lead Time") || 
-                    (stat.trend === "down" && stat.title === "Avg. Lead Time")
-                      ? "text-green-500"
-                      : "text-red-500"
-                  }`}
+              <Button variant="outline" className="flex items-center mt-4 md:mt-0">
+                <Filter size={16} className="mr-2" /> Filter Data
+              </Button>
+            </motion.div>
+
+            {/* Stats Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={index}
+                  custom={index}
+                  variants={fadeInUp}
+                  initial="initial"
+                  whileInView="animate"
+                  viewport={{ once: true }}
                 >
-                  {stat.change} from last month
-                </span>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
-
-      {/* Spending Chart */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Monthly Procurement Spend</CardTitle>
-          <CardDescription>Track your packaging procurement costs</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="h-80">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={spendingData}
-                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip formatter={(value) => `₹${value.toLocaleString()}`} />
-                <Bar dataKey="amount" fill="#2C5EF6" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Recent Orders and RFQ Responses */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <div>
-              <CardTitle>Recent Orders</CardTitle>
-              <CardDescription>Your latest procurement activities</CardDescription>
+                  <Card className="border-none shadow-md hover:shadow-lg transition-shadow">
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="text-sm font-medium text-gray-500">{stat.title}</p>
+                          <p className="text-3xl font-bold mt-2">{stat.value}</p>
+                        </div>
+                        <div className="bg-blue-50 p-3 rounded-full">
+                          {stat.icon}
+                        </div>
+                      </div>
+                      <div className="flex items-center mt-4">
+                        {stat.trend === "up" ? (
+                          <TrendingUp className="h-4 w-4 text-green-500 mr-2" />
+                        ) : (
+                          <TrendingDown className="h-4 w-4 text-red-500 mr-2" />
+                        )}
+                        <span
+                          className={`text-sm ${
+                            (stat.trend === "up" && stat.title !== "Avg. Lead Time") || 
+                            (stat.trend === "down" && stat.title === "Avg. Lead Time")
+                              ? "text-green-500"
+                              : "text-red-500"
+                          }`}
+                        >
+                          {stat.change} from last month
+                        </span>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
-            <Button variant="ghost" size="sm" className="text-toreso-blue">
-              View All <ArrowRight className="h-4 w-4 ml-1" />
-            </Button>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <div className="divide-y">
-              {recentOrders.map((order, index) => (
-                <div key={index} className="py-3 flex justify-between items-center">
+          </section>
+
+          {/* Popular Packaging Materials section - using data from IndiaMART */}
+          <section className="mb-16">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+              <div>
+                <h2 className="text-2xl md:text-3xl font-bold mb-2">Popular Packaging Materials</h2>
+                <p className="text-gray-600">Featured products based on your industry and requirements</p>
+              </div>
+              <Button variant="ghost" className="text-toreso-blue flex items-center mt-4 md:mt-0">
+                View All <ArrowRight className="ml-1 h-4 w-4" />
+              </Button>
+            </div>
+
+            <Tabs defaultValue="all" className="mb-8">
+              <TabsList>
+                <TabsTrigger value="all">All</TabsTrigger>
+                {packageCategories.map((category, index) => (
+                  <TabsTrigger key={index} value={category.name.toLowerCase().replace(/\s+/g, '-')}>
+                    <span className="hidden sm:flex items-center">
+                      {category.icon}
+                      <span className="ml-2">{category.name}</span>
+                    </span>
+                    <span className="sm:hidden">{category.name.split(' ')[0]}</span>
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {popularPackaging.map((product, index) => (
+                <motion.div 
+                  key={product.id}
+                  custom={index}
+                  variants={fadeInUp}
+                  initial="initial"
+                  whileInView="animate"
+                  viewport={{ once: true }}
+                >
+                  <Card className="overflow-hidden h-full hover:shadow-lg transition-shadow border-none shadow-md group">
+                    <div className="relative h-48 overflow-hidden bg-gray-100">
+                      <motion.img 
+                        src={product.image}
+                        alt={product.name}
+                        className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <div className="absolute top-2 right-2">
+                        <Badge className="bg-white text-toreso-blue">{product.category}</Badge>
+                      </div>
+                    </div>
+                    <CardContent className="p-4">
+                      <h3 className="font-semibold text-lg mb-1">{product.name}</h3>
+                      <p className="text-gray-500 text-sm line-clamp-2 mb-3">{product.description}</p>
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center">
+                          <Star className="h-4 w-4 text-yellow-400 fill-yellow-400" />
+                          <span className="ml-1 text-sm font-medium">{product.rating}</span>
+                        </div>
+                        <div className="text-sm text-gray-500">{product.supplier}</div>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <p className="font-bold text-lg">₹{product.price} <span className="text-xs text-gray-500 font-normal">{product.unit}</span></p>
+                        <Button size="sm" className="bg-toreso-blue hover:bg-toreso-darkBlue">Add to Cart</Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+          </section>
+
+          {/* Spending Chart & Recent Orders */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <Card className="shadow-md border-none">
+                <CardHeader>
+                  <CardTitle>Monthly Procurement Spend</CardTitle>
+                  <CardDescription>Track your packaging procurement costs</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-80">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart
+                        data={spendingData}
+                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                      >
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                        <XAxis dataKey="name" />
+                        <YAxis />
+                        <Tooltip formatter={(value) => `₹${value.toLocaleString()}`} />
+                        <Bar dataKey="amount" fill="#2C5EF6" radius={[4, 4, 0, 0]} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+            >
+              <Card className="shadow-md border-none">
+                <CardHeader className="flex flex-row items-center justify-between pb-2">
                   <div>
-                    <p className="font-medium">{order.product}</p>
-                    <div className="flex items-center text-sm text-gray-500">
-                      <span>{order.supplier}</span>
-                      <span className="mx-2">•</span>
-                      <span>{order.date}</span>
-                    </div>
+                    <CardTitle>Recent Orders</CardTitle>
+                    <CardDescription>Your latest procurement activities</CardDescription>
                   </div>
-                  <div className="flex items-center">
-                    <Badge variant="outline" className={order.statusColor}>
-                      {order.status}
-                    </Badge>
-                    <Button variant="ghost" size="sm" className="ml-2">
-                      <ArrowRight className="h-4 w-4" />
-                    </Button>
+                  <Button variant="ghost" size="sm" className="text-toreso-blue">
+                    View All <ArrowRight className="h-4 w-4 ml-1" />
+                  </Button>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <div className="divide-y">
+                    {recentOrders.map((order, index) => (
+                      <div key={index} className="py-3 flex justify-between items-center">
+                        <div>
+                          <p className="font-medium">{order.product}</p>
+                          <div className="flex items-center text-sm text-gray-500">
+                            <span>{order.supplier}</span>
+                            <span className="mx-2">•</span>
+                            <span>{order.date}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center">
+                          <Badge variant="outline" className={order.statusColor}>
+                            {order.status}
+                          </Badge>
+                          <Button variant="ghost" size="sm" className="ml-2">
+                            <ArrowRight className="h-4 w-4" />
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <div>
-              <CardTitle>RFQ Responses</CardTitle>
-              <CardDescription>Recent quotes from suppliers</CardDescription>
-            </div>
-            <Button variant="ghost" size="sm" className="text-toreso-blue">
-              View All <ArrowRight className="h-4 w-4 ml-1" />
-            </Button>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <div className="divide-y">
-              {rfqResponses.map((rfq, index) => (
-                <div key={index} className="py-3">
-                  <div className="flex justify-between items-start">
-                    <div>
-                      <p className="font-medium">{rfq.item}</p>
-                      <p className="text-sm text-gray-500">{rfq.supplier}</p>
-                    </div>
-                    <p className="font-semibold text-toreso-blue">{rfq.quote}</p>
-                  </div>
-                  <div className="flex justify-between items-center mt-2">
-                    <p className="text-xs flex items-center">
-                      <Clock className="h-3 w-3 mr-1 text-gray-400" />
-                      <span className={rfq.expires === "today" ? "text-red-500" : "text-gray-500"}>
-                        Expires {rfq.expires}
-                      </span>
-                    </p>
-                    <div className="space-x-2">
-                      <Button size="sm" variant="outline" className="h-7 px-2 text-xs">
-                        Compare
-                      </Button>
-                      <Button size="sm" className="h-7 px-2 text-xs bg-toreso-blue hover:bg-toreso-darkBlue">
-                        Accept
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Volume Savings and Upcoming Deliveries */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Volume Consolidation Savings</CardTitle>
-            <CardDescription>Cost savings through multi-plant procurement</CardDescription>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <div className="divide-y">
-              {volumeSavings.map((item, index) => (
-                <div key={index} className="py-3">
-                  <div className="flex justify-between mb-1">
-                    <p className="font-medium">{item.product}</p>
-                    <p className="font-medium text-green-600">₹{item.savings.toLocaleString()} saved</p>
-                  </div>
-                  <div className="flex items-center text-sm text-gray-500 mb-2">
-                    <span>Volume: {item.volume.toLocaleString()} units</span>
-                    <span className="mx-2">•</span>
-                    <span className="line-through">₹{item.standardPrice}/unit</span>
-                    <span className="mx-1">→</span>
-                    <span className="text-toreso-blue font-semibold">₹{item.currentPrice}/unit</span>
-                  </div>
-                  <Progress value={((item.standardPrice - item.currentPrice) / item.standardPrice) * 100} className="h-1.5" />
-                  <p className="text-xs text-gray-500 mt-1">
-                    {Math.round(((item.standardPrice - item.currentPrice) / item.standardPrice) * 100)}% discount from standard pricing
-                  </p>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-          <CardFooter className="border-t pt-4 pb-0">
-            <Button variant="ghost" size="sm" className="text-toreso-blue ml-auto">
-              View All Savings <ArrowRight className="h-4 w-4 ml-1" />
-            </Button>
-          </CardFooter>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <div>
-              <CardTitle>Upcoming Deliveries</CardTitle>
-              <CardDescription>Scheduled packaging deliveries across plants</CardDescription>
-            </div>
-            <Button variant="ghost" size="sm" className="text-toreso-blue">
-              View All <ArrowRight className="h-4 w-4 ml-1" />
-            </Button>
-          </CardHeader>
-          <CardContent className="pt-0">
-            <div className="divide-y">
-              {upcomingDeliveries.map((delivery, index) => (
-                <div key={index} className="py-3">
-                  <div className="flex justify-between">
-                    <p className="font-medium">{delivery.product}</p>
-                    <Badge variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
-                      {delivery.plant}
-                    </Badge>
-                  </div>
-                  <div className="flex items-center text-sm text-gray-500 mt-1">
-                    <p>Quantity: {delivery.quantity}</p>
-                    <span className="mx-2">•</span>
-                    <div className="flex items-center">
-                      <Calendar className="h-3 w-3 mr-1" />
-                      <span className={delivery.delivery === "Tomorrow" ? "text-orange-500 font-medium" : ""}>
-                        {delivery.delivery}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center mt-2">
-                    <p className="text-xs text-gray-500">Order #{delivery.order}</p>
-                    <Button size="sm" variant="outline" className="h-7 px-2 text-xs">
-                      Track
-                    </Button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Recommended Suppliers */}
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between pb-2">
-          <div>
-            <CardTitle>Recommended Suppliers</CardTitle>
-            <CardDescription>Based on your procurement history and location</CardDescription>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
-          <Button variant="ghost" size="sm" className="text-toreso-blue">
-            View All <ArrowRight className="h-4 w-4 ml-1" />
-          </Button>
-        </CardHeader>
-        <CardContent className="pt-0">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {recommendedSuppliers.map((supplier, index) => (
-              <div key={index} className="border rounded-lg p-4 hover:border-toreso-blue transition-colors">
-                <div className="flex justify-between items-start mb-2">
-                  <p className="font-medium">{supplier.name}</p>
-                  <div className="flex items-center">
-                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                    <span className="ml-1 font-medium">{supplier.rating}</span>
-                  </div>
-                </div>
-                <Badge variant="secondary" className="mb-2">
-                  {supplier.category}
-                </Badge>
-                <div className="space-y-2 text-sm text-gray-500">
-                  <div className="flex items-start">
-                    <Building className="h-4 w-4 mr-2 mt-0.5 flex-shrink-0" />
-                    <p>{supplier.plants}</p>
-                  </div>
-                  <div className="flex items-start">
-                    <TrendingDown className="h-4 w-4 mr-2 mt-0.5 flex-shrink-0 text-green-500" />
-                    <p className="text-green-500 font-medium">{supplier.savings}</p>
-                  </div>
-                </div>
-                <Button size="sm" variant="outline" className="w-full mt-3">
-                  View Profile
-                </Button>
+
+          {/* CTA section */}
+          <motion.section 
+            className="rounded-3xl bg-gradient-to-r from-toreso-blue to-blue-700 text-white p-10 mb-16"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.7 }}
+          >
+            <div className="flex flex-col md:flex-row items-center justify-between">
+              <div className="mb-6 md:mb-0">
+                <h2 className="text-3xl font-bold mb-2">Ready to optimize your packaging?</h2>
+                <p className="text-blue-100">Get personalized recommendations based on your specific requirements.</p>
               </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              <Button size="lg" className="bg-white text-toreso-blue hover:bg-blue-50">
+                Schedule Consultation
+              </Button>
+            </div>
+          </motion.section>
 
-      {/* Alerts and Reminders */}
-      <Card className="bg-amber-50 border-amber-200">
-        <CardHeader className="pb-2">
-          <div className="flex items-center">
-            <AlertCircle className="h-5 w-5 text-amber-500 mr-2" />
-            <CardTitle className="text-amber-800">Alerts & Reminders</CardTitle>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <ul className="space-y-2">
-            <li className="flex items-start">
-              <FileText className="h-4 w-4 text-amber-500 mr-2 mt-0.5" />
-              <p className="text-amber-800">RFQ #385 for Custom Printed Boxes needs your review (3 quotes received)</p>
-            </li>
-            <li className="flex items-start">
-              <Clock className="h-4 w-4 text-amber-500 mr-2 mt-0.5" />
-              <p className="text-amber-800">Order #ORD-7712 is scheduled for delivery tomorrow to Gurugram plant</p>
-            </li>
-            <li className="flex items-start">
-              <Package className="h-4 w-4 text-amber-500 mr-2 mt-0.5" />
-              <p className="text-amber-800">Low stock alert for Packaging Tapes at Chennai plant (estimated to last 5 days)</p>
-            </li>
-          </ul>
-        </CardContent>
-      </Card>
+          {/* Alerts and Reminders */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+          >
+            <Card className="bg-amber-50 border-amber-200 shadow-md mb-8">
+              <CardHeader className="pb-2">
+                <div className="flex items-center">
+                  <AlertCircle className="h-5 w-5 text-amber-500 mr-2" />
+                  <CardTitle className="text-amber-800">Alerts & Reminders</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <ul className="space-y-2">
+                  <li className="flex items-start">
+                    <FileText className="h-4 w-4 text-amber-500 mr-2 mt-0.5" />
+                    <p className="text-amber-800">RFQ #385 for Custom Printed Boxes needs your review (3 quotes received)</p>
+                  </li>
+                  <li className="flex items-start">
+                    <Clock className="h-4 w-4 text-amber-500 mr-2 mt-0.5" />
+                    <p className="text-amber-800">Order #ORD-7712 is scheduled for delivery tomorrow to Gurugram plant</p>
+                  </li>
+                  <li className="flex items-start">
+                    <Package className="h-4 w-4 text-amber-500 mr-2 mt-0.5" />
+                    <p className="text-amber-800">Low stock alert for Packaging Tapes at Chennai plant (estimated to last 5 days)</p>
+                  </li>
+                </ul>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </div>
     </div>
   );
 };
