@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Card,
@@ -29,6 +28,7 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 
 const Compliance = () => {
   // Mock data for certifications
@@ -322,8 +322,8 @@ const Compliance = () => {
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left">
-                  <thead>
+                <Table>
+                  <TableHeader>
                     <tr className="bg-gray-50 text-gray-600">
                       <th className="px-4 py-3 font-medium">Audit Type</th>
                       <th className="px-4 py-3 font-medium">Date</th>
@@ -332,8 +332,8 @@ const Compliance = () => {
                       <th className="px-4 py-3 font-medium">Score</th>
                       <th className="px-4 py-3 font-medium">Actions</th>
                     </tr>
-                  </thead>
-                  <tbody>
+                  </TableHeader>
+                  <TableBody>
                     {audits.map((audit) => (
                       <tr key={audit.id} className="border-b">
                         <td className="px-4 py-3 font-medium">{audit.type}</td>
@@ -358,14 +358,14 @@ const Compliance = () => {
                               {audit.score}
                               <Progress
                                 value={audit.score}
-                                className="w-16 h-2 ml-2"
-                                indicatorClassName={
+                                className={cn(
+                                  "w-16 h-2 ml-2",
                                   audit.score >= 90
-                                    ? "bg-green-500"
+                                    ? "bg-secondary [&>div]:bg-green-500"
                                     : audit.score >= 70
-                                    ? "bg-yellow-500"
-                                    : "bg-red-500"
-                                }
+                                    ? "bg-secondary [&>div]:bg-yellow-500"
+                                    : "bg-secondary [&>div]:bg-red-500"
+                                )}
                               />
                             </div>
                           ) : (
@@ -379,8 +379,8 @@ const Compliance = () => {
                         </td>
                       </tr>
                     ))}
-                  </tbody>
-                </table>
+                  </TableBody>
+                </Table>
               </div>
             </CardContent>
           </Card>
@@ -432,14 +432,14 @@ const Compliance = () => {
                         </div>
                         <Progress
                           value={task.progress}
-                          className="h-2"
-                          indicatorClassName={
+                          className={cn(
+                            "h-2",
                             task.progress >= 75
-                              ? "bg-green-500"
+                              ? "bg-secondary [&>div]:bg-green-500"
                               : task.progress >= 25
-                              ? "bg-yellow-500"
-                              : "bg-red-500"
-                          }
+                              ? "bg-secondary [&>div]:bg-yellow-500"
+                              : "bg-secondary [&>div]:bg-red-500"
+                          )}
                         />
                       </div>
                       <Button variant="outline" size="sm">
