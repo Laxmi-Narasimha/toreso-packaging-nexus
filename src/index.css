@@ -1,4 +1,6 @@
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -91,8 +93,12 @@
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
   }
 }
 
@@ -102,22 +108,34 @@
     @apply bg-gradient-to-r from-toreso-blue via-toreso-teal to-toreso-green text-transparent bg-clip-text;
   }
   
-  /* Card styles */
-  .card-hover {
-    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  /* Immersive UI Components */
+  .immersive-card {
+    @apply relative overflow-hidden border-0 shadow-none bg-transparent transition-all;
   }
   
-  /* Button styles */
+  .immersive-section {
+    @apply py-24 px-4 md:px-8 relative overflow-hidden;
+  }
+  
+  .immersive-heading {
+    @apply text-3xl md:text-4xl lg:text-5xl font-display font-medium tracking-tight;
+  }
+
+  .immersive-button {
+    @apply py-3 px-6 bg-transparent border border-white/20 hover:border-white/50 rounded-none text-white font-medium transition-all duration-300;
+  }
+  
+  /* Button styles - more minimal */
   .btn-primary {
-    @apply bg-toreso-blue text-white px-6 py-3 rounded-lg font-medium hover:bg-toreso-darkBlue transition-colors duration-300;
+    @apply bg-toreso-blue text-white px-6 py-3 rounded-none font-medium hover:bg-toreso-darkBlue transition-all duration-300;
   }
   
   .btn-secondary {
-    @apply bg-white text-toreso-blue border border-toreso-blue px-6 py-3 rounded-lg font-medium hover:bg-toreso-lightBlue/10 transition-colors duration-300;
+    @apply bg-transparent text-toreso-blue border border-toreso-blue px-6 py-3 rounded-none font-medium hover:bg-toreso-blue/5 transition-all duration-300;
   }
   
   .btn-accent {
-    @apply bg-toreso-teal text-white px-6 py-3 rounded-lg font-medium hover:bg-toreso-teal/90 transition-colors duration-300;
+    @apply bg-toreso-teal text-white px-6 py-3 rounded-none font-medium hover:bg-toreso-teal/90 transition-all duration-300;
   }
 
   /* Animation classes */
@@ -133,40 +151,40 @@
     @apply animate-scale-in;
   }
   
-  /* Service box */
+  /* Service box - more minimal */
   .service-box {
-    @apply bg-white p-6 rounded-xl shadow-md transition-all duration-300 hover:shadow-xl border border-gray-100 h-full;
+    @apply p-6 transition-all duration-300 border-b border-gray-100 hover:bg-white/5 h-full;
   }
   
   .service-icon {
-    @apply text-toreso-blue mb-4 p-3 rounded-full bg-blue-50 inline-block;
+    @apply text-toreso-blue mb-4 p-0;
   }
   
-  /* Feature box */
+  /* Feature box - more minimal */
   .feature-box {
-    @apply bg-white p-6 rounded-xl shadow-sm border border-gray-100 h-full transition-all duration-300 hover:shadow-md;
+    @apply p-6 border-0 h-full transition-all duration-300 hover:bg-white/5;
   }
 
-  /* Custom scrollbar */
+  /* Custom scrollbar - more minimal */
   .custom-scrollbar::-webkit-scrollbar {
-    @apply w-2;
+    @apply w-1;
   }
   
   .custom-scrollbar::-webkit-scrollbar-track {
-    @apply bg-gray-100 rounded;
+    @apply bg-transparent;
   }
   
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply bg-toreso-blue/50 rounded hover:bg-toreso-blue/70;
+    @apply bg-toreso-blue/30 hover:bg-toreso-blue/50;
   }
 
-  /* Stats */
+  /* Stats - more minimal */
   .stat-box {
-    @apply p-6 rounded-xl bg-white shadow-sm border border-gray-100;
+    @apply p-6 border-b border-gray-100;
   }
 
   .stat-value {
-    @apply text-4xl font-bold text-toreso-blue mb-2;
+    @apply text-4xl font-display font-medium text-toreso-blue mb-2;
   }
 
   .stat-label {
@@ -175,37 +193,37 @@
 
   /* Custom section styles */
   .section {
-    @apply py-16 px-4 md:px-8;
+    @apply py-24 px-4 md:px-8;
   }
 
   .section-title {
-    @apply text-3xl md:text-4xl font-bold text-center mb-2;
+    @apply text-3xl md:text-4xl font-display font-medium mb-2;
   }
 
   .section-subtitle {
-    @apply text-xl text-gray-600 text-center mb-12;
+    @apply text-xl text-gray-600 mb-12;
   }
 
-  /* Documentation */
+  /* Documentation - more minimal */
   .doc-card {
-    @apply bg-white p-6 rounded-xl shadow-md border border-gray-100 transition-all duration-300 hover:shadow-lg;
+    @apply p-6 border-b border-gray-100 transition-all duration-300 hover:bg-white/5;
   }
   
   .doc-title {
-    @apply text-xl font-semibold mb-2;
+    @apply text-xl font-display font-medium mb-2;
   }
   
   .doc-description {
     @apply text-gray-600 mb-4;
   }
 
-  /* Table styles */
+  /* Table styles - more minimal */
   .data-table {
-    @apply w-full rounded-md overflow-hidden;
+    @apply w-full overflow-hidden;
   }
   
   .data-table-header {
-    @apply bg-toreso-blue text-white font-medium text-left;
+    @apply bg-transparent text-foreground border-b border-gray-200 font-medium text-left;
   }
   
   .data-table-header th {
@@ -213,39 +231,51 @@
   }
   
   .data-table-row {
-    @apply bg-white border-b border-gray-100;
+    @apply bg-transparent border-b border-gray-100;
   }
   
   .data-table-row td {
     @apply px-4 py-3 text-sm;
   }
   
-  .data-table-row:nth-child(even) {
-    @apply bg-gray-50;
-  }
-
   .data-table-row:hover {
-    @apply bg-blue-50;
+    @apply bg-gray-50/50;
   }
 
-  /* Background patterns */
+  /* Background patterns - more subtle */
   .bg-pattern-dots {
-    @apply bg-white;
     background-image: radial-gradient(circle, #e5e7eb 1px, transparent 1px);
-    background-size: 20px 20px;
+    background-size: 30px 30px;
   }
 
   .bg-pattern-grid {
-    @apply bg-white;
     background-image: linear-gradient(to right, #f1f5f9 1px, transparent 1px),
                      linear-gradient(to bottom, #f1f5f9 1px, transparent 1px);
-    background-size: 20px 20px;
+    background-size: 30px 30px;
+  }
+  
+  /* Video background */
+  .full-video-background {
+    @apply absolute inset-0 w-full h-full object-cover;
+  }
+  
+  .video-overlay {
+    @apply absolute inset-0 bg-black/50;
+  }
+  
+  /* Navigation */
+  .minimal-nav-link {
+    @apply relative text-white opacity-80 hover:opacity-100 after:absolute after:bottom-0 after:left-0 after:w-0 after:h-px after:bg-white after:transition-all hover:after:w-full;
+  }
+  
+  .minimal-nav-link.active {
+    @apply opacity-100 after:w-full;
   }
 }
 
 /* Modern input field styling */
 input, textarea, select {
-  @apply rounded-lg border border-gray-300 px-4 py-2 outline-none focus:border-toreso-blue focus:ring-1 focus:ring-toreso-blue transition-all duration-200 w-full;
+  @apply border border-gray-200 px-4 py-2 outline-none focus:border-toreso-blue focus:ring-0 transition-all duration-200 w-full rounded-none;
 }
 
 /* Custom animation delays */
@@ -273,8 +303,17 @@ input, textarea, select {
   top: -15px;
   width: 100px;
   height: 100px;
-  border-radius: 50%;
+  border-radius: 0;
   background: linear-gradient(45deg, #2C5EF6, #00C9B6);
   opacity: 0.1;
   z-index: 0;
+}
+
+/* Immersive video hero */
+.immersive-hero {
+  @apply relative min-h-screen flex items-center justify-center overflow-hidden;
+}
+
+.immersive-hero-content {
+  @apply relative z-10 max-w-4xl mx-auto text-white;
 }

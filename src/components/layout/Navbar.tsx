@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Package, Menu, X, User } from "lucide-react";
+import { motion } from "framer-motion";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -34,20 +35,22 @@ const Navbar = () => {
   ];
 
   return (
-    <nav
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white shadow-md py-3" : "bg-transparent py-6"
+    <motion.nav
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+        isScrolled ? "bg-black/80 backdrop-blur-lg py-3" : "bg-transparent py-6"
       }`}
     >
-      <div className="container mx-auto px-4 flex justify-between items-center">
-        <Link to="/" className="flex items-center space-x-2">
+      <div className="container mx-auto px-4 md:px-8 flex justify-between items-center">
+        <Link to="/" className="flex items-center space-x-3">
           <Package 
             size={28} 
             className="text-toreso-blue" 
           />
-          <span className="text-xl font-bold text-toreso-dark">
+          <span className="text-xl font-display font-medium text-white">
             Toreso
-            <span className="text-toreso-blue">Nexus</span>
           </span>
         </Link>
 
@@ -57,29 +60,26 @@ const Navbar = () => {
             <Link
               key={link.name}
               to={link.path}
-              className={`text-sm font-medium transition-colors duration-200 relative ${
-                location.pathname === link.path
-                  ? "text-toreso-blue"
-                  : "text-gray-700 hover:text-toreso-blue"
+              className={`minimal-nav-link text-sm ${
+                location.pathname === link.path ? "active" : ""
               }`}
             >
               {link.name}
-              {location.pathname === link.path && (
-                <span className="absolute bottom-[-5px] left-0 w-full h-0.5 bg-toreso-blue rounded-full"></span>
-              )}
             </Link>
           ))}
         </div>
 
         <div className="hidden md:flex items-center space-x-4">
           <Link to="/login">
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="text-white border-white/20 hover:border-white/50 hover:bg-white/5 rounded-none">
               <User size={16} className="mr-2" />
               Log In
             </Button>
           </Link>
           <Link to="/register">
-            <Button size="sm">Get Started</Button>
+            <Button size="sm" className="bg-toreso-blue hover:bg-toreso-darkBlue text-white rounded-none">
+              Get Started
+            </Button>
           </Link>
         </div>
 
@@ -88,7 +88,7 @@ const Navbar = () => {
           variant="ghost" 
           size="icon" 
           onClick={toggleMenu} 
-          className="md:hidden"
+          className="md:hidden text-white"
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </Button>
@@ -96,34 +96,32 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden bg-white shadow-lg absolute top-full w-full pb-4 animate-fade-in">
-          <div className="flex flex-col space-y-4 px-4 pt-4">
+        <div className="md:hidden bg-black/95 backdrop-blur-lg absolute top-full w-full animate-fade-in">
+          <div className="flex flex-col space-y-1 px-4 py-6">
             {navLinks.map((link) => (
               <Link
                 key={link.name}
                 to={link.path}
                 onClick={() => setIsMenuOpen(false)}
-                className={`text-sm font-medium py-2 px-4 rounded-md transition-colors duration-200 ${
-                  location.pathname === link.path
-                    ? "bg-blue-50 text-toreso-blue"
-                    : "text-gray-700 hover:bg-gray-50"
+                className={`text-white py-3 border-b border-white/10 ${
+                  location.pathname === link.path ? "opacity-100" : "opacity-70"
                 }`}
               >
                 {link.name}
               </Link>
             ))}
-            <div className="border-t border-gray-100 pt-4 flex flex-col space-y-2">
+            <div className="border-t border-white/10 pt-4 mt-4 flex flex-col space-y-3">
               <Link 
                 to="/login" 
                 onClick={() => setIsMenuOpen(false)}
-                className="text-sm font-medium py-2 px-4 rounded-md border border-gray-200 text-gray-700 hover:bg-gray-50 flex items-center"
+                className="py-3 border border-white/20 text-white flex items-center justify-center"
               >
                 <User size={16} className="mr-2" /> Log In
               </Link>
               <Link 
                 to="/register" 
                 onClick={() => setIsMenuOpen(false)}
-                className="text-sm font-medium py-2 px-4 rounded-md bg-toreso-blue text-white hover:bg-toreso-darkBlue text-center"
+                className="py-3 bg-toreso-blue text-white flex items-center justify-center"
               >
                 Get Started
               </Link>
@@ -131,7 +129,7 @@ const Navbar = () => {
           </div>
         </div>
       )}
-    </nav>
+    </motion.nav>
   );
 };
 

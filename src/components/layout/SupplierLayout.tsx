@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import {
@@ -19,7 +20,6 @@ import {
   Building,
   BadgeCheck,
   MessageSquare,
-  ChevronDown,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -33,15 +33,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { motion, AnimatePresence } from "framer-motion";
-import { 
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
 
 const SupplierLayout = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -72,7 +63,7 @@ const SupplierLayout = () => {
       path: "/supplier",
     },
     {
-      title: "Product Catalog",
+      title: "Products",
       icon: <Package size={20} />,
       path: "/supplier/products",
     },
@@ -89,17 +80,17 @@ const SupplierLayout = () => {
       badge: 3,
     },
     {
-      title: "Company Profile",
+      title: "Profile",
       icon: <Building size={20} />,
       path: "/supplier/profile",
     },
     {
-      title: "Audit & Compliance",
+      title: "Compliance",
       icon: <BadgeCheck size={20} />,
       path: "/supplier/compliance",
     },
     {
-      title: "Financial Management",
+      title: "Financial",
       icon: <DollarSign size={20} />,
       path: "/supplier/financials",
     },
@@ -120,22 +111,22 @@ const SupplierLayout = () => {
       path: "/supplier/settings",
     },
     {
-      title: "Help & Support",
+      title: "Support",
       icon: <HelpCircle size={20} />,
       path: "/supplier/support",
     },
   ];
 
-  // Video background URL for supplier portal
-  const videoUrl = "https://player.vimeo.com/external/392279384.sd.mp4?s=37c3a2c508c58a52563990059206be0480d340c8&profile_id=164&oauth2_token_id=57447761";
+  // Video background URL for supplier portal - high quality manufacturing/industrial video
+  const videoUrl = "https://player.vimeo.com/external/485192803.sd.mp4?s=71e18faec1ad7bab7726910dc640e5530374ca5c&profile_id=164&oauth2_token_id=57447761";
 
   return (
-    <div className="relative min-h-screen">
-      {/* Video Background */}
-      <div className="absolute inset-0 overflow-hidden -z-10">
-        <div className="absolute inset-0 bg-black/60 z-10"></div>
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Full-screen Video Background */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-black/60 bg-gradient-to-t from-black z-10"></div>
         <video
-          className="absolute w-full h-full object-cover"
+          className="full-video-background"
           autoPlay
           loop
           muted
@@ -146,20 +137,22 @@ const SupplierLayout = () => {
         </video>
       </div>
 
-      {/* Header/Navigation - horizontal top navigation */}
+      {/* Horizontal Navigation */}
       <header 
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          isScrolled ? "bg-white/90 backdrop-blur-md shadow-md py-2" : "bg-transparent backdrop-blur-sm py-4"
+        className={`fixed top-0 w-full z-50 transition-all duration-500 ${
+          isScrolled 
+            ? "bg-black/80 backdrop-blur-lg py-2" 
+            : "bg-transparent py-6"
         }`}
       >
-        <div className="container mx-auto px-4">
+        <div className="container mx-auto px-4 md:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <Link to="/supplier" className="flex items-center space-x-2">
+              <Link to="/supplier" className="flex items-center space-x-3">
                 <motion.div
-                  initial={{ scale: 0.8 }}
-                  animate={{ scale: 1 }}
-                  transition={{ duration: 0.3 }}
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.5 }}
                 >
                   <Package size={28} className="text-toreso-teal" />
                 </motion.div>
@@ -167,78 +160,64 @@ const SupplierLayout = () => {
                   initial={{ opacity: 0, x: -5 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  className="text-xl font-bold text-white"
+                  className="text-xl font-display font-medium text-white"
                 >
-                  Toreso<span className="text-toreso-teal">Supplier</span>
+                  Toreso
                 </motion.span>
               </Link>
             </div>
             
-            <div className="hidden lg:flex items-center space-x-1">
-              <NavigationMenu>
-                <NavigationMenuList>
-                  {menuItems.slice(0, 6).map((item) => (
-                    <NavigationMenuItem key={item.path}>
-                      <Link to={item.path}>
-                        <NavigationMenuLink 
-                          className={navigationMenuTriggerStyle() + ` ${
-                            location.pathname === item.path 
-                              ? "bg-teal-50 text-toreso-teal" 
-                              : ""
-                          }`}
-                        >
-                          <motion.span 
-                            className="flex items-center"
-                            whileHover={{ scale: 1.05 }}
-                            transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                          >
-                            {item.icon}
-                            <span className="ml-2">{item.title}</span>
-                            {item.badge && (
-                              <Badge variant="default" className="ml-2 bg-toreso-teal">
-                                {item.badge}
-                              </Badge>
-                            )}
-                          </motion.span>
-                        </NavigationMenuLink>
+            {/* Desktop Navigation Links */}
+            <div className="hidden lg:flex items-center space-x-8">
+              {menuItems.slice(0, 7).map((item) => (
+                <Link 
+                  key={item.path} 
+                  to={item.path}
+                  className={`minimal-nav-link flex items-center space-x-2 ${
+                    location.pathname === item.path ? "active" : ""
+                  }`}
+                >
+                  <span>{item.title}</span>
+                  {item.badge && (
+                    <Badge variant="default" className="ml-1 bg-toreso-teal text-xs h-5 w-5 flex items-center justify-center p-0 rounded-full">
+                      {item.badge}
+                    </Badge>
+                  )}
+                </Link>
+              ))}
+              
+              {/* More Dropdown for remaining items */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="minimal-nav-link"
+                  >
+                    More
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="bg-black/90 text-white border-gray-800">
+                  {menuItems.slice(7).map((item) => (
+                    <DropdownMenuItem key={item.path} className="focus:bg-white/10">
+                      <Link to={item.path} className="flex items-center w-full">
+                        {item.icon}
+                        <span className="ml-2">{item.title}</span>
+                        {item.badge && (
+                          <Badge variant="default" className="ml-2 bg-toreso-teal">
+                            {item.badge}
+                          </Badge>
+                        )}
                       </Link>
-                    </NavigationMenuItem>
+                    </DropdownMenuItem>
                   ))}
-                  
-                  <NavigationMenuItem>
-                    <NavigationMenuTrigger>More</NavigationMenuTrigger>
-                    <NavigationMenuContent>
-                      <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2">
-                        {menuItems.slice(6).map((item) => (
-                          <li key={item.path}>
-                            <Link 
-                              to={item.path}
-                              className={`block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors ${
-                                location.pathname === item.path 
-                                  ? "bg-teal-50 text-toreso-teal" 
-                                  : "hover:bg-gray-100"
-                              }`}
-                            >
-                              <div className="flex items-center space-x-2">
-                                {item.icon}
-                                <span className="text-sm font-medium">{item.title}</span>
-                                {item.badge && (
-                                  <Badge variant="default" className="bg-toreso-teal">
-                                    {item.badge}
-                                  </Badge>
-                                )}
-                              </div>
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </NavigationMenuContent>
-                  </NavigationMenuItem>
-                </NavigationMenuList>
-              </NavigationMenu>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </div>
 
-            <div className="flex items-center space-x-4">
+            {/* User Actions */}
+            <div className="flex items-center space-x-1 md:space-x-4">
+              {/* Search - Hidden on smaller screens */}
               <div className="hidden md:flex items-center relative">
                 <Search
                   size={18}
@@ -246,17 +225,18 @@ const SupplierLayout = () => {
                 />
                 <input
                   type="text"
-                  placeholder="Search products, orders, RFQs..."
-                  className="pl-10 pr-4 py-2 border rounded-full w-56 md:w-64 focus:outline-none focus:ring-2 focus:ring-toreso-teal focus:border-transparent"
+                  placeholder="Search..."
+                  className="pl-10 pr-4 py-2 bg-white/10 border-0 text-white w-40 lg:w-56 focus:bg-white/20 focus:outline-none"
                 />
               </div>
 
+              {/* Notifications */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="relative"
+                    className="relative text-white"
                   >
                     <Bell size={20} />
                     <span className="absolute -top-1 -right-1 bg-toreso-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -264,94 +244,85 @@ const SupplierLayout = () => {
                     </span>
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-80">
+                <DropdownMenuContent align="end" className="w-80 bg-black/90 text-white border-gray-800">
                   <DropdownMenuLabel>Notifications</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
+                  <DropdownMenuSeparator className="bg-gray-700" />
                   <div className="max-h-80 overflow-y-auto">
-                    <DropdownMenuItem className="py-2 px-4 cursor-pointer">
-                      <div>
-                        <p className="text-sm font-medium">New order received</p>
-                        <p className="text-xs text-gray-500">Maruti Corp. placed an order for 2,000 corrugated boxes</p>
-                        <p className="text-xs text-gray-500 mt-1">30 minutes ago</p>
-                      </div>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="py-2 px-4 cursor-pointer">
-                      <div>
-                        <p className="text-sm font-medium">Audit reminder</p>
-                        <p className="text-xs text-gray-500">Quality audit scheduled for next week</p>
-                        <p className="text-xs text-gray-500 mt-1">2 hours ago</p>
-                      </div>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="py-2 px-4 cursor-pointer">
-                      <div>
-                        <p className="text-sm font-medium">RFQ received</p>
-                        <p className="text-xs text-gray-500">JCB Ltd. has sent an RFQ for industrial pallets</p>
-                        <p className="text-xs text-gray-500 mt-1">1 day ago</p>
-                      </div>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="py-2 px-4 cursor-pointer">
-                      <div>
-                        <p className="text-sm font-medium">Certificate expiring</p>
-                        <p className="text-xs text-gray-500">Your ISO certification expires in 30 days</p>
-                        <p className="text-xs text-gray-500 mt-1">2 days ago</p>
-                      </div>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="py-2 px-4 cursor-pointer">
-                      <div>
-                        <p className="text-sm font-medium">Payment received</p>
-                        <p className="text-xs text-gray-500">Payment of ₹125,000 received from Volvo India</p>
-                        <p className="text-xs text-gray-500 mt-1">2 days ago</p>
-                      </div>
-                    </DropdownMenuItem>
+                    {/* Notification items */}
+                    {[
+                      { 
+                        title: "New order received", 
+                        description: "Maruti Corp. placed an order for 2,000 corrugated boxes", 
+                        time: "30 minutes ago" 
+                      },
+                      { 
+                        title: "Audit reminder", 
+                        description: "Quality audit scheduled for next week", 
+                        time: "2 hours ago" 
+                      },
+                      { 
+                        title: "RFQ received", 
+                        description: "JCB Ltd. has sent an RFQ for industrial pallets", 
+                        time: "1 day ago" 
+                      },
+                    ].map((notification, idx) => (
+                      <DropdownMenuItem key={idx} className="py-3 px-4 cursor-pointer focus:bg-white/10">
+                        <div>
+                          <p className="text-sm font-medium">{notification.title}</p>
+                          <p className="text-xs text-gray-400">{notification.description}</p>
+                          <p className="text-xs text-gray-500 mt-1">{notification.time}</p>
+                        </div>
+                      </DropdownMenuItem>
+                    ))}
                   </div>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-center text-toreso-teal hover:text-toreso-teal hover:bg-teal-50">
+                  <DropdownMenuSeparator className="bg-gray-700" />
+                  <DropdownMenuItem className="text-center text-toreso-teal hover:text-toreso-teal focus:bg-white/10">
                     View all notifications
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
 
+              {/* User Menu */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="flex items-center"
+                    className="flex items-center text-white"
                   >
-                    <Avatar className="h-8 w-8 mr-2">
+                    <Avatar className="h-8 w-8 mr-2 border border-white/20">
                       <AvatarImage src="/placeholder.svg" />
                       <AvatarFallback>SP</AvatarFallback>
                     </Avatar>
                     <div className="text-left hidden md:block">
-                      <p className="text-sm font-medium">Supplier Name</p>
-                      <p className="text-xs text-gray-500">PackRight Industries</p>
+                      <p className="text-sm font-medium">PackRight Ind.</p>
                     </div>
-                    <ChevronDown size={14} className="ml-1 text-gray-500" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent align="end" className="bg-black/90 text-white border-gray-800">
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
+                  <DropdownMenuSeparator className="bg-gray-700" />
+                  <DropdownMenuItem className="focus:bg-white/10">
                     <User size={16} className="mr-2" /> Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem className="focus:bg-white/10">
                     <Building size={16} className="mr-2" /> Company Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem>
+                  <DropdownMenuItem className="focus:bg-white/10">
                     <Settings size={16} className="mr-2" /> Settings
                   </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem className="text-red-600">
+                  <DropdownMenuSeparator className="bg-gray-700" />
+                  <DropdownMenuItem className="text-red-400 focus:bg-white/10">
                     <LogOut size={16} className="mr-2" /> Logout
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
 
+              {/* Mobile Menu Toggle */}
               <Button
                 variant="ghost"
                 size="icon"
-                className="lg:hidden"
+                className="lg:hidden text-white"
                 onClick={toggleMobileMenu}
               >
                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -365,47 +336,48 @@ const SupplierLayout = () => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div 
-            className="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden"
+            className="fixed inset-0 z-40 bg-black/80 backdrop-blur-lg lg:hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setMobileMenuOpen(false)}
           >
             <motion.div 
-              className="fixed right-0 top-0 h-screen w-64 bg-white overflow-y-auto"
+              className="fixed right-0 top-0 h-screen w-64 bg-black border-l border-gray-800 overflow-y-auto"
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", bounce: 0, duration: 0.4 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-4 border-b">
+              <div className="p-4 border-b border-gray-800">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center">
                     <Package size={24} className="text-toreso-teal mr-2" />
-                    <span className="font-bold text-lg">
-                      Toreso<span className="text-toreso-teal">Supplier</span>
+                    <span className="font-display font-medium text-lg text-white">
+                      Toreso
                     </span>
                   </div>
                   <Button
                     variant="ghost"
                     size="icon"
                     onClick={toggleMobileMenu}
+                    className="text-white"
                   >
                     <X size={18} />
                   </Button>
                 </div>
               </div>
 
-              <div className="px-4 py-2 border-b">
+              <div className="px-4 py-2 border-b border-gray-800">
                 <div className="flex items-center space-x-3 py-3">
                   <Avatar>
                     <AvatarImage src="/placeholder.svg" />
                     <AvatarFallback>SP</AvatarFallback>
                   </Avatar>
-                  <div>
-                    <p className="font-medium">Supplier Name</p>
-                    <p className="text-sm text-gray-500">PackRight Industries</p>
+                  <div className="text-white">
+                    <p className="font-medium">PackRight Industries</p>
+                    <p className="text-sm text-gray-400">Supplier</p>
                   </div>
                 </div>
               </div>
@@ -420,7 +392,7 @@ const SupplierLayout = () => {
                     <input
                       type="text"
                       placeholder="Search..."
-                      className="pl-9 pr-4 py-2 border rounded-md w-full focus:outline-none focus:ring-2 focus:ring-toreso-teal focus:border-transparent"
+                      className="pl-9 pr-4 py-2 bg-white/10 border-0 text-white w-full focus:bg-white/20"
                     />
                   </div>
                 </div>
@@ -430,8 +402,8 @@ const SupplierLayout = () => {
                     <Link
                       key={item.title}
                       to={item.path}
-                      className={`flex items-center justify-between px-4 py-3 hover:bg-gray-100 ${
-                        location.pathname === item.path ? "bg-teal-50 text-toreso-teal" : ""
+                      className={`flex items-center justify-between px-4 py-3 text-white border-b border-gray-800/50 ${
+                        location.pathname === item.path ? "bg-white/10" : ""
                       }`}
                       onClick={() => setMobileMenuOpen(false)}
                     >
@@ -449,10 +421,10 @@ const SupplierLayout = () => {
                 </nav>
               </div>
 
-              <div className="border-t p-4">
+              <div className="border-t border-gray-800 p-4">
                 <Button
                   variant="ghost"
-                  className="w-full justify-start text-red-600"
+                  className="w-full justify-start text-red-400"
                 >
                   <LogOut size={18} className="mr-2" />
                   Logout
@@ -464,26 +436,71 @@ const SupplierLayout = () => {
       </AnimatePresence>
 
       {/* Main content */}
-      <main className="flex-1 pt-16 md:pt-20">
-        {/* Introductory section for supplier landing */}
+      <main className="flex-1 pt-16 md:pt-24">
+        {/* Immersive landing content for supplier route */}
         {location.pathname === "/supplier" && (
-          <div className="container mx-auto px-4 py-16 text-center">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight leading-tight">
-              Revolutionizing Packaging Supply Chain
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
-              Accelerate your business growth with Toreso's digital platform that connects you directly with verified buyers, streamlines operations, and ensures compliance standards are met with ease.
-            </p>
-            <div className="mt-10">
-              <Button size="lg" className="bg-toreso-teal hover:bg-toreso-teal/90 text-white mr-4">
-                Explore Products
-              </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                Learn More
-              </Button>
+          <section className="immersive-hero">
+            <div className="immersive-hero-content text-center px-4">
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+                className="text-4xl md:text-5xl lg:text-7xl font-display font-medium mb-6 tracking-tight"
+              >
+                Revolutionizing Packaging Supply
+              </motion.h1>
+              
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto leading-relaxed mb-10"
+              >
+                Transform your business with direct access to verified buyers, 
+                streamlined operations, and simplified compliance – all in one platform.
+              </motion.p>
+              
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="flex flex-col sm:flex-row gap-6 justify-center"
+              >
+                <Button className="bg-toreso-teal hover:bg-toreso-teal/90 text-white border-0 rounded-none py-6 px-8 text-lg">
+                  Explore Platform
+                </Button>
+                <Button variant="outline" className="text-white border-white/20 hover:border-white/50 hover:bg-white/5 rounded-none py-6 px-8 text-lg">
+                  Watch Demo
+                </Button>
+              </motion.div>
+              
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 1.5, delay: 1 }}
+                className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+              >
+                <div className="flex flex-col items-center">
+                  <span className="text-sm text-white/50 mb-2">Scroll to explore</span>
+                  <div className="w-6 h-10 border border-white/20 rounded-full flex items-center justify-center">
+                    <motion.div 
+                      className="w-1.5 h-1.5 bg-white rounded-full"
+                      animate={{ 
+                        y: [0, 12, 0],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    />
+                  </div>
+                </div>
+              </motion.div>
             </div>
-          </div>
+          </section>
         )}
+        
         <Outlet />
       </main>
     </div>
