@@ -291,9 +291,7 @@ const ComplianceDashboard = () => {
               </div>
               <Progress 
                 value={40} 
-                className="h-2 bg-gray-200" 
-                // Fix: Use className and cn to conditionally style the indicator
-                className={cn("h-2 bg-gray-200")}
+                className={cn("h-2 bg-gray-200", "[&>div]:bg-blue-500")}
               />
               <div className="flex justify-between items-center">
                 <span>Pending</span>
@@ -301,8 +299,7 @@ const ComplianceDashboard = () => {
               </div>
               <Progress 
                 value={40} 
-                // Fix: Use className and cn to conditionally style the indicator
-                className={cn("h-2 bg-gray-200")}
+                className={cn("h-2 bg-gray-200", "[&>div]:bg-yellow-500")}
               />
               <div className="flex justify-between items-center">
                 <span>Expired</span>
@@ -310,8 +307,7 @@ const ComplianceDashboard = () => {
               </div>
               <Progress 
                 value={20} 
-                // Fix: Use className and cn to conditionally style the indicator
-                className={cn("h-2 bg-gray-200")}
+                className={cn("h-2 bg-gray-200", "[&>div]:bg-red-500")}
               />
             </div>
           </CardContent>
@@ -381,7 +377,12 @@ const ComplianceDashboard = () => {
                       <div className="flex items-center gap-2">
                         <Progress 
                           value={cert.progress} 
-                          className={cn("h-2 bg-gray-200")}
+                          className={cn("h-2 bg-gray-200",
+                            cert.progress > 90 ? "[&>div]:bg-green-500" :
+                            cert.progress > 70 ? "[&>div]:bg-blue-500" :
+                            cert.progress > 40 ? "[&>div]:bg-yellow-500" :
+                            "[&>div]:bg-red-500"
+                          )}
                         />
                         <span className="text-sm font-medium">{cert.progress}%</span>
                       </div>
@@ -447,7 +448,12 @@ const ComplianceDashboard = () => {
                         <div className="flex items-center gap-2">
                           <Progress 
                             value={audit.score} 
-                            className={cn("h-2 bg-gray-200")}
+                            className={cn("h-2 bg-gray-200",
+                              audit.score > 90 ? "[&>div]:bg-green-500" :
+                              audit.score > 70 ? "[&>div]:bg-blue-500" :
+                              audit.score > 40 ? "[&>div]:bg-yellow-500" :
+                              "[&>div]:bg-red-500"
+                            )}
                           />
                           <span className="text-sm font-medium">{audit.score}%</span>
                         </div>
@@ -497,7 +503,12 @@ const ComplianceDashboard = () => {
                       <div className="flex items-center gap-2">
                         <Progress 
                           value={req.progress} 
-                          className={cn("h-2 bg-gray-200")}
+                          className={cn("h-2 bg-gray-200",
+                            req.progress > 90 ? "[&>div]:bg-green-500" :
+                            req.progress > 70 ? "[&>div]:bg-blue-500" :
+                            req.progress > 40 ? "[&>div]:bg-yellow-500" :
+                            "[&>div]:bg-red-500"
+                          )}
                         />
                         <span className="text-sm font-medium">{req.progress}%</span>
                       </div>

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
@@ -46,6 +45,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { cn } from "@/lib/utils";
 
 const CompanyManagement = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -333,11 +333,12 @@ const CompanyManagement = () => {
                             <div className="flex items-center gap-2">
                               <Progress 
                                 value={company.complianceScore} 
-                                className="h-2 w-16 bg-white/20" 
-                                indicatorClassName={
-                                  company.complianceScore > 90 ? "bg-green-500" :
-                                  company.complianceScore > 75 ? "bg-yellow-500" : "bg-red-500"
-                                }
+                                className={cn(
+                                  "h-2 w-16 bg-white/20",
+                                  company.complianceScore > 90 ? "[&>div]:bg-green-500" :
+                                  company.complianceScore > 75 ? "[&>div]:bg-yellow-500" : 
+                                  "[&>div]:bg-red-500"
+                                )}
                               />
                               <span>{company.complianceScore}%</span>
                             </div>
