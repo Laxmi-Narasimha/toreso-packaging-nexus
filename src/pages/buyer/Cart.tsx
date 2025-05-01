@@ -164,7 +164,8 @@ const Cart = () => {
     setTimeout(() => setAddingMore(false), 2000);
   };
 
-  const container = {
+  // Define animation variants correctly for framer-motion
+  const containerVariants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
@@ -174,7 +175,7 @@ const Cart = () => {
     }
   };
 
-  const item = {
+  const itemVariants = {
     hidden: { opacity: 0, y: 20 },
     show: { opacity: 1, y: 0 }
   };
@@ -208,14 +209,14 @@ const Cart = () => {
         <div className="flex flex-col md:flex-row gap-6">
           {/* Cart items */}
           <motion.div 
-            variants={container}
+            variants={containerVariants}
             initial="hidden"
             animate="show"
             className="flex-1"
           >
             <div className="space-y-6">
               {cartItems.map(item => (
-                <motion.div key={item.id} variants={item}>
+                <motion.div key={item.id} variants={itemVariants}>
                   <Card className="overflow-hidden">
                     <CardContent className="p-0">
                       <div className="flex flex-col sm:flex-row">
