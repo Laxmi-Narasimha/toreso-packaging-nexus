@@ -1,11 +1,33 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+// Layouts
+import MainLayout from "./components/layout/MainLayout";
+import AdminLayout from "./components/layout/AdminLayout";
+import BuyerLayout from "./components/layout/BuyerLayout";
+import SupplierLayout from "./components/layout/SupplierLayout";
+
+// Public Pages
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import RegistrationSuccess from "./pages/RegistrationSuccess";
 
+// Admin Pages
+import AdminDashboard from "./pages/admin/AdminDashboard";
+
+// Buyer Pages
+import BuyerDashboard from "./pages/buyer/BuyerDashboard";
+
+// Supplier Pages
+import SupplierDashboard from "./pages/supplier/SupplierDashboard";
+
+// Create a client
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -15,8 +37,61 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Index />} />
-          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          {/* Public Routes */}
+          <Route element={<MainLayout />}>
+            <Route path="/" element={<Index />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/registration-success" element={<RegistrationSuccess />} />
+          </Route>
+
+          {/* Admin Routes */}
+          <Route path="/admin" element={<AdminLayout />}>
+            <Route index element={<AdminDashboard />} />
+            <Route path="users" element={<div>User Management</div>} />
+            <Route path="companies" element={<div>Company Management</div>} />
+            <Route path="supplier-verification" element={<div>Supplier Verification</div>} />
+            <Route path="audit-management" element={<div>Audit Management</div>} />
+            <Route path="products" element={<div>Product Catalog</div>} />
+            <Route path="orders" element={<div>Order Management</div>} />
+            <Route path="financials" element={<div>Financial Management</div>} />
+            <Route path="analytics" element={<div>Reports & Analytics</div>} />
+            <Route path="settings" element={<div>Settings</div>} />
+            <Route path="support" element={<div>Support</div>} />
+          </Route>
+
+          {/* Buyer Routes */}
+          <Route path="/buyer" element={<BuyerLayout />}>
+            <Route index element={<BuyerDashboard />} />
+            <Route path="products" element={<div>Product Catalog</div>} />
+            <Route path="suppliers" element={<div>Suppliers</div>} />
+            <Route path="cart" element={<div>Cart</div>} />
+            <Route path="orders" element={<div>Orders</div>} />
+            <Route path="rfq" element={<div>RFQ Management</div>} />
+            <Route path="favorites" element={<div>Favorites</div>} />
+            <Route path="order-history" element={<div>Order History</div>} />
+            <Route path="analytics" element={<div>Analytics</div>} />
+            <Route path="messages" element={<div>Messages</div>} />
+            <Route path="settings" element={<div>Settings</div>} />
+            <Route path="support" element={<div>Help & Support</div>} />
+          </Route>
+
+          {/* Supplier Routes */}
+          <Route path="/supplier" element={<SupplierLayout />}>
+            <Route index element={<SupplierDashboard />} />
+            <Route path="products" element={<div>Product Catalog</div>} />
+            <Route path="orders" element={<div>Orders</div>} />
+            <Route path="rfq" element={<div>RFQ/RFI Management</div>} />
+            <Route path="profile" element={<div>Company Profile</div>} />
+            <Route path="compliance" element={<div>Audit & Compliance</div>} />
+            <Route path="financials" element={<div>Financial Management</div>} />
+            <Route path="analytics" element={<div>Analytics</div>} />
+            <Route path="messages" element={<div>Messages</div>} />
+            <Route path="settings" element={<div>Settings</div>} />
+            <Route path="support" element={<div>Help & Support</div>} />
+          </Route>
+
+          {/* Catch-all route */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
