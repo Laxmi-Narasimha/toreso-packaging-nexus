@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
 
 // Layouts
 import MainLayout from "./components/layout/MainLayout";
@@ -23,6 +23,9 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 
 // Buyer Pages
 import BuyerDashboard from "./pages/buyer/BuyerDashboard";
+import ProductCatalog from "./pages/buyer/ProductCatalog";
+import Suppliers from "./pages/buyer/Suppliers";
+import Cart from "./pages/buyer/Cart";
 
 // Supplier Pages
 import SupplierDashboard from "./pages/supplier/SupplierDashboard";
@@ -63,9 +66,9 @@ const App = () => (
           {/* Buyer Routes */}
           <Route path="/buyer" element={<BuyerLayout />}>
             <Route index element={<BuyerDashboard />} />
-            <Route path="products" element={<div>Product Catalog</div>} />
-            <Route path="suppliers" element={<div>Suppliers</div>} />
-            <Route path="cart" element={<div>Cart</div>} />
+            <Route path="products" element={<ProductCatalog />} />
+            <Route path="suppliers" element={<Suppliers />} />
+            <Route path="cart" element={<Cart />} />
             <Route path="orders" element={<div>Orders</div>} />
             <Route path="rfq" element={<div>RFQ Management</div>} />
             <Route path="favorites" element={<div>Favorites</div>} />
