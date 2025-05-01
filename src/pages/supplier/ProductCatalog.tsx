@@ -1,4 +1,3 @@
-
 import React, { useRef, useState } from "react";
 import {
   Card,
@@ -25,6 +24,7 @@ import {
   ArrowDown,
   TrendingUp,
   TrendingDown,
+  DollarSign,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
