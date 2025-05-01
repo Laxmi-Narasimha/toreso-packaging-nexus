@@ -314,7 +314,7 @@ const Suppliers = () => {
                     <span>Verified Supplier</span>
                     <span className="mx-2 text-white/60">|</span>
                     <Clock className="h-4 w-4 mr-1" />
-                    <span>< 24hr response</span>
+                    <span>&lt; 24hr response</span>
                   </div>
                 </div>
                 <div className="hidden md:block">
