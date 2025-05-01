@@ -20,6 +20,7 @@ import RegistrationSuccess from "./pages/RegistrationSuccess";
 
 // Admin Pages
 import AdminDashboard from "./pages/admin/AdminDashboard";
+import UserManagement from "./pages/admin/UserManagement";
 
 // Buyer Pages
 import BuyerDashboard from "./pages/buyer/BuyerDashboard";
@@ -33,6 +34,7 @@ import { default as SupplierProductCatalog } from "./pages/supplier/ProductCatal
 import SupplierAnalytics from "./pages/supplier/SupplierAnalytics";
 import Orders from "./pages/supplier/Orders";
 import Rfq from "./pages/supplier/Rfq";
+import Compliance from "./pages/supplier/Compliance";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -55,7 +57,7 @@ const App = () => (
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
-            <Route path="users" element={<div>User Management</div>} />
+            <Route path="users" element={<UserManagement />} />
             <Route path="companies" element={<div>Company Management</div>} />
             <Route path="supplier-verification" element={<div>Supplier Verification</div>} />
             <Route path="audit-management" element={<div>Audit Management</div>} />
@@ -90,7 +92,7 @@ const App = () => (
             <Route path="orders" element={<Orders />} />
             <Route path="rfq" element={<Rfq />} />
             <Route path="profile" element={<div>Company Profile</div>} />
-            <Route path="compliance" element={<div>Audit & Compliance</div>} />
+            <Route path="compliance" element={<Compliance />} />
             <Route path="financials" element={<div>Financial Management</div>} />
             <Route path="analytics" element={<SupplierAnalytics />} />
             <Route path="messages" element={<div>Messages</div>} />
