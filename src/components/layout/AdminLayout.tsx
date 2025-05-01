@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import {
@@ -61,6 +60,9 @@ const AdminLayout = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
+  // Video background URL from Benz Packaging
+  const videoUrl = "https://www.benz-packaging.com/wp-content/uploads/2022/04/homepage-banner-1.mp4";
+
   const menuItems = [
     {
       title: "Dashboard",
@@ -120,7 +122,22 @@ const AdminLayout = () => {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="relative min-h-screen">
+      {/* Video Background */}
+      <div className="absolute inset-0 overflow-hidden -z-10">
+        <div className="absolute inset-0 bg-black/70 z-10"></div>
+        <video
+          className="absolute w-full h-full object-cover"
+          autoPlay
+          loop
+          muted
+          playsInline
+        >
+          <source src={videoUrl} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      
       {/* Header/Navigation - now horizontal top navigation */}
       <header 
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${
@@ -142,7 +159,7 @@ const AdminLayout = () => {
                   initial={{ opacity: 0, x: -5 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.5, delay: 0.2 }}
-                  className="text-xl font-bold text-toreso-dark"
+                  className="text-xl font-bold text-white"
                 >
                   Toreso<span className="text-toreso-blue">Admin</span>
                 </motion.span>
@@ -408,6 +425,25 @@ const AdminLayout = () => {
 
       {/* Main content */}
       <main className="flex-1 pt-16 md:pt-20">
+        {/* Introductory section for admin landing */}
+        {location.pathname === "/admin" && (
+          <div className="container mx-auto px-4 py-16 text-center">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight leading-tight">
+              Unified Packaging Industry Management
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
+              Empowering administrators with comprehensive tools to oversee and optimize the entire packaging ecosystem, from supplier verification to transaction monitoring, all in one powerful platform.
+            </p>
+            <div className="mt-10">
+              <Button size="lg" className="bg-toreso-blue hover:bg-toreso-blue/90 text-white mr-4">
+                Platform Overview
+              </Button>
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                System Status
+              </Button>
+            </div>
+          </div>
+        )}
         <Outlet />
       </main>
     </div>

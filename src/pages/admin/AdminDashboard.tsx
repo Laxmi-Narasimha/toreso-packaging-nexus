@@ -1,4 +1,3 @@
-
 import React from "react";
 import {
   Card,
@@ -154,30 +153,8 @@ const AdminDashboard = () => {
   const videoUrl = "https://www.benz-packaging.com/wp-content/uploads/2022/04/homepage-banner-1.mp4";
 
   return (
-    <div className="relative min-h-screen">
-      {/* Video Background */}
-      <div className="absolute inset-0 overflow-hidden -z-10">
-        <div className="absolute inset-0 bg-black/70 z-10"></div>
-        <video
-          className="absolute w-full h-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-        >
-          <source src={videoUrl} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div>
-      
+    <div className="relative">
       <div className="container mx-auto px-4 py-8 space-y-8 relative z-10">
-        <div>
-          <h1 className="text-3xl font-bold mb-1 text-white">Admin Dashboard</h1>
-          <p className="text-gray-300">
-            Welcome back! Here's what's happening on the platform today.
-          </p>
-        </div>
-
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {stats.map((stat, index) => (
