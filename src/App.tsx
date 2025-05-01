@@ -29,6 +29,10 @@ import Cart from "./pages/buyer/Cart";
 
 // Supplier Pages
 import SupplierDashboard from "./pages/supplier/SupplierDashboard";
+import ProductCatalog as SupplierProductCatalog from "./pages/supplier/ProductCatalog";
+import SupplierAnalytics from "./pages/supplier/SupplierAnalytics";
+import Orders from "./pages/supplier/Orders";
+import Rfq from "./pages/supplier/Rfq";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -82,13 +86,13 @@ const App = () => (
           {/* Supplier Routes */}
           <Route path="/supplier" element={<SupplierLayout />}>
             <Route index element={<SupplierDashboard />} />
-            <Route path="products" element={<div>Product Catalog</div>} />
-            <Route path="orders" element={<div>Orders</div>} />
-            <Route path="rfq" element={<div>RFQ/RFI Management</div>} />
+            <Route path="products" element={<SupplierProductCatalog />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="rfq" element={<Rfq />} />
             <Route path="profile" element={<div>Company Profile</div>} />
             <Route path="compliance" element={<div>Audit & Compliance</div>} />
             <Route path="financials" element={<div>Financial Management</div>} />
-            <Route path="analytics" element={<div>Analytics</div>} />
+            <Route path="analytics" element={<SupplierAnalytics />} />
             <Route path="messages" element={<div>Messages</div>} />
             <Route path="settings" element={<div>Settings</div>} />
             <Route path="support" element={<div>Help & Support</div>} />
