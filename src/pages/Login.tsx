@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import LoginForm from "@/components/auth/LoginForm";
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const Login = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
-            <h2 className="text-3xl font-bold tracking-tight">Welcome back!</h2>
+            <h2 className="text-3xl font-bold tracking-tight">Welcome to Toreso</h2>
             <p className="mt-2 text-sm text-gray-600">
               Sign in to access your account
             </p>
@@ -66,10 +67,10 @@ const Login = () => {
             </div>
           </div>
           
-          <div className="space-y-2">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <Button
               variant="outline"
-              className="w-full border-toreso-blue text-toreso-blue hover:bg-toreso-blue/5"
+              className="w-full border-toreso-blue text-toreso-blue hover:bg-toreso-blue/5 transition-colors"
               onClick={() => handleDemoLogin("admin")}
             >
               Admin Demo
@@ -77,7 +78,7 @@ const Login = () => {
             
             <Button
               variant="outline"
-              className="w-full border-toreso-teal text-toreso-teal hover:bg-toreso-teal/5"
+              className="w-full border-toreso-teal text-toreso-teal hover:bg-toreso-teal/5 transition-colors"
               onClick={() => handleDemoLogin("buyer")}
             >
               Buyer Demo
@@ -85,7 +86,7 @@ const Login = () => {
             
             <Button
               variant="outline"
-              className="w-full border-toreso-purple text-toreso-purple hover:bg-toreso-purple/5"
+              className="w-full border-toreso-purple text-toreso-purple hover:bg-toreso-purple/5 transition-colors"
               onClick={() => handleDemoLogin("supplier")}
             >
               Supplier Demo
@@ -103,9 +104,9 @@ const Login = () => {
             Don't have an account?{" "}
             <Link
               to="/register"
-              className="font-semibold text-toreso-blue hover:text-toreso-darkBlue"
+              className="font-semibold text-toreso-blue hover:text-toreso-darkBlue transition-colors inline-flex items-center"
             >
-              Register here
+              Register here <ArrowRight className="ml-1 h-3 w-3" />
             </Link>
           </p>
         </motion.div>
