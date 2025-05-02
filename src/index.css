@@ -1,3 +1,4 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
@@ -427,6 +428,7 @@ input, textarea, select {
   @apply stroke-2;
 }
 
+/* Instead of using @apply stroke-dasharray-2 which doesn't exist in Tailwind */
 .svg-illustration .dotted-line {
-  @apply stroke-dasharray-2;
+  stroke-dasharray: 2;
 }

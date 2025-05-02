@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
@@ -463,7 +462,7 @@ const Index = () => {
                 )
               },
               {
-                icon: <Robot className="h-8 w-8 text-toreso-orange" />,
+                icon: <Bot className="h-8 w-8 text-toreso-orange" />,
                 title: "Robotic Integration",
                 description: "Seamlessly integrate modern robotics systems into your packaging operations.",
                 illustration: (
