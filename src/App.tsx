@@ -19,6 +19,7 @@ import Register from "./pages/Register";
 import RegistrationSuccess from "./pages/RegistrationSuccess";
 
 // Admin Pages
+import AdminHome from "./pages/admin/AdminHome";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import UserManagement from "./pages/admin/UserManagement";
 import ProductCatalog from "./pages/admin/ProductCatalog";
@@ -30,12 +31,14 @@ import FinancialManagement from "./pages/admin/FinancialManagement";
 import Analytics from "./pages/admin/Analytics";
 
 // Buyer Pages
+import BuyerHome from "./pages/buyer/BuyerHome";
 import BuyerDashboard from "./pages/buyer/BuyerDashboard";
 import { default as BuyerProductCatalog } from "./pages/buyer/ProductCatalog";
 import Suppliers from "./pages/buyer/Suppliers";
 import Cart from "./pages/buyer/Cart";
 
 // Supplier Pages
+import SupplierHome from "./pages/supplier/SupplierHome";
 import SupplierDashboard from "./pages/supplier/SupplierDashboard";
 import { default as SupplierProductCatalog } from "./pages/supplier/ProductCatalog";
 import SupplierAnalytics from "./pages/supplier/SupplierAnalytics";
@@ -63,7 +66,8 @@ const App = () => (
 
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<AdminDashboard />} />
+            <Route index element={<AdminHome />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="users" element={<UserManagement />} />
             <Route path="companies" element={<CompanyManagement />} />
             <Route path="supplier-verification" element={<SupplierVerification />} />
@@ -78,7 +82,8 @@ const App = () => (
 
           {/* Buyer Routes */}
           <Route path="/buyer" element={<BuyerLayout />}>
-            <Route index element={<BuyerDashboard />} />
+            <Route index element={<BuyerHome />} />
+            <Route path="dashboard" element={<BuyerDashboard />} />
             <Route path="products" element={<BuyerProductCatalog />} />
             <Route path="suppliers" element={<Suppliers />} />
             <Route path="cart" element={<Cart />} />
@@ -94,7 +99,8 @@ const App = () => (
 
           {/* Supplier Routes */}
           <Route path="/supplier" element={<SupplierLayout />}>
-            <Route index element={<SupplierDashboard />} />
+            <Route index element={<SupplierHome />} />
+            <Route path="dashboard" element={<SupplierDashboard />} />
             <Route path="products" element={<SupplierProductCatalog />} />
             <Route path="orders" element={<Orders />} />
             <Route path="rfq" element={<Rfq />} />

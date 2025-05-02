@@ -1,14 +1,17 @@
 
 import React from "react";
-import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import LoginForm from "@/components/auth/LoginForm";
+import { motion } from "framer-motion";
 
 const Login = () => {
   const navigate = useNavigate();
-
+  
   const handleDemoLogin = (role: string) => {
-    switch (role) {
+    // In a real app, we would handle authentication here
+    // For demo purposes, we just navigate to the respective dashboard
+    switch(role) {
       case "admin":
         navigate("/admin");
         break;
@@ -24,89 +27,88 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col justify-center relative overflow-hidden">
-      {/* Video Background */}
-      <div className="absolute inset-0 z-0">
-        <video
-          className="h-full w-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-        >
-          <source src="https://ik.imagekit.io/rqegzjddo/packaging-video.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-      </div>
-      
-      {/* Content */}
-      <div className="container mx-auto px-4 z-10">
-        <div className="max-w-md mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
+    <div className="flex min-h-[calc(100vh-5rem)] flex-col items-center justify-center">
+      <div className="w-full max-w-md space-y-8 px-4">
+        <div className="text-center">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="bg-black/30 backdrop-blur-lg border border-white/10 rounded-2xl p-8 shadow-xl"
+            transition={{ duration: 0.5 }}
           >
-            <div className="text-center mb-8">
-              <motion.h1 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
-                className="text-3xl font-display font-medium text-white mb-2"
-              >
-                Welcome to Toreso
-              </motion.h1>
-              <motion.p
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3, duration: 0.6 }}
-                className="text-white/70"
-              >
-                Revolutionizing the packaging industry
-              </motion.p>
-            </div>
-
-            <motion.div 
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4, duration: 0.6 }}
-              className="mb-6"
-            >
-              <h2 className="text-xl text-white mb-4 text-center">Demo Login</h2>
-              <div className="space-y-3">
-                <Button 
-                  className="w-full bg-toreso-blue hover:bg-toreso-darkBlue text-white"
-                  onClick={() => handleDemoLogin("admin")}
-                >
-                  Login as Admin
-                </Button>
-                <Button 
-                  className="w-full bg-toreso-teal hover:bg-toreso-teal/90 text-white"
-                  onClick={() => handleDemoLogin("buyer")}
-                >
-                  Login as Buyer
-                </Button>
-                <Button 
-                  className="w-full bg-toreso-purple hover:bg-toreso-purple/90 text-white"
-                  onClick={() => handleDemoLogin("supplier")}
-                >
-                  Login as Supplier
-                </Button>
-              </div>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.6 }}
-              className="text-center text-sm text-white/60"
-            >
-              <p>Click any button above to explore the demo</p>
-            </motion.div>
+            <h2 className="text-3xl font-bold tracking-tight">Welcome back!</h2>
+            <p className="mt-2 text-sm text-gray-600">
+              Sign in to access your account
+            </p>
           </motion.div>
         </div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mt-8"
+        >
+          <LoginForm />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mt-8 space-y-6"
+        >
+          <div className="relative">
+            <div className="absolute inset-0 flex items-center">
+              <div className="w-full border-t border-gray-200" />
+            </div>
+            <div className="relative flex justify-center text-sm">
+              <span className="bg-white px-2 text-gray-500">Or try demo access</span>
+            </div>
+          </div>
+          
+          <div className="space-y-2">
+            <Button
+              variant="outline"
+              className="w-full border-toreso-blue text-toreso-blue hover:bg-toreso-blue/5"
+              onClick={() => handleDemoLogin("admin")}
+            >
+              Admin Demo
+            </Button>
+            
+            <Button
+              variant="outline"
+              className="w-full border-toreso-teal text-toreso-teal hover:bg-toreso-teal/5"
+              onClick={() => handleDemoLogin("buyer")}
+            >
+              Buyer Demo
+            </Button>
+            
+            <Button
+              variant="outline"
+              className="w-full border-toreso-purple text-toreso-purple hover:bg-toreso-purple/5"
+              onClick={() => handleDemoLogin("supplier")}
+            >
+              Supplier Demo
+            </Button>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.3 }}
+          className="mt-6 text-center"
+        >
+          <p className="text-sm">
+            Don't have an account?{" "}
+            <Link
+              to="/register"
+              className="font-semibold text-toreso-blue hover:text-toreso-darkBlue"
+            >
+              Register here
+            </Link>
+          </p>
+        </motion.div>
       </div>
     </div>
   );

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import {
@@ -67,9 +66,14 @@ const BuyerLayout = () => {
 
   const menuItems = [
     {
-      title: "Dashboard",
+      title: "Home",
       icon: <Home size={20} />,
       path: "/buyer",
+    },
+    {
+      title: "Dashboard",
+      icon: <BarChart4 size={20} />,
+      path: "/buyer/dashboard",
     },
     {
       title: "Products",
