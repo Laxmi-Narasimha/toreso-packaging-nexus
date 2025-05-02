@@ -1,8 +1,9 @@
 
-import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
 interface ProductData {
   id: number;
@@ -47,18 +48,63 @@ interface ProductCarouselProps {
 const ProductCarousel: React.FC<ProductCarouselProps> = ({ onThemeChange }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
+  const carouselRef = useRef<HTMLDivElement>(null);
+  
+  // Scroll animation tracking
+  const { scrollYProgress } = useScroll({
+    target: carouselRef,
+    offset: ["start", "end"]
+  });
+  
+  // Map scroll progress to carousel index
+  const scrollIndex = useTransform(
+    scrollYProgress, 
+    [0, 0.33, 0.67, 1], 
+    [0, 1, 2, 0]
+  );
+  
+  // Update index based on scroll position
+  useEffect(() => {
+    const unsubscribe = scrollIndex.on("change", (latest) => {
+      const rounded = Math.round(latest);
+      if (rounded !== currentIndex) {
+        setDirection(rounded > currentIndex ? 1 : -1);
+        setCurrentIndex(rounded % products.length);
+      }
+    });
+    
+    return () => unsubscribe();
+  }, [scrollIndex, currentIndex]);
 
   useEffect(() => {
     // Change theme when product changes
     onThemeChange(products[currentIndex].bgColor);
     
-    // Auto-advance the carousel every 6 seconds
+    // Auto-advance the carousel every 6 seconds only if not being scrolled
     const interval = setInterval(() => {
-      handleNext();
+      if (!document.documentElement.classList.contains("scrolling")) {
+        handleNext();
+      }
     }, 6000);
     
     return () => clearInterval(interval);
   }, [currentIndex, onThemeChange]);
+
+  // Track scroll state
+  useEffect(() => {
+    let scrollTimeout: number;
+    
+    const handleScroll = () => {
+      document.documentElement.classList.add("scrolling");
+      clearTimeout(scrollTimeout);
+      scrollTimeout = window.setTimeout(() => {
+        document.documentElement.classList.remove("scrolling");
+      }, 100);
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleNext = () => {
     setDirection(1);
@@ -100,7 +146,7 @@ const ProductCarousel: React.FC<ProductCarouselProps> = ({ onThemeChange }) => {
   };
 
   return (
-    <div className="relative h-full w-full overflow-hidden">
+    <div ref={carouselRef} className="relative h-full w-full overflow-hidden">
       {/* Product display */}
       <AnimatePresence custom={direction} initial={false}>
         <motion.div

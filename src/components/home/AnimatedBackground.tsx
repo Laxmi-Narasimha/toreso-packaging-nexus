@@ -1,6 +1,6 @@
 
 import React, { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 
 interface AnimatedBackgroundProps {
   theme: string;
@@ -8,6 +8,12 @@ interface AnimatedBackgroundProps {
 
 const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ theme }) => {
   const [currentTheme, setCurrentTheme] = useState(theme);
+  const { scrollYProgress } = useScroll();
+  
+  // Transform values based on scroll
+  const opacity = useTransform(scrollYProgress, [0, 0.3], [1, 0.7]);
+  const scale = useTransform(scrollYProgress, [0, 0.3], [1, 1.05]);
+  const y = useTransform(scrollYProgress, [0, 0.3], [0, -30]);
   
   useEffect(() => {
     // Small delay to allow for smooth transition
@@ -27,6 +33,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ theme }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 1.5 }}
+          style={{ opacity }}
           className={`absolute inset-0 ${currentTheme}`}
         />
       </AnimatePresence>
@@ -36,6 +43,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ theme }) => {
         {/* Animated floating shapes */}
         <motion.div
           className="absolute w-[600px] h-[600px] rounded-full bg-white/5 blur-3xl"
+          style={{ y, scale }}
           animate={{ 
             x: [0, 30, 0], 
             y: [0, -30, 0],
@@ -46,11 +54,12 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ theme }) => {
             duration: 20,
             ease: "easeInOut" 
           }}
-          style={{ top: '10%', right: '5%' }}
+          initial={{ top: '10%', right: '5%' }}
         />
         
         <motion.div
           className="absolute w-[400px] h-[400px] rounded-full bg-white/5 blur-3xl"
+          style={{ y: useTransform(scrollYProgress, [0, 0.5], [0, 50]) }}
           animate={{ 
             x: [0, -20, 0], 
             y: [0, 20, 0],
@@ -62,11 +71,12 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ theme }) => {
             ease: "easeInOut",
             delay: 2
           }}
-          style={{ bottom: '5%', left: '10%' }}
+          initial={{ bottom: '5%', left: '10%' }}
         />
         
         <motion.div
           className="absolute w-[300px] h-[300px] rounded-full bg-white/5 blur-3xl"
+          style={{ x: useTransform(scrollYProgress, [0, 0.5], [0, -30]) }}
           animate={{ 
             x: [0, 15, 0], 
             y: [0, 15, 0],
@@ -78,7 +88,7 @@ const AnimatedBackground: React.FC<AnimatedBackgroundProps> = ({ theme }) => {
             ease: "easeInOut",
             delay: 1
           }}
-          style={{ top: '30%', left: '5%' }}
+          initial={{ top: '30%', left: '5%' }}
         />
       </div>
       
