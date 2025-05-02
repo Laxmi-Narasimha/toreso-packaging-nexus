@@ -127,12 +127,13 @@ export const SupplierDetails = ({ supplier }: SupplierDetailsProps) => {
                     {supplier.verificationSteps.map((step, index) => (
                       <div key={index} className="flex justify-between items-center">
                         <div className="flex items-center">
-                          <span className={`p-1 rounded-full mr-2 ${
+                          <span className={cn(
+                            "p-1 rounded-full mr-2",
                             step.status === "completed" ? "bg-green-500/20" :
                             step.status === "in_progress" ? "bg-blue-500/20" : 
                             step.status === "rejected" ? "bg-red-500/20" :
                             "bg-gray-500/20"
-                          }`}>
+                          )}>
                             {getStatusIcon(step.status)}
                           </span>
                           <span>{step.name}</span>

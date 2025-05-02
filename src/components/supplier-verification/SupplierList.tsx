@@ -20,7 +20,8 @@ import {
   CheckCircle, 
   XCircle, 
   FileText,
-  ArrowUpDown
+  ArrowUpDown,
+  User
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Supplier } from "@/types/supplier";
@@ -59,9 +60,10 @@ export const SupplierList = ({ suppliers, selectedSupplier, onSelectSupplier }: 
           {suppliers.map((supplier) => (
             <TableRow 
               key={supplier.id} 
-              className={`hover:bg-white/5 border-white/10 cursor-pointer ${
+              className={cn(
+                "hover:bg-white/5 border-white/10 cursor-pointer",
                 selectedSupplier === supplier.id ? "bg-white/5" : ""
-              }`}
+              )}
               onClick={() => onSelectSupplier(supplier.id)}
             >
               <TableCell>

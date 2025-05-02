@@ -7,6 +7,7 @@ import FilterTabs from "@/components/supplier-verification/FilterTabs";
 import { SupplierList } from "@/components/supplier-verification/SupplierList";
 import { SupplierDetails } from "@/components/supplier-verification/SupplierDetails";
 import { supplierVerifications } from "@/types/supplier";
+import { cn } from "@/lib/utils";
 
 const SupplierVerification = () => {
   const [activeTab, setActiveTab] = useState("all");
