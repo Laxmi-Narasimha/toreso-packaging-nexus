@@ -4,12 +4,15 @@ import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Play, ArrowRight, Package, Shield, Users, TrendingUp, Award, ChevronDown } from "lucide-react";
+import ProductCarousel from "@/components/home/ProductCarousel";
+import AnimatedBackground from "@/components/home/AnimatedBackground";
 
 const Index = () => {
   const videoRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [cursorPosition, setCursorPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState("bg-gradient-to-br from-toreso-teal/30 to-toreso-blue/30");
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -46,29 +49,14 @@ const Index = () => {
     }
   }, []);
   
-  const shapes = [
-    { id: 1, x: -20, y: 120, color: 'bg-toreso-blue', size: 'h-24 w-24', delay: 0.2, shape: 'rounded-full' },
-    { id: 2, x: 420, y: 180, color: 'bg-toreso-teal', size: 'h-32 w-32', delay: 0.4, shape: 'rounded-lg' },
-    { id: 3, x: 220, y: 320, color: 'bg-toreso-purple', size: 'h-20 w-20', delay: 0.6, shape: 'rounded-full' },
-    { id: 4, x: -120, y: 420, color: 'bg-toreso-orange', size: 'h-28 w-28', delay: 0.8, shape: 'rounded-lg' },
-  ];
+  const handleThemeChange = (theme: string) => {
+    setCurrentTheme(theme);
+  };
   
   return (
-    <div ref={containerRef} className="min-h-screen overflow-x-hidden bg-white dark:bg-[#1A1F2C]">
-      {/* Interactive background elements */}
-      {shapes.map((shape) => (
-        <motion.div
-          key={shape.id}
-          className={`fixed ${shape.color} ${shape.size} ${shape.shape} blur-3xl opacity-20 pointer-events-none z-0`}
-          initial={{ x: shape.x, y: shape.y, opacity: 0 }}
-          animate={{ 
-            opacity: 0.2,
-            x: isHovering ? shape.x + (cursorPosition.x * 0.02) : shape.x,
-            y: isHovering ? shape.y + (cursorPosition.y * 0.02) : shape.y,
-          }}
-          transition={{ delay: shape.delay, duration: 0.8 }}
-        />
-      ))}
+    <div ref={containerRef} className="min-h-screen overflow-x-hidden">
+      {/* Dynamic background */}
+      <AnimatedBackground theme={currentTheme} />
 
       {/* Custom cursor follower */}
       <motion.div
@@ -80,174 +68,26 @@ const Index = () => {
         transition={{ type: "spring", damping: 10, mass: 0.5 }}
       />
 
-      {/* Hero Section with Illustrated Elements */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <motion.div
-          style={{ opacity, scale, y }}
-          className="absolute inset-0 z-0"
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-        >
-          {/* Illustrated Background */}
-          <div className="absolute inset-0 flex items-center justify-center overflow-hidden">
-            <motion.div 
-              className="absolute w-[800px] h-[800px] rounded-full bg-gradient-to-br from-toreso-blue/20 to-toreso-teal/20"
-              animate={{ 
-                scale: [1, 1.05, 1],
-                rotate: [0, 10, 0],
-              }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            />
-            <motion.div 
-              className="absolute w-[600px] h-[600px] rounded-full bg-gradient-to-tr from-toreso-purple/10 to-toreso-orange/10"
-              animate={{ 
-                scale: [1.1, 1, 1.1],
-                rotate: [10, 0, 10],
-              }}
-              transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-            />
-            
-            {/* Animated Particles */}
-            <div className="absolute inset-0 overflow-hidden">
-              {Array.from({ length: 20 }).map((_, i) => (
-                <motion.div
-                  key={i}
-                  className="absolute rounded-full bg-white"
-                  initial={{
-                    opacity: Math.random() * 0.5 + 0.1,
-                    width: Math.random() * 8 + 2,
-                    height: Math.random() * 8 + 2,
-                    x: Math.random() * window.innerWidth,
-                    y: Math.random() * window.innerHeight,
-                  }}
-                  animate={{
-                    y: [null, Math.random() * -window.innerHeight],
-                    opacity: [null, 0],
-                  }}
-                  transition={{
-                    duration: Math.random() * 10 + 10,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
-                />
-              ))}
-            </div>
-
-            {/* Floating Graphical Elements */}
-            <motion.div
-              className="absolute -top-20 -right-20 w-80 h-80"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 120, repeat: Infinity, ease: "linear" }}
-            >
-              <div className="absolute top-1/2 left-1/2 w-20 h-20 rounded bg-toreso-blue/20 transform -translate-x-1/2 -translate-y-1/2" />
-            </motion.div>
-            <motion.div
-              className="absolute -bottom-40 -left-40 w-120 h-120"
-              animate={{ rotate: -360 }}
-              transition={{ duration: 180, repeat: Infinity, ease: "linear" }}
-            >
-              <div className="absolute top-1/2 left-1/2 w-24 h-24 rounded-full bg-toreso-purple/20 transform -translate-x-1/2 -translate-y-1/2" />
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Content */}
-        <div className="container mx-auto px-4 z-10 relative">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-8">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-                className="inline-flex items-center justify-center bg-gradient-to-tr from-toreso-blue to-toreso-teal p-4 mb-8 cursor-pointer rounded-full hover:shadow-lg hover:shadow-toreso-blue/20 transition-all"
-                onClick={() => videoRef.current?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                <Play className="h-6 w-6 text-white" />
-              </motion.div>
-
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1 }}
-                className="relative inline-block mb-6"
-              >
-                <motion.h1
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.2 }}
-                  className="text-6xl md:text-8xl font-display font-medium tracking-tight relative z-10"
-                >
-                  We are <span className="text-toreso-blue relative">
-                    Toreso
-                    <motion.div
-                      className="absolute -bottom-2 left-0 h-3 bg-toreso-blue/20 w-full -z-10"
-                      initial={{ width: 0 }}
-                      animate={{ width: '100%' }}
-                      transition={{ duration: 0.8, delay: 1.2 }}
-                    />
-                  </span>
-                </motion.h1>
-                
-                {/* Animated decorative elements */}
-                <motion.div
-                  className="absolute -right-8 -top-8 w-16 h-16 rounded-full border border-toreso-orange/30"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: 1.4 }}
-                />
-                <motion.div
-                  className="absolute -left-12 top-1/2 w-8 h-8 rounded border border-toreso-teal/30"
-                  initial={{ opacity: 0, scale: 0 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.6, delay: 1.6 }}
-                />
-              </motion.div>
-
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-12"
-              >
-                Revolutionizing the packaging industry through innovation, quality, and sustainability.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="flex flex-wrap justify-center gap-4"
-              >
-                <Button asChild size="lg" className="bg-toreso-blue hover:bg-toreso-darkBlue text-white relative overflow-hidden group">
-                  <Link to="/register">
-                    <span className="relative z-10 flex items-center">
-                      Get Started <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
-                    </span>
-                    <span className="absolute inset-0 bg-gradient-to-r from-toreso-blue to-toreso-teal opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                  </Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-all duration-300">
-                  <Link to="/login">Login</Link>
-                </Button>
-              </motion.div>
-            </div>
-          </div>
-
-          {/* Scroll Down Indicator */}
-          <motion.div
-            initial={{ opacity: 0, y: 0 }}
-            animate={{ opacity: 1, y: 10 }}
-            transition={{ duration: 1, delay: 1, repeat: Infinity, repeatType: "reverse" }}
-            className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
-          >
-            <ChevronDown className="h-6 w-6 text-gray-400 dark:text-gray-500" />
-            <span className="text-xs text-gray-400 dark:text-gray-500 mt-1">Scroll Down</span>
-          </motion.div>
+      {/* Hero Section with Dynamic Product Carousel */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-10">
+          <ProductCarousel onThemeChange={handleThemeChange} />
         </div>
+
+        {/* Scroll Down Indicator */}
+        <motion.div
+          initial={{ opacity: 0, y: 0 }}
+          animate={{ opacity: 1, y: 10 }}
+          transition={{ duration: 1, delay: 1, repeat: Infinity, repeatType: "reverse" }}
+          className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center z-20"
+        >
+          <ChevronDown className="h-6 w-6 text-white" />
+          <span className="text-xs text-white mt-1">Scroll Down</span>
+        </motion.div>
       </section>
 
-      {/* About Section with Illustrations */}
-      <section className="py-20 md:py-32 bg-white dark:bg-[#1A1F2C] relative overflow-hidden">
+      {/* About Section */}
+      <section className="py-20 md:py-32 relative overflow-hidden bg-white dark:bg-[#1A1F2C]">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div>
