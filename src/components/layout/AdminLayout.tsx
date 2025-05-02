@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -53,8 +52,8 @@ const AdminLayout = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  // Video background URL
-  const videoUrl = "https://ik.imagekit.io/rqegzjddo/packaging-video.mp4";
+  // Video background URL - Update this to your local video path
+  const videoUrl = "/videos/packaging-video.mp4"; // This assumes you'll place the video in public/videos/
 
   const menuItems = [
     {
