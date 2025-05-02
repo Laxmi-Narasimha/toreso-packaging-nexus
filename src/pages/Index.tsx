@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Play, ArrowRight, Package, Shield, Robot, TrendingUp, Award, ChevronDown } from "lucide-react";
+import { Play, ArrowRight, Package, Shield, Bot, TrendingUp, Award, ChevronDown } from "lucide-react";
 import ProductCarousel from "@/components/home/ProductCarousel";
 import AnimatedBackground from "@/components/home/AnimatedBackground";
 

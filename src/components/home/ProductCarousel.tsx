@@ -1,8 +1,7 @@
-
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Package, Robot, TrendingUp, Shield } from "lucide-react";
+import { ChevronLeft, ChevronRight, Package, Bot, TrendingUp, Shield } from "lucide-react";
 
 interface ProductData {
   id: number;
@@ -249,7 +248,7 @@ const products: ProductData[] = [
     bgColor: "bg-gradient-to-br from-toreso-blue/30 to-toreso-purple/30",
     image: "/lovable-uploads/ade7c73d-1bce-4d10-9047-b9ad090db91d.png",
     actionText: "View Robots",
-    icon: <Robot className="h-6 w-6" />,
+    icon: <Bot className="h-6 w-6" />,
     illustration: (
       <svg viewBox="0 0 300 300" className="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
         <motion.rect 
