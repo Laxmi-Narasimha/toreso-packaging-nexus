@@ -431,7 +431,7 @@ const AdminLayout = () => {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="text-4xl md:text-6xl lg:text-7xl font-display font-medium text-white tracking-tight leading-tight mb-6"
             >
-              Revolutionizing the <span className="text-toreso-blue">Packaging Industry</span>
+              We are <span className="text-toreso-blue">Toreso</span>
             </motion.h1>
             <motion.p 
               initial={{ y: 20, opacity: 0 }}
@@ -439,7 +439,7 @@ const AdminLayout = () => {
               transition={{ duration: 0.8, delay: 0.4 }}
               className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto leading-relaxed mb-12"
             >
-              Unifying the entire packaging ecosystem through a seamless platform that connects suppliers, buyers, and quality verification in one immersive experience.
+              Revolutionizing the packaging industry through innovation, quality, and sustainability.
             </motion.p>
             <motion.div 
               initial={{ y: 20, opacity: 0 }}

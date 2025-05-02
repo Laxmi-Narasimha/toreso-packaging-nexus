@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Supplier } from "@/types/supplier";
+import { motion } from "framer-motion";
 
 interface SupplierListProps {
   suppliers: Supplier[];
@@ -57,9 +58,12 @@ export const SupplierList = ({ suppliers, selectedSupplier, onSelectSupplier }: 
           </TableRow>
         </TableHeader>
         <TableBody>
-          {suppliers.map((supplier) => (
-            <TableRow 
-              key={supplier.id} 
+          {suppliers.map((supplier, index) => (
+            <motion.tr
+              key={supplier.id}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: index * 0.05 }}
               className={cn(
                 "hover:bg-white/5 border-white/10 cursor-pointer",
                 selectedSupplier === supplier.id ? "bg-white/5" : ""
@@ -137,7 +141,7 @@ export const SupplierList = ({ suppliers, selectedSupplier, onSelectSupplier }: 
                   </DropdownMenuContent>
                 </DropdownMenu>
               </TableCell>
-            </TableRow>
+            </motion.tr>
           ))}
         </TableBody>
       </Table>
