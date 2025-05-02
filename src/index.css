@@ -314,6 +314,43 @@
     @apply transition-transform duration-200;
     transform-style: preserve-3d;
   }
+
+  /* SVG Illustration styles */
+  .svg-illustration {
+    @apply max-w-full h-auto;
+  }
+
+  .svg-illustration path,
+  .svg-illustration line,
+  .svg-illustration rect,
+  .svg-illustration circle {
+    @apply stroke-current;
+  }
+
+  .svg-illustration .fill-shape {
+    @apply fill-current;
+  }
+
+  .svg-illustration .translucent-fill {
+    @apply fill-current opacity-20;
+  }
+
+  .svg-illustration .stroke-thin {
+    @apply stroke-1;
+  }
+
+  .svg-illustration .stroke-medium {
+    @apply stroke-2;
+  }
+
+  .svg-illustration .stroke-thick {
+    @apply stroke-2;
+  }
+
+  /* Instead of using @apply stroke-dasharray-2 which doesn't exist in Tailwind */
+  .svg-illustration .dotted-line {
+    stroke-dasharray: 2;
+  }
 }
 
 /* Modern input field styling */
@@ -396,39 +433,62 @@ input, textarea, select {
   @apply flex-none snap-start w-80;
 }
 
-/* SVG Illustrations */
-.svg-illustration {
+/* Warehouse and robot illustrations */
+.warehouse-illustration {
+  @apply w-full h-auto;
+}
+
+.robot-illustration {
   @apply max-w-full h-auto;
 }
 
-.svg-illustration path,
-.svg-illustration line,
-.svg-illustration rect,
-.svg-illustration circle {
-  @apply stroke-current;
+/* New illustration styles */
+.robot-arm {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  transition: all 0.5s ease;
 }
 
-.svg-illustration .fill-shape {
-  @apply fill-current;
+.robot-joint {
+  fill: #aaadb0;
+  stroke: #000000e6;
+  stroke-width: 1;
 }
 
-.svg-illustration .translucent-fill {
-  @apply fill-current opacity-20;
+.robot-body {
+  fill: #aaadb0;
+  stroke: #000000e6;
+  stroke-width: 1.5;
 }
 
-.svg-illustration .stroke-thin {
-  @apply stroke-1;
+.conveyor-belt {
+  fill: #1A1F2C;
+  stroke: #000000e6;
+  stroke-width: 0.5;
 }
 
-.svg-illustration .stroke-medium {
-  @apply stroke-2;
+.package-box {
+  fill: #9b87f5;
+  stroke: #000000e6;
+  stroke-width: 1;
 }
 
-.svg-illustration .stroke-thick {
-  @apply stroke-2;
+.warehouse-grid {
+  stroke: rgba(255,255,255,0.1);
+  stroke-width: 0.5;
 }
 
-/* Instead of using @apply stroke-dasharray-2 which doesn't exist in Tailwind */
-.svg-illustration .dotted-line {
-  stroke-dasharray: 2;
+.warehouse-shelf {
+  fill: #1A1F2C;
+  stroke: #000000e6;
+}
+
+/* Handwritten path effect */
+.handwritten-path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke-dashoffset 1.5s ease;
 }
