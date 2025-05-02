@@ -289,6 +289,31 @@
   .glass-button {
     @apply backdrop-blur-md bg-white/10 border border-white/20 hover:bg-white/20 hover:border-white/30 text-white transition-colors;
   }
+  
+  /* Illustrative drawing styles */
+  .drawing-lines path {
+    @apply stroke-current stroke-1 fill-none;
+  }
+  
+  .illustrated-icon {
+    @apply absolute w-full h-full top-0 left-0 opacity-10 pointer-events-none text-current;
+  }
+  
+  .illustrated-grid {
+    background-size: 40px 40px;
+    background-image: 
+      linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+  }
+  
+  .hand-drawn {
+    filter: url('#hand-drawn-filter');
+  }
+  
+  .parallax-element {
+    @apply transition-transform duration-200;
+    transform-style: preserve-3d;
+  }
 }
 
 /* Modern input field styling */
@@ -370,3 +395,40 @@ input, textarea, select {
 .scroll-item {
   @apply flex-none snap-start w-80;
 }
+
+/* SVG Illustrations */
+.svg-illustration {
+  @apply max-w-full h-auto;
+}
+
+.svg-illustration path,
+.svg-illustration line,
+.svg-illustration rect,
+.svg-illustration circle {
+  @apply stroke-current;
+}
+
+.svg-illustration .fill-shape {
+  @apply fill-current;
+}
+
+.svg-illustration .translucent-fill {
+  @apply fill-current opacity-20;
+}
+
+.svg-illustration .stroke-thin {
+  @apply stroke-1;
+}
+
+.svg-illustration .stroke-medium {
+  @apply stroke-2;
+}
+
+.svg-illustration .stroke-thick {
+  @apply stroke-3;
+}
+
+.svg-illustration .dotted-line {
+  @apply stroke-dasharray-2;
+}
+
