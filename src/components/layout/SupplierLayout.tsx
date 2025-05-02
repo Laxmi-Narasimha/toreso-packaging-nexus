@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import {
@@ -117,25 +116,27 @@ const SupplierLayout = () => {
     },
   ];
 
-  // Video background URL for supplier portal - high quality manufacturing/industrial video
-  const videoUrl = "https://player.vimeo.com/external/485192803.sd.mp4?s=71e18faec1ad7bab7726910dc640e5530374ca5c&profile_id=164&oauth2_token_id=57447761";
+  // Updated video URL for supplier portal - high quality manufacturing/industrial video
+  const videoUrl = "https://videos.pexels.com/video-files/6167566/6167566-hd_1920_1080_30fps.mp4";
 
   return (
     <div className="relative min-h-screen overflow-hidden">
-      {/* Full-screen Video Background */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-black/60 bg-gradient-to-t from-black z-10"></div>
-        <video
-          className="full-video-background"
-          autoPlay
-          loop
-          muted
-          playsInline
-        >
-          <source src={videoUrl} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div>
+      {/* Full-screen Video Background - only shown on supplier home route */}
+      {location.pathname === "/supplier" && (
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-black/60 bg-gradient-to-t from-black z-10"></div>
+          <video
+            className="full-video-background"
+            autoPlay
+            loop
+            muted
+            playsInline
+          >
+            <source src={videoUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
+      )}
 
       {/* Horizontal Navigation */}
       <header 

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -95,7 +94,7 @@ const SupplierHome = () => {
             muted
             playsInline
           >
-            <source src="https://player.vimeo.com/external/515912154.hd.mp4?s=f93d7c1904376355a35573502b082e28840203ad&profile_id=174&oauth2_token_id=57447761" type="video/mp4" />
+            <source src="https://videos.pexels.com/video-files/6167566/6167566-hd_1920_1080_30fps.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
           <div className="absolute inset-0 bg-black/70 backdrop-blur-sm"></div>
