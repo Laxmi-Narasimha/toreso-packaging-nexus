@@ -24,6 +24,10 @@ import UserManagement from "./pages/admin/UserManagement";
 import ProductCatalog from "./pages/admin/ProductCatalog";
 import CompanyManagement from "./pages/admin/CompanyManagement";
 import SupplierVerification from "./pages/admin/SupplierVerification";
+import AuditManagement from "./pages/admin/AuditManagement";
+import OrderManagement from "./pages/admin/OrderManagement";
+import FinancialManagement from "./pages/admin/FinancialManagement";
+import Analytics from "./pages/admin/Analytics";
 
 // Buyer Pages
 import BuyerDashboard from "./pages/buyer/BuyerDashboard";
@@ -63,11 +67,11 @@ const App = () => (
             <Route path="users" element={<UserManagement />} />
             <Route path="companies" element={<CompanyManagement />} />
             <Route path="supplier-verification" element={<SupplierVerification />} />
-            <Route path="audit-management" element={<div>Audit Management</div>} />
+            <Route path="audit-management" element={<AuditManagement />} />
             <Route path="products" element={<ProductCatalog />} />
-            <Route path="orders" element={<div>Order Management</div>} />
-            <Route path="financials" element={<div>Financial Management</div>} />
-            <Route path="analytics" element={<div>Reports & Analytics</div>} />
+            <Route path="orders" element={<OrderManagement />} />
+            <Route path="financials" element={<FinancialManagement />} />
+            <Route path="analytics" element={<Analytics />} />
             <Route path="settings" element={<div>Settings</div>} />
             <Route path="support" element={<div>Support</div>} />
           </Route>
