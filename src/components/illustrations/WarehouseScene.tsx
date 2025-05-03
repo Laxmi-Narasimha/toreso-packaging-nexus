@@ -225,6 +225,7 @@ const WarehouseScene = () => {
       >
         <svg width="100" height="300" viewBox="0 0 100 300">
           <rect x="45" y="0" width="10" height="200" fill="#1A1F2C" stroke="#000000e6" />
+          {/* Fixed: Removed transformOrigin prop and moved it to CSS transform-origin */}
           <motion.rect 
             x="20" 
             y="200" 
@@ -232,31 +233,34 @@ const WarehouseScene = () => {
             height="10" 
             fill="#1A1F2C"
             stroke="#000000e6" 
-            style={{ rotate: useTransform(scrollYProgress, [0, 0.5, 1], [-10, 20, -10]) }}
-            transformOrigin="50 200"
+            style={{ 
+              rotate: useTransform(scrollYProgress, [0, 0.5, 1], [-10, 20, -10]),
+              // Using CSS transform-origin
+              transformBox: "fill-box",
+              transformOrigin: "center"
+            }}
+            className="origin-center"
           />
+          {/* Fixed: Changed y2 in style to separate y2 attribute */}
           <motion.line 
             x1="50" 
             y1="200" 
             x2="50" 
-            y2="250" 
+            style={{ 
+              // Don't use y2 in style
+            }}
+            y2={useTransform(scrollYProgress, [0, 0.3, 0.6, 1], [220, 270, 250, 230])}
             stroke="#000000e6" 
             strokeWidth="2" 
             strokeDasharray="4"
-            style={{ 
-              y2: useTransform(scrollYProgress, [0, 0.3, 0.6, 1], [220, 270, 250, 230])
-            }}
           />
           <motion.rect 
             x="40" 
-            y="250" 
+            y={useTransform(scrollYProgress, [0, 0.3, 0.6, 1], [220, 270, 250, 230])}
             width="20" 
             height="15" 
             fill="#9b87f5"
             stroke="#000000e6" 
-            style={{ 
-              y: useTransform(scrollYProgress, [0, 0.3, 0.6, 1], [220, 270, 250, 230])
-            }}
           />
         </svg>
       </motion.div>
