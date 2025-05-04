@@ -1,6 +1,7 @@
+
 import * as React from "react"
 import * as TabsPrimitive from "@radix-ui/react-tabs"
-
+import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 
 const Tabs = TabsPrimitive.Root
@@ -12,7 +13,7 @@ const TabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
+      "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground relative",
       className
     )}
     {...props}
@@ -23,15 +24,29 @@ TabsList.displayName = TabsPrimitive.List.displayName
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
->(({ className, ...props }, ref) => (
+>(({ className, children, ...props }, ref) => (
   <TabsPrimitive.Trigger
     ref={ref}
     className={cn(
-      "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
+      "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm relative group overflow-hidden",
       className
     )}
     {...props}
-  />
+  >
+    {children}
+    <motion.span 
+      className="absolute bottom-0 left-0 h-0.5 bg-toreso-blue"
+      initial={{ width: 0 }}
+      animate={{ width: props["data-state"] === "active" ? "100%" : 0 }}
+      transition={{ duration: 0.3 }}
+    />
+    <motion.span
+      className="absolute inset-0 bg-white/5 rounded-sm"
+      initial={{ opacity: 0 }}
+      whileHover={{ opacity: 1 }}
+      transition={{ duration: 0.2 }}
+    />
+  </TabsPrimitive.Trigger>
 ))
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName
 

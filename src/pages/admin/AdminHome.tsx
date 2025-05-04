@@ -1,14 +1,19 @@
 
 import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, ChevronDown } from "lucide-react";
+import { ArrowRight, Play, ChevronDown, Package, Settings, ClipboardCheck, BarChart4 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import WarehouseScene from "@/components/illustrations/WarehouseScene";
 
 const AdminHome = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: containerRef });
+  
+  const headerOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
+  const headerScale = useTransform(scrollYProgress, [0, 0.1], [1, 0.95]);
   
   useEffect(() => {
     if (videoRef.current) {
@@ -39,9 +44,16 @@ const AdminHome = () => {
     transition: { duration: 0.8 }
   };
 
+  const featureIcons = [
+    <Package className="text-toreso-blue" />, 
+    <ClipboardCheck className="text-toreso-blue" />, 
+    <BarChart4 className="text-toreso-blue" />, 
+    <Settings className="text-toreso-blue" />
+  ];
+
   return (
     <div ref={containerRef} className="min-h-screen overflow-x-hidden bg-white">
-      {/* Hero Section with Video Background */}
+      {/* Hero Section with Full Screen Video Background */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
         {/* Video Background */}
         <div className="absolute inset-0 z-0">
@@ -59,8 +71,11 @@ const AdminHome = () => {
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
         </div>
 
-        {/* Content */}
-        <div className="container mx-auto px-4 z-10 text-white relative">
+        {/* Animated Content */}
+        <motion.div 
+          className="container mx-auto px-4 z-10 text-white relative"
+          style={{ opacity: headerOpacity, scale: headerScale }}
+        >
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-8">
               <motion.div
@@ -68,6 +83,8 @@ const AdminHome = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
                 className="inline-flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-full p-4 mb-8 cursor-pointer hover:bg-white/20 transition-all"
+                whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.15)" }}
+                whileTap={{ scale: 0.95 }}
               >
                 <Play className="h-6 w-6 text-white" />
               </motion.div>
@@ -109,17 +126,36 @@ const AdminHome = () => {
           {/* Scroll Down Indicator */}
           <motion.div
             initial={{ opacity: 0, y: 0 }}
-            animate={{ opacity: 1, y: 10 }}
-            transition={{ duration: 1, delay: 1, repeat: Infinity, repeatType: "reverse" }}
+            animate={{ opacity: 1, y: [0, 10, 0] }}
+            transition={{ duration: 1.5, delay: 1, repeat: Infinity }}
             className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
           >
             <ChevronDown className="h-6 w-6 text-white/80" />
             <span className="text-xs text-white/80 mt-1">Scroll Down</span>
           </motion.div>
+        </motion.div>
+      </section>
+
+      {/* Illustrated Warehouse Scene */}
+      <section className="py-20 md:py-32 bg-gray-50 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-gray-100 to-gray-50 opacity-80 z-0"></div>
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-4xl md:text-5xl font-display font-medium tracking-tight mb-6 animate-on-scroll opacity-0 translate-y-10 transition-all duration-1000">
+              Warehouse <span className="text-toreso-blue">Visualization</span>
+            </h2>
+            <p className="text-lg text-gray-600 animate-on-scroll opacity-0 translate-y-10 transition-all duration-1000 delay-100">
+              Interactive visual representation of your warehouse operations and logistics
+            </p>
+          </div>
+          
+          <div className="h-[600px] animate-on-scroll opacity-0 translate-y-10 transition-all duration-1000 delay-200">
+            <WarehouseScene />
+          </div>
         </div>
       </section>
 
-      {/* Admin Features Section */}
+      {/* Admin Features Section with Illustrative Animations */}
       <section className="py-20 md:py-32 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
@@ -137,25 +173,29 @@ const AdminHome = () => {
                 title: "User Management",
                 description: "Manage user accounts, permissions, and access controls.",
                 link: "/admin/users",
-                badge: "Core"
+                badge: "Core",
+                icon: 0
               },
               {
                 title: "Supplier Verification",
                 description: "Review and approve supplier applications with comprehensive verification.",
                 link: "/admin/supplier-verification",
-                badge: "Active"
+                badge: "Active",
+                icon: 1
               },
               {
                 title: "Analytics Dashboard",
                 description: "Gain insights with real-time data visualization and reporting.",
                 link: "/admin/analytics",
-                badge: "Premium"
+                badge: "Premium",
+                icon: 2
               },
               {
                 title: "Financial Controls",
                 description: "Monitor transactions, payments, and financial operations.",
                 link: "/admin/financials",
-                badge: "Advanced"
+                badge: "Advanced",
+                icon: 3
               },
             ].map((feature, index) => (
               <motion.div 
@@ -165,25 +205,54 @@ const AdminHome = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
+                whileHover={{ y: -5, boxShadow: "0 10px 30px rgba(0,0,0,0.1)" }}
               >
                 <Badge className="mb-4 bg-toreso-blue/10 text-toreso-blue border-none">
                   {feature.badge}
                 </Badge>
+                
+                <motion.div 
+                  className="mb-5 p-3 bg-gray-50 rounded-full inline-block"
+                  whileHover={{ rotate: [0, -5, 5, -5, 0] }}
+                  transition={{ duration: 0.6 }}
+                >
+                  {featureIcons[feature.icon]}
+                </motion.div>
+                
                 <h3 className="text-xl font-semibold mb-4">{feature.title}</h3>
                 <p className="text-gray-600 mb-8">{feature.description}</p>
                 <Link 
                   to={feature.link}
                   className="text-toreso-blue font-medium hover:text-toreso-darkBlue flex items-center group-hover:underline"
                 >
-                  Explore Now <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <motion.div 
+                    className="flex items-center"
+                    whileHover={{ x: 3 }}
+                  >
+                    Explore Now 
+                    <motion.div
+                      animate={{ x: [0, 5, 0] }}
+                      transition={{ duration: 1, repeat: Infinity, repeatDelay: 1 }}
+                    >
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </motion.div>
+                  </motion.div>
                 </Link>
+                
+                {/* Dynamic background pattern */}
+                <svg className="absolute top-0 right-0 w-32 h-32 text-gray-50 opacity-70 pointer-events-none">
+                  <pattern id={`grid-pattern-${index}`} patternUnits="userSpaceOnUse" width="20" height="20" patternTransform="rotate(45)">
+                    <rect width="2" height="2" fill="currentColor" />
+                  </pattern>
+                  <rect width="100%" height="100%" fill={`url(#grid-pattern-${index})`} />
+                </svg>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Platform Overview Section */}
+      {/* Platform Overview Section with Animation */}
       <section className="py-20 md:py-32 bg-white">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-16 items-center">
@@ -220,10 +289,41 @@ const AdminHome = () => {
                   alt="Admin Dashboard" 
                   className="w-full h-full object-cover"
                 />
+                
+                {/* Animated UI Elements */}
+                <motion.div 
+                  className="absolute left-4 top-4 w-24 h-4 bg-white/20 rounded"
+                  animate={{ opacity: [0.5, 1, 0.5] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                />
+                <motion.div 
+                  className="absolute left-4 top-12 w-32 h-4 bg-white/15 rounded"
+                  animate={{ opacity: [0.3, 0.7, 0.3] }}
+                  transition={{ duration: 2, delay: 0.3, repeat: Infinity }}
+                />
+                <motion.div 
+                  className="absolute right-12 top-8 w-16 h-16 bg-white/10 rounded-full"
+                  animate={{ scale: [1, 1.05, 1] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                />
+                <motion.div 
+                  className="absolute left-8 bottom-8 h-20 w-40 bg-white/10 rounded"
+                  animate={{ width: [160, 200, 160] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                />
+                <motion.div 
+                  className="absolute right-8 bottom-12 h-12 w-12 bg-white/20 rounded"
+                  animate={{ rotate: [0, 180, 0] }}
+                  transition={{ duration: 8, repeat: Infinity }}
+                />
               </div>
-              <div className="absolute -bottom-6 -right-6 bg-white p-4 rounded-lg shadow-lg">
+              <motion.div 
+                className="absolute -bottom-6 -right-6 bg-white p-4 rounded-lg shadow-lg"
+                animate={{ y: [0, -5, 0] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              >
                 <Badge className="bg-green-500">Platform Status: Operational</Badge>
-              </div>
+              </motion.div>
             </motion.div>
           </div>
         </div>
@@ -240,9 +340,11 @@ const AdminHome = () => {
               Access your administrative dashboard to begin managing the Toreso platform.
             </p>
             <div className="animate-on-scroll opacity-0 translate-y-10 transition-all duration-1000 delay-200">
-              <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                <Link to="/admin/dashboard">Go to Dashboard <ArrowRight className="ml-2 h-5 w-5" /></Link>
-              </Button>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                  <Link to="/admin/dashboard">Go to Dashboard <ArrowRight className="ml-2 h-5 w-5" /></Link>
+                </Button>
+              </motion.div>
             </div>
           </div>
         </div>
