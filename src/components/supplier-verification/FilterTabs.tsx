@@ -21,12 +21,6 @@ const FilterTabs = ({
   setSearchQuery, 
   children 
 }: FilterTabsProps) => {
-  // Animation variants for tab indicators
-  const tabIndicatorVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: { opacity: 1, scale: 1 }
-  };
-
   // Tab configurations with icons
   const tabs = [
     { id: "all", label: "All Verifications", icon: <Box size={16} className="mr-2" /> },
@@ -69,16 +63,6 @@ const FilterTabs = ({
                 {tab.icon}
                 {tab.label}
               </motion.span>
-              
-              {activeTab === tab.id && (
-                <motion.div 
-                  className="absolute bottom-0 left-0 h-0.5 bg-toreso-blue"
-                  initial={{ width: 0 }}
-                  animate={{ width: "100%" }}
-                  layoutId="activeTabIndicator"
-                  transition={{ duration: 0.3 }}
-                />
-              )}
             </TabsTrigger>
           ))}
         </TabsList>

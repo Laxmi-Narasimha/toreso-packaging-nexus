@@ -3,17 +3,16 @@ import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Play, ChevronDown, Package, Settings, ClipboardCheck, BarChart4 } from "lucide-react";
+import { ArrowRight, Package, Settings, ClipboardCheck, BarChart4 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import WarehouseScene from "@/components/illustrations/WarehouseScene";
+import SimpleWarehouseIllustration from "@/components/illustrations/SimpleWarehouseIllustration";
+import SimplePackagingIllustration from "@/components/illustrations/SimplePackagingIllustration";
+import SimpleRobotArm from "@/components/illustrations/SimpleRobotArm";
 
 const AdminHome = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: containerRef });
-  
-  const headerOpacity = useTransform(scrollYProgress, [0, 0.1], [1, 0]);
-  const headerScale = useTransform(scrollYProgress, [0, 0.1], [1, 0.95]);
   
   useEffect(() => {
     if (videoRef.current) {
@@ -37,12 +36,6 @@ const AdminHome = () => {
 
     return () => elements.forEach((el) => observer.unobserve(el));
   }, []);
-  
-  const fadeInUp = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.8 }
-  };
 
   const featureIcons = [
     <Package className="text-toreso-blue" />, 
@@ -74,85 +67,41 @@ const AdminHome = () => {
         {/* Animated Content */}
         <motion.div 
           className="container mx-auto px-4 z-10 text-white relative"
-          style={{ opacity: headerOpacity, scale: headerScale }}
         >
           <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-8">
-              <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5 }}
-                className="inline-flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-full p-4 mb-8 cursor-pointer hover:bg-white/20 transition-all"
-                whileHover={{ scale: 1.1, backgroundColor: "rgba(255,255,255,0.15)" }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Play className="h-6 w-6 text-white" />
-              </motion.div>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="text-5xl md:text-7xl font-display font-medium tracking-tight mb-6 text-center"
+            >
+              Welcome to the <span className="text-toreso-blue">Admin Portal</span>
+            </motion.h1>
 
-              <motion.h1
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-5xl md:text-7xl font-display font-medium tracking-tight mb-6"
-              >
-                Welcome to the <span className="text-toreso-blue">Admin Portal</span>
-              </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto mb-12 text-center"
+            >
+              Manage users, suppliers, and operations with complete control and oversight.
+            </motion.p>
 
-              <motion.p
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto mb-12"
-              >
-                Manage users, suppliers, and operations with complete control and oversight.
-              </motion.p>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                className="flex flex-wrap justify-center gap-4"
-              >
-                <Button asChild size="lg" className="bg-toreso-blue hover:bg-toreso-darkBlue text-white">
-                  <Link to="/admin/dashboard">Go to Dashboard <ArrowRight className="ml-2 h-5 w-5" /></Link>
-                </Button>
-                <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
-                  <Link to="/admin/supplier-verification">Verify Suppliers</Link>
-                </Button>
-              </motion.div>
-            </div>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              className="flex flex-wrap justify-center gap-4"
+            >
+              <Button asChild size="lg" className="bg-toreso-blue hover:bg-toreso-darkBlue text-white">
+                <Link to="/admin/dashboard">Go to Dashboard <ArrowRight className="ml-2 h-5 w-5" /></Link>
+              </Button>
+              <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
+                <Link to="/admin/supplier-verification">Verify Suppliers</Link>
+              </Button>
+            </motion.div>
           </div>
-
-          {/* Scroll Down Indicator */}
-          <motion.div
-            initial={{ opacity: 0, y: 0 }}
-            animate={{ opacity: 1, y: [0, 10, 0] }}
-            transition={{ duration: 1.5, delay: 1, repeat: Infinity }}
-            className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
-          >
-            <ChevronDown className="h-6 w-6 text-white/80" />
-            <span className="text-xs text-white/80 mt-1">Scroll Down</span>
-          </motion.div>
         </motion.div>
-      </section>
-
-      {/* Illustrated Warehouse Scene */}
-      <section className="py-20 md:py-32 bg-gray-50 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-gray-100 to-gray-50 opacity-80 z-0"></div>
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-4xl md:text-5xl font-display font-medium tracking-tight mb-6 animate-on-scroll opacity-0 translate-y-10 transition-all duration-1000">
-              Warehouse <span className="text-toreso-blue">Visualization</span>
-            </h2>
-            <p className="text-lg text-gray-600 animate-on-scroll opacity-0 translate-y-10 transition-all duration-1000 delay-100">
-              Interactive visual representation of your warehouse operations and logistics
-            </p>
-          </div>
-          
-          <div className="h-[600px] animate-on-scroll opacity-0 translate-y-10 transition-all duration-1000 delay-200">
-            <WarehouseScene />
-          </div>
-        </div>
       </section>
 
       {/* Admin Features Section with Illustrative Animations */}
@@ -165,6 +114,11 @@ const AdminHome = () => {
             <p className="text-lg text-gray-600 animate-on-scroll opacity-0 translate-y-10 transition-all duration-1000 delay-100">
               Everything you need to manage the Toreso platform efficiently and effectively.
             </p>
+
+            {/* Integrated warehouse illustration */}
+            <div className="my-12">
+              <SimpleWarehouseIllustration className="w-full h-auto max-w-2xl mx-auto" variant="light" />
+            </div>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -174,28 +128,32 @@ const AdminHome = () => {
                 description: "Manage user accounts, permissions, and access controls.",
                 link: "/admin/users",
                 badge: "Core",
-                icon: 0
+                icon: 0,
+                illustration: <SimpleRobotArm size="sm" className="mb-4 mx-auto" />
               },
               {
                 title: "Supplier Verification",
                 description: "Review and approve supplier applications with comprehensive verification.",
                 link: "/admin/supplier-verification",
                 badge: "Active",
-                icon: 1
+                icon: 1,
+                illustration: <SimplePackagingIllustration className="h-20 mb-4 mx-auto" />
               },
               {
                 title: "Analytics Dashboard",
                 description: "Gain insights with real-time data visualization and reporting.",
                 link: "/admin/analytics",
                 badge: "Premium",
-                icon: 2
+                icon: 2,
+                illustration: null
               },
               {
                 title: "Financial Controls",
                 description: "Monitor transactions, payments, and financial operations.",
                 link: "/admin/financials",
                 badge: "Advanced",
-                icon: 3
+                icon: 3,
+                illustration: null
               },
             ].map((feature, index) => (
               <motion.div 
@@ -211,13 +169,21 @@ const AdminHome = () => {
                   {feature.badge}
                 </Badge>
                 
-                <motion.div 
-                  className="mb-5 p-3 bg-gray-50 rounded-full inline-block"
-                  whileHover={{ rotate: [0, -5, 5, -5, 0] }}
-                  transition={{ duration: 0.6 }}
-                >
-                  {featureIcons[feature.icon]}
-                </motion.div>
+                {feature.illustration && (
+                  <div className="h-20 w-full mb-4">
+                    {feature.illustration}
+                  </div>
+                )}
+                
+                {!feature.illustration && (
+                  <motion.div 
+                    className="mb-5 p-3 bg-gray-50 rounded-full inline-block"
+                    whileHover={{ rotate: [0, -5, 5, -5, 0] }}
+                    transition={{ duration: 0.6 }}
+                  >
+                    {featureIcons[feature.icon]}
+                  </motion.div>
+                )}
                 
                 <h3 className="text-xl font-semibold mb-4">{feature.title}</h3>
                 <p className="text-gray-600 mb-8">{feature.description}</p>
@@ -282,13 +248,18 @@ const AdminHome = () => {
               transition={{ duration: 0.6 }}
               className="relative"
             >
-              <div className="aspect-video rounded-xl overflow-hidden shadow-2xl">
+              <div className="aspect-video rounded-xl overflow-hidden shadow-2xl relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-toreso-blue to-toreso-teal opacity-80 mix-blend-multiply"></div>
                 <img 
                   src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80" 
                   alt="Admin Dashboard" 
                   className="w-full h-full object-cover"
                 />
+                
+                {/* Integrated robot arm animation */}
+                <div className="absolute top-0 right-0 -mr-10 -mt-10 z-10">
+                  <SimpleRobotArm size="lg" variant="dark" />
+                </div>
                 
                 {/* Animated UI Elements */}
                 <motion.div 
@@ -300,21 +271,6 @@ const AdminHome = () => {
                   className="absolute left-4 top-12 w-32 h-4 bg-white/15 rounded"
                   animate={{ opacity: [0.3, 0.7, 0.3] }}
                   transition={{ duration: 2, delay: 0.3, repeat: Infinity }}
-                />
-                <motion.div 
-                  className="absolute right-12 top-8 w-16 h-16 bg-white/10 rounded-full"
-                  animate={{ scale: [1, 1.05, 1] }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                />
-                <motion.div 
-                  className="absolute left-8 bottom-8 h-20 w-40 bg-white/10 rounded"
-                  animate={{ width: [160, 200, 160] }}
-                  transition={{ duration: 4, repeat: Infinity }}
-                />
-                <motion.div 
-                  className="absolute right-8 bottom-12 h-12 w-12 bg-white/20 rounded"
-                  animate={{ rotate: [0, 180, 0] }}
-                  transition={{ duration: 8, repeat: Infinity }}
                 />
               </div>
               <motion.div 
@@ -329,9 +285,14 @@ const AdminHome = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 md:py-32 bg-toreso-blue text-white">
-        <div className="container mx-auto px-4">
+      {/* CTA Section with Integrated Packaging Illustration */}
+      <section className="py-20 md:py-32 bg-toreso-blue text-white overflow-hidden relative">
+        {/* Background illustrations */}
+        <div className="absolute top-0 left-0 w-full">
+          <SimplePackagingIllustration className="w-full opacity-20" variant="dark" />
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-3xl mx-auto">
             <h2 className="text-4xl md:text-5xl font-display font-medium tracking-tight mb-6 animate-on-scroll opacity-0 translate-y-10 transition-all duration-1000">
               Ready to Get Started?

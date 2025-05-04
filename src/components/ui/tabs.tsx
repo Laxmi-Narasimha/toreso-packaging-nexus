@@ -38,13 +38,14 @@ const TabsTrigger = React.forwardRef<
       className="absolute bottom-0 left-0 h-0.5 bg-toreso-blue"
       initial={{ width: 0 }}
       animate={{ width: props["data-state"] === "active" ? "100%" : 0 }}
-      transition={{ duration: 0.3 }}
+      transition={{ duration: 0.3, ease: "easeInOut" }}
     />
-    <motion.span
-      className="absolute inset-0 bg-white/5 rounded-sm"
+    <motion.div
+      className="absolute inset-0 rounded-sm"
       initial={{ opacity: 0 }}
       whileHover={{ opacity: 1 }}
       transition={{ duration: 0.2 }}
+      style={{ background: "rgba(255, 255, 255, 0.05)" }}
     />
   </TabsPrimitive.Trigger>
 ))
