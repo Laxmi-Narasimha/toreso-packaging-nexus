@@ -3,7 +3,7 @@ import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Package, Settings, ClipboardCheck, BarChart4 } from "lucide-react";
+import { ArrowRight, Package, Settings, ClipboardCheck, BarChart4, Users, Building, ShoppingCart } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import SimpleWarehouseIllustration from "@/components/illustrations/SimpleWarehouseIllustration";
 import SimplePackagingIllustration from "@/components/illustrations/SimplePackagingIllustration";
@@ -37,87 +37,30 @@ const AdminHome = () => {
     return () => elements.forEach((el) => observer.unobserve(el));
   }, []);
 
+  // Icons for admin features
   const featureIcons = [
-    <Package className="text-toreso-blue" />, 
-    <ClipboardCheck className="text-toreso-blue" />, 
-    <BarChart4 className="text-toreso-blue" />, 
-    <Settings className="text-toreso-blue" />
+    <Users className="text-toreso-blue h-5 w-5" />, 
+    <ClipboardCheck className="text-toreso-blue h-5 w-5" />, 
+    <BarChart4 className="text-toreso-blue h-5 w-5" />, 
+    <Settings className="text-toreso-blue h-5 w-5" />
   ];
 
   return (
-    <div ref={containerRef} className="min-h-screen overflow-x-hidden bg-white">
-      {/* Hero Section with Full Screen Video Background */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Video Background */}
-        <div className="absolute inset-0 z-0">
-          <video
-            ref={videoRef}
-            className="h-full w-full object-cover"
-            autoPlay
-            loop
-            muted
-            playsInline
-          >
-            <source src="https://videos.pexels.com/video-files/855859/855859-hd_1920_1080_30fps.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
-        </div>
-
-        {/* Animated Content */}
-        <motion.div 
-          className="container mx-auto px-4 z-10 text-white relative"
-        >
-          <div className="max-w-5xl mx-auto">
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-5xl md:text-7xl font-display font-medium tracking-tight mb-6 text-center"
-            >
-              Welcome to the <span className="text-toreso-blue">Admin Portal</span>
-            </motion.h1>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto mb-12 text-center"
-            >
-              Manage users, suppliers, and operations with complete control and oversight.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="flex flex-wrap justify-center gap-4"
-            >
-              <Button asChild size="lg" className="bg-toreso-blue hover:bg-toreso-darkBlue text-white">
-                <Link to="/admin/dashboard">Go to Dashboard <ArrowRight className="ml-2 h-5 w-5" /></Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="border-white text-white hover:bg-white/10">
-                <Link to="/admin/supplier-verification">Verify Suppliers</Link>
-              </Button>
-            </motion.div>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Admin Features Section with Illustrative Animations */}
-      <section className="py-20 md:py-32 bg-gray-50">
+    <div ref={containerRef} className="min-h-screen overflow-x-hidden">
+      {/* Admin Features Section with Improved Illustrations */}
+      <section className="py-20 md:py-32">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-4xl md:text-5xl font-display font-medium tracking-tight mb-6 animate-on-scroll opacity-0 translate-y-10 transition-all duration-1000">
+            <h2 className="text-4xl md:text-5xl font-display font-medium tracking-tight mb-6 animate-on-scroll opacity-0 translate-y-10 transition-all duration-1000 text-white">
               Powerful <span className="text-toreso-blue">Admin Tools</span>
             </h2>
-            <p className="text-lg text-gray-600 animate-on-scroll opacity-0 translate-y-10 transition-all duration-1000 delay-100">
+            <p className="text-lg text-white/70 animate-on-scroll opacity-0 translate-y-10 transition-all duration-1000 delay-100">
               Everything you need to manage the Toreso platform efficiently and effectively.
             </p>
 
-            {/* Integrated warehouse illustration */}
+            {/* Enhanced packaging illustration */}
             <div className="my-12">
-              <SimpleWarehouseIllustration className="w-full h-auto max-w-2xl mx-auto" variant="light" />
+              <SimplePackagingIllustration className="w-full h-auto max-w-2xl mx-auto" variant="dark" />
             </div>
           </div>
 
@@ -125,10 +68,10 @@ const AdminHome = () => {
             {[
               {
                 title: "User Management",
-                description: "Manage user accounts, permissions, and access controls.",
+                description: "Manage user accounts, permissions, and access controls across the platform.",
                 link: "/admin/users",
                 badge: "Core",
-                icon: 0,
+                icon: <Users className="text-toreso-blue h-6 w-6" />,
                 illustration: <SimpleRobotArm size="sm" className="mb-4 mx-auto" />
               },
               {
@@ -136,36 +79,103 @@ const AdminHome = () => {
                 description: "Review and approve supplier applications with comprehensive verification.",
                 link: "/admin/supplier-verification",
                 badge: "Active",
-                icon: 1,
-                illustration: <SimplePackagingIllustration className="h-20 mb-4 mx-auto" />
+                icon: <ClipboardCheck className="text-toreso-blue h-6 w-6" />,
+                illustration: <SimplePackagingIllustration className="h-20 mb-4 mx-auto" variant="dark" />
               },
               {
                 title: "Analytics Dashboard",
                 description: "Gain insights with real-time data visualization and reporting.",
                 link: "/admin/analytics",
                 badge: "Premium",
-                icon: 2,
-                illustration: null
+                icon: <BarChart4 className="text-toreso-blue h-6 w-6" />,
+                illustration: (
+                  <svg className="h-20 w-auto mb-4 mx-auto" viewBox="0 0 120 80">
+                    <rect x="10" y="30" width="15" height="40" rx="2" fill="#2C5EF6" opacity="0.7" />
+                    <rect x="30" y="20" width="15" height="50" rx="2" fill="#9b87f5" opacity="0.8" />
+                    <rect x="50" y="35" width="15" height="35" rx="2" fill="#00C9B6" opacity="0.7" />
+                    <rect x="70" y="10" width="15" height="60" rx="2" fill="#F97316" opacity="0.7" />
+                    <rect x="90" y="25" width="15" height="45" rx="2" fill="#2C5EF6" opacity="0.7" />
+                    <motion.path
+                      d="M10,30 L25,10 L45,25 L65,15 L85,30 L105,20"
+                      stroke="#fff"
+                      strokeWidth="2"
+                      fill="none"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      initial={{ pathLength: 0 }}
+                      animate={{ pathLength: 1 }}
+                      transition={{ duration: 2, delay: 0.5 }}
+                    />
+                    <motion.circle
+                      cx="10" cy="30" r="3"
+                      fill="#fff"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 0.5, delay: 0.5 }}
+                    />
+                    <motion.circle
+                      cx="45" cy="25" r="3"
+                      fill="#fff"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 0.5, delay: 1 }}
+                    />
+                    <motion.circle
+                      cx="85" cy="30" r="3"
+                      fill="#fff"
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 0.5, delay: 1.5 }}
+                    />
+                  </svg>
+                )
               },
               {
                 title: "Financial Controls",
                 description: "Monitor transactions, payments, and financial operations.",
                 link: "/admin/financials",
                 badge: "Advanced",
-                icon: 3,
-                illustration: null
+                icon: <Settings className="text-toreso-blue h-6 w-6" />,
+                illustration: (
+                  <svg className="h-20 w-auto mb-4 mx-auto" viewBox="0 0 120 80">
+                    <defs>
+                      <linearGradient id="financial-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#2C5EF6" stopOpacity="0.2" />
+                        <stop offset="100%" stopColor="#9b87f5" stopOpacity="0.6" />
+                      </linearGradient>
+                    </defs>
+                    <rect x="20" y="20" width="80" height="50" rx="4" fill="url(#financial-gradient)" stroke="#fff" strokeWidth="0.5" />
+                    <rect x="25" y="30" width="70" height="10" rx="2" fill="rgba(255,255,255,0.1)" />
+                    <motion.rect
+                      x="25" y="30" width="0" height="10" rx="2"
+                      fill="#2C5EF6"
+                      animate={{ width: 50 }}
+                      transition={{ duration: 2, delay: 1 }}
+                    />
+                    <circle cx="60" cy="55" r="10" fill="rgba(255,255,255,0.1)" stroke="#fff" strokeWidth="0.5" />
+                    <motion.path
+                      d="M60,50 L60,55 L65,55"
+                      stroke="#F97316"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      initial={{ pathLength: 0 }}
+                      animate={{ pathLength: 1 }}
+                      transition={{ duration: 1, delay: 1.5 }}
+                    />
+                  </svg>
+                )
               },
             ].map((feature, index) => (
               <motion.div 
                 key={index} 
-                className="bg-white p-8 rounded-xl shadow-sm border border-gray-100 overflow-hidden group relative"
+                className="bg-black/30 backdrop-blur-sm p-8 rounded-xl border border-white/10 overflow-hidden group relative glass-card"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                whileHover={{ y: -5, boxShadow: "0 10px 30px rgba(0,0,0,0.1)" }}
+                whileHover={{ y: -5, boxShadow: "0 10px 30px rgba(0,0,0,0.2)" }}
               >
-                <Badge className="mb-4 bg-toreso-blue/10 text-toreso-blue border-none">
+                <Badge className="mb-4 bg-toreso-blue/20 text-toreso-blue border-none">
                   {feature.badge}
                 </Badge>
                 
@@ -177,19 +187,19 @@ const AdminHome = () => {
                 
                 {!feature.illustration && (
                   <motion.div 
-                    className="mb-5 p-3 bg-gray-50 rounded-full inline-block"
+                    className="mb-5 p-3 bg-white/5 rounded-full inline-block"
                     whileHover={{ rotate: [0, -5, 5, -5, 0] }}
                     transition={{ duration: 0.6 }}
                   >
-                    {featureIcons[feature.icon]}
+                    {feature.icon}
                   </motion.div>
                 )}
                 
-                <h3 className="text-xl font-semibold mb-4">{feature.title}</h3>
-                <p className="text-gray-600 mb-8">{feature.description}</p>
+                <h3 className="text-xl font-semibold mb-4 text-white">{feature.title}</h3>
+                <p className="text-white/70 mb-8">{feature.description}</p>
                 <Link 
                   to={feature.link}
-                  className="text-toreso-blue font-medium hover:text-toreso-darkBlue flex items-center group-hover:underline"
+                  className="text-toreso-blue font-medium hover:text-toreso-blue/80 flex items-center group-hover:underline"
                 >
                   <motion.div 
                     className="flex items-center"
@@ -206,7 +216,7 @@ const AdminHome = () => {
                 </Link>
                 
                 {/* Dynamic background pattern */}
-                <svg className="absolute top-0 right-0 w-32 h-32 text-gray-50 opacity-70 pointer-events-none">
+                <svg className="absolute top-0 right-0 w-32 h-32 text-white/5 opacity-70 pointer-events-none">
                   <pattern id={`grid-pattern-${index}`} patternUnits="userSpaceOnUse" width="20" height="20" patternTransform="rotate(45)">
                     <rect width="2" height="2" fill="currentColor" />
                   </pattern>
@@ -218,8 +228,8 @@ const AdminHome = () => {
         </div>
       </section>
 
-      {/* Platform Overview Section with Animation */}
-      <section className="py-20 md:py-32 bg-white">
+      {/* Platform Overview Section with Enhanced Animation */}
+      <section className="py-20 md:py-32">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <motion.div
@@ -228,13 +238,13 @@ const AdminHome = () => {
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
             >
-              <h2 className="text-4xl md:text-5xl font-display font-medium tracking-tight mb-8">
+              <h2 className="text-4xl md:text-5xl font-display font-medium tracking-tight mb-8 text-white">
                 Complete <span className="text-toreso-blue">Administrative Control</span>
               </h2>
-              <p className="text-lg text-gray-600 mb-6">
+              <p className="text-lg text-white/70 mb-6">
                 As an administrator, you have the tools to oversee all aspects of the Toreso platform. From user management to financial operations, everything is at your fingertips.
               </p>
-              <p className="text-lg text-gray-600 mb-8">
+              <p className="text-lg text-white/70 mb-8">
                 Our intuitive admin interface provides powerful controls while maintaining ease of use, allowing you to focus on what matters most—growing the platform and ensuring quality service.
               </p>
               <Button asChild size="lg" className="bg-toreso-blue hover:bg-toreso-darkBlue text-white">
@@ -256,8 +266,8 @@ const AdminHome = () => {
                   className="w-full h-full object-cover"
                 />
                 
-                {/* Integrated robot arm animation */}
-                <div className="absolute top-0 right-0 -mr-10 -mt-10 z-10">
+                {/* Enhanced robot arm animation */}
+                <div className="absolute top-0 right-0 -mr-5 -mt-5 z-10 transform scale-125">
                   <SimpleRobotArm size="lg" variant="dark" />
                 </div>
                 
@@ -272,24 +282,55 @@ const AdminHome = () => {
                   animate={{ opacity: [0.3, 0.7, 0.3] }}
                   transition={{ duration: 2, delay: 0.3, repeat: Infinity }}
                 />
+                
+                {/* Animated data points */}
+                <motion.div
+                  className="absolute bottom-8 left-8 flex space-x-3"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5, duration: 0.6 }}
+                >
+                  <motion.div 
+                    className="h-12 w-3 bg-white rounded-sm"
+                    animate={{ height: [12, 24, 8, 12] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                  />
+                  <motion.div 
+                    className="h-16 w-3 bg-white rounded-sm"
+                    animate={{ height: [16, 8, 20, 16] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 0.2 }}
+                  />
+                  <motion.div 
+                    className="h-10 w-3 bg-white rounded-sm"
+                    animate={{ height: [10, 16, 6, 10] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 0.4 }}
+                  />
+                  <motion.div 
+                    className="h-14 w-3 bg-white rounded-sm"
+                    animate={{ height: [14, 6, 18, 14] }}
+                    transition={{ duration: 2, repeat: Infinity, delay: 0.6 }}
+                  />
+                </motion.div>
               </div>
+              
+              {/* Status indicator */}
               <motion.div 
-                className="absolute -bottom-6 -right-6 bg-white p-4 rounded-lg shadow-lg"
+                className="absolute -bottom-6 -right-6 bg-black/40 backdrop-blur-md p-4 rounded-lg shadow-lg border border-white/10"
                 animate={{ y: [0, -5, 0] }}
                 transition={{ duration: 2, repeat: Infinity }}
               >
-                <Badge className="bg-green-500">Platform Status: Operational</Badge>
+                <Badge className="bg-green-500 text-white">Platform Status: Operational</Badge>
               </motion.div>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* CTA Section with Integrated Packaging Illustration */}
-      <section className="py-20 md:py-32 bg-toreso-blue text-white overflow-hidden relative">
-        {/* Background illustrations */}
+      {/* CTA Section with Enhanced Packaging Illustration */}
+      <section className="py-20 md:py-32 bg-toreso-blue/30 backdrop-blur text-white overflow-hidden relative">
+        {/* Enhanced background illustrations */}
         <div className="absolute top-0 left-0 w-full">
-          <SimplePackagingIllustration className="w-full opacity-20" variant="dark" />
+          <SimplePackagingIllustration className="w-full opacity-30" variant="dark" />
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
@@ -302,7 +343,7 @@ const AdminHome = () => {
             </p>
             <div className="animate-on-scroll opacity-0 translate-y-10 transition-all duration-1000 delay-200">
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button asChild size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+                <Button asChild size="lg" className="bg-white text-toreso-blue hover:bg-white/90 border-0">
                   <Link to="/admin/dashboard">Go to Dashboard <ArrowRight className="ml-2 h-5 w-5" /></Link>
                 </Button>
               </motion.div>
@@ -315,3 +356,4 @@ const AdminHome = () => {
 };
 
 export default AdminHome;
+

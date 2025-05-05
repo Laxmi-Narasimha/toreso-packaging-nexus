@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Outlet, Link, useLocation, useNavigate } from "react-router-dom";
 import {
@@ -52,8 +53,9 @@ const AdminLayout = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  // Video background URL - Update this to your local video path
-  const videoUrl = "/videos/packaging-video.mp4"; // This assumes you'll place the video in public/videos/
+  // Video background URL
+  // Updated to a direct path that should be accessible in the public folder
+  const videoUrl = "https://videos.pexels.com/video-files/855859/855859-hd_1920_1080_30fps.mp4";
 
   const menuItems = [
     {
@@ -115,7 +117,7 @@ const AdminLayout = () => {
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden">
-      {/* Video Background */}
+      {/* Video Background - improved loading and visibility */}
       <div className="absolute inset-0 z-[-2]">
         <video
           className="h-full w-full object-cover"
@@ -422,36 +424,43 @@ const AdminLayout = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6 }}
-            className="container mx-auto px-4 sm:px-6 lg:px-8 py-32 md:py-40 text-center"
+            className="relative min-h-[90vh] flex items-center justify-center"
           >
-            <motion.h1 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-4xl md:text-6xl lg:text-7xl font-display font-medium text-white tracking-tight leading-tight mb-6"
-            >
-              We are <span className="text-toreso-blue">Toreso</span>
-            </motion.h1>
-            <motion.p 
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto leading-relaxed mb-12"
-            >
-              Revolutionizing the packaging industry through innovation, quality, and sustainability.
-            </motion.p>
             <motion.div 
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="flex flex-wrap justify-center gap-4"
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10"
             >
-              <Button size="lg" className="bg-toreso-blue hover:bg-toreso-blue/90 text-white border-0">
-                Platform Overview
-              </Button>
-              <Button size="lg" variant="outline" className="border border-white text-white hover:bg-white/10">
-                System Status
-              </Button>
+              <motion.h1 
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.2 }}
+                className="text-4xl md:text-6xl lg:text-7xl font-display font-medium text-white tracking-tight leading-tight mb-6"
+              >
+                We are <span className="text-toreso-blue">Toreso</span>
+              </motion.h1>
+              <motion.p 
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+                className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto leading-relaxed mb-12"
+              >
+                Revolutionizing the packaging industry through innovation, quality, and sustainability.
+              </motion.p>
+              <motion.div 
+                initial={{ y: 20, opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
+                className="flex flex-wrap justify-center gap-4"
+              >
+                <Button size="lg" className="bg-toreso-blue hover:bg-toreso-blue/90 text-white border-0">
+                  Platform Overview
+                </Button>
+                <Button size="lg" variant="outline" className="border-white/40 text-white hover:bg-white/10 bg-black/30">
+                  System Status
+                </Button>
+              </motion.div>
             </motion.div>
           </motion.div>
         )}
@@ -462,3 +471,4 @@ const AdminLayout = () => {
 };
 
 export default AdminLayout;
+
