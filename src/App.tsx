@@ -101,11 +101,14 @@ function App() {
         <Route path="/admin" element={<AdminLayout />}>
           <Route index element={<AdminHome />} />
           <Route path="dashboard" element={<AdminDashboard />} />
-          <Route path="user-management" element={<UserManagement />} />
+          {/* Update path for user management */}
+          <Route path="users" element={<UserManagement />} />
           <Route path="add-user" element={<AddUser />} />
-          <Route path="company-management" element={<CompanyManagement />} />
+          {/* Update path for company management */}
+          <Route path="companies" element={<CompanyManagement />} />
           <Route path="add-company" element={<AddCompany />} />
-          <Route path="order-management" element={<OrderManagement />} />
+          {/* Update path for order management */}
+          <Route path="orders" element={<OrderManagement />} />
           <Route path="products" element={<ProductCatalog />} />
           <Route path="supplier-verification" element={<SupplierVerification />} />
           <Route path="audit-management" element={<AuditManagement />} />
