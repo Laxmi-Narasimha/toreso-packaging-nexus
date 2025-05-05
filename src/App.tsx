@@ -46,6 +46,8 @@ import Orders from "@/pages/supplier/Orders";
 import Rfq from "@/pages/supplier/Rfq";
 import SupplierAnalytics from "@/pages/supplier/SupplierAnalytics";
 import Compliance from "@/pages/supplier/Compliance";
+import SupplierProfile from "@/pages/supplier/SupplierProfile";
+import SupplierFinancials from "@/pages/supplier/SupplierFinancials";
 
 // Document title utility
 const useDocumentTitle = (title: string) => {
@@ -128,11 +130,13 @@ function App() {
         <Route path="/supplier" element={<SupplierLayout />}>
           <Route index element={<SupplierHome />} />
           <Route path="dashboard" element={<SupplierDashboard />} />
+          <Route path="profile" element={<SupplierProfile />} />
           <Route path="products" element={<SupplierProductCatalog />} />
           <Route path="orders" element={<Orders />} />
           <Route path="rfq" element={<Rfq />} />
           <Route path="analytics" element={<SupplierAnalytics />} />
           <Route path="compliance" element={<Compliance />} />
+          <Route path="financials" element={<SupplierFinancials />} />
         </Route>
         
         <Route path="*" element={<NotFound />} />
