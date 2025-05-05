@@ -35,7 +35,8 @@ import {
   CheckCircle,
   ArrowUpDown,
   Eye,
-  UserCheck
+  UserCheck,
+  Star // Add the missing Star import
 } from "lucide-react";
 import {
   Dialog,
