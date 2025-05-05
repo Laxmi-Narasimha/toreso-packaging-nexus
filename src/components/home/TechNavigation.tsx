@@ -5,7 +5,15 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 
-const TechNavigation: React.FC = () => {
+interface TechNavigationProps {
+  onLoginClick?: () => void;
+  loginButton?: React.ReactNode;
+}
+
+const TechNavigation: React.FC<TechNavigationProps> = ({ 
+  onLoginClick, 
+  loginButton 
+}) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -65,22 +73,29 @@ const TechNavigation: React.FC = () => {
                 </motion.div>
               ))}
             </div>
-            <Button
-              asChild
-              variant="techOutline"
-              size="sm"
-              className="rounded-full"
-            >
-              <Link to="/login">Sign In</Link>
-            </Button>
-            <Button
-              asChild
-              variant="techPrimary"
-              size="sm"
-              className="rounded-full"
-            >
-              <Link to="/register">Get Started</Link>
-            </Button>
+            {loginButton ? (
+              loginButton
+            ) : (
+              <>
+                <Button
+                  asChild
+                  variant="techOutline"
+                  size="sm"
+                  className="rounded-full"
+                  onClick={onLoginClick}
+                >
+                  <Link to="/login">Sign In</Link>
+                </Button>
+                <Button
+                  asChild
+                  variant="techPrimary"
+                  size="sm"
+                  className="rounded-full"
+                >
+                  <Link to="/register">Get Started</Link>
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -127,6 +142,7 @@ const TechNavigation: React.FC = () => {
                     variant="techOutline"
                     size="sm"
                     className="flex-1"
+                    onClick={onLoginClick}
                   >
                     <Link to="/login" onClick={() => setIsMobileMenuOpen(false)}>
                       Sign In
