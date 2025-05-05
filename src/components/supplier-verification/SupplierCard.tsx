@@ -7,14 +7,16 @@ import {
   CheckCircle,
   XCircle,
 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 type SupplierCardProps = {
   title: string;
   count: number;
   status: "pending" | "in_review" | "approved" | "rejected";
+  onViewAll?: () => void;
 };
 
-export const SupplierCard = ({ title, count, status }: SupplierCardProps) => {
+export const SupplierCard = ({ title, count, status, onViewAll }: SupplierCardProps) => {
   const getIcon = () => {
     switch (status) {
       case "pending":
@@ -48,7 +50,16 @@ export const SupplierCard = ({ title, count, status }: SupplierCardProps) => {
           {getIcon()}
         </div>
         <h3 className="text-2xl font-bold mb-1">{count}</h3>
-        <p className="text-white/70 text-center">{title}</p>
+        <p className="text-white/70 text-center mb-4">{title}</p>
+        {onViewAll && (
+          <Button 
+            variant="outline" 
+            className="w-full mt-2 text-white border-white/20 hover:bg-white/10"
+            onClick={onViewAll}
+          >
+            View All
+          </Button>
+        )}
       </CardContent>
     </Card>
   );

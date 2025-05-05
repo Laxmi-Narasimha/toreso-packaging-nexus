@@ -1,190 +1,272 @@
 
 import React from "react";
-import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { 
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardFooter, 
+  CardHeader, 
+  CardTitle 
+} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { StatusBadge, getStatusColor, getStatusDisplayName, getStatusIcon } from "./StatusBadge";
-import { cn } from "@/lib/utils";
-import { Building, MapPin, Globe, Calendar, FileText, Mail, Phone, User, ClipboardCheck, CheckCircle, XCircle, Clock, Download } from "lucide-react";
-import { Supplier } from "@/types/supplier";
+import {
+  Building,
+  MapPin,
+  Phone,
+  Mail,
+  Globe,
+  Calendar,
+  AlertCircle,
+  FileCheck,
+  Users,
+  Briefcase,
+  Package,
+  Shield,
+  Clock,
+  CheckCircle,
+  XCircle,
+  User,
+  DownloadCloud
+} from "lucide-react";
+import { StatusBadge } from "./StatusBadge";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
-interface SupplierDetailsProps {
-  supplier: Supplier | null;
-}
-
-export const SupplierDetails = ({ supplier }: SupplierDetailsProps) => {
+export const SupplierDetails = ({ supplier }: any) => {
   if (!supplier) {
     return (
-      <Card className="bg-black/30 backdrop-blur border-white/10 text-white h-full flex items-center justify-center">
-        <CardContent className="p-12 text-center">
-          <Building size={48} className="mx-auto mb-4 text-white/30" />
-          <h3 className="text-lg font-medium mb-2">No Supplier Selected</h3>
-          <p className="text-white/60">Select a supplier from the list to view details</p>
+      <Card className="bg-black/30 backdrop-blur border-white/10 text-white h-full">
+        <CardContent className="flex flex-col items-center justify-center h-full py-20">
+          <Building className="text-white/30 w-20 h-20 mb-4" />
+          <h3 className="text-xl font-medium text-white/80 mb-2">No Supplier Selected</h3>
+          <p className="text-white/50 text-center max-w-xs">
+            Select a supplier from the list to view their verification details
+          </p>
         </CardContent>
       </Card>
     );
   }
 
+  // Determine verification status indicator
+  const getStatusIcon = () => {
+    switch (supplier.status) {
+      case "approved":
+        return <CheckCircle size={20} className="text-green-500" />;
+      case "pending":
+        return <Clock size={20} className="text-blue-500" />;
+      case "in_review":
+        return <AlertCircle size={20} className="text-purple-500" />;
+      case "rejected":
+        return <XCircle size={20} className="text-red-500" />;
+      default:
+        return null;
+    }
+  };
+
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-    >
-      <Card className="bg-black/30 backdrop-blur border-white/10 text-white">
-        <CardHeader>
-          <div className="flex justify-between items-start">
-            <div className="flex items-center space-x-3">
-              <Avatar className="h-12 w-12">
-                <AvatarImage src={supplier.logo} alt={supplier.companyName} />
-                <AvatarFallback>{supplier.companyName.substring(0, 2)}</AvatarFallback>
-              </Avatar>
-              <div>
-                <CardTitle>{supplier.companyName}</CardTitle>
-                <CardDescription className="text-white/60">{supplier.category}</CardDescription>
-              </div>
-            </div>
-            <StatusBadge status={supplier.status} />
-          </div>
-        </CardHeader>
-        <CardContent className="space-y-6">
+    <Card className="bg-black/30 backdrop-blur border-white/10 text-white">
+      <CardHeader>
+        <div className="flex items-start justify-between">
           <div>
-            <h4 className="text-sm font-medium text-white/70 mb-3">Company Information</h4>
-            <div className="space-y-3">
-              <div className="flex items-center">
-                <MapPin size={16} className="mr-2 text-white/60" />
-                <span>{supplier.location}</span>
-              </div>
-              <div className="flex items-center">
-                <Globe size={16} className="mr-2 text-white/60" />
-                <a href={`https://${supplier.contact.website}`} className="text-toreso-blue hover:underline">
-                  {supplier.contact.website}
-                </a>
-              </div>
-              <div className="flex items-center">
-                <Calendar size={16} className="mr-2 text-white/60" />
-                <span>Submitted: {supplier.submissionDate}</span>
-              </div>
-              <div className="flex items-center">
-                <FileText size={16} className="mr-2 text-white/60" />
-                <span>{supplier.documentCount} Documents</span>
-              </div>
+            <CardTitle>{supplier.companyName}</CardTitle>
+            <CardDescription className="text-white/50">
+              Supplier ID: {supplier.id}
+            </CardDescription>
+          </div>
+          <StatusBadge status={supplier.status} />
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="flex flex-col space-y-4">
+          <div className="flex items-start space-x-3">
+            <Building className="h-5 w-5 text-white/70 mt-0.5" />
+            <div>
+              <p className="text-sm text-white/50">Company Type</p>
+              <p className="font-medium">{supplier.companyType}</p>
             </div>
           </div>
-          
-          <div>
-            <h4 className="text-sm font-medium text-white/70 mb-3">Contact Person</h4>
-            <div className="space-y-3">
-              <div className="flex items-center">
-                <User size={16} className="mr-2 text-white/60" />
-                <span>{supplier.contact.name}</span>
-              </div>
-              <div className="flex items-center">
-                <Mail size={16} className="mr-2 text-white/60" />
-                <a href={`mailto:${supplier.contact.email}`} className="text-toreso-blue hover:underline">
-                  {supplier.contact.email}
-                </a>
-              </div>
-              <div className="flex items-center">
-                <Phone size={16} className="mr-2 text-white/60" />
-                <span>{supplier.contact.phone}</span>
-              </div>
+
+          <div className="flex items-start space-x-3">
+            <MapPin className="h-5 w-5 text-white/70 mt-0.5" />
+            <div>
+              <p className="text-sm text-white/50">Location</p>
+              <p className="font-medium">{supplier.location}</p>
             </div>
           </div>
-          
-          <div>
-            <h4 className="text-sm font-medium text-white/70 mb-3">Verification Progress</h4>
-            <div className="mb-4">
-              <div className="flex justify-between items-center mb-1">
-                <span>Overall Progress</span>
-                <span>{supplier.completionPercent}%</span>
-              </div>
-              <Progress 
-                value={supplier.completionPercent} 
-                className={cn(
-                  "h-2 bg-white/20",
-                  supplier.completionPercent > 90 ? "[&>div]:bg-green-500" :
-                  supplier.completionPercent > 70 ? "[&>div]:bg-blue-500" : 
-                  supplier.completionPercent > 40 ? "[&>div]:bg-yellow-500" : 
-                  "[&>div]:bg-red-500"
-                )}
-              />
+
+          <div className="flex items-start space-x-3">
+            <Mail className="h-5 w-5 text-white/70 mt-0.5" />
+            <div>
+              <p className="text-sm text-white/50">Email</p>
+              <p className="font-medium">{supplier.email}</p>
             </div>
-            
-            <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="verification-steps" className="border-white/10">
-                <AccordionTrigger className="text-sm">
-                  <span className="flex items-center">
-                    <ClipboardCheck size={16} className="mr-2" /> Verification Steps
-                  </span>
-                </AccordionTrigger>
-                <AccordionContent className="text-sm">
-                  <div className="space-y-3 pt-2">
-                    {supplier.verificationSteps.map((step, index) => (
-                      <div key={index} className="flex justify-between items-center">
-                        <div className="flex items-center">
-                          <span className={cn(
-                            "p-1 rounded-full mr-2",
-                            step.status === "completed" ? "bg-green-500/20" :
-                            step.status === "in_progress" ? "bg-blue-500/20" : 
-                            step.status === "rejected" ? "bg-red-500/20" :
-                            "bg-gray-500/20"
-                          )}>
-                            {getStatusIcon(step.status)}
-                          </span>
-                          <span>{step.name}</span>
+          </div>
+
+          <div className="flex items-start space-x-3">
+            <Phone className="h-5 w-5 text-white/70 mt-0.5" />
+            <div>
+              <p className="text-sm text-white/50">Phone</p>
+              <p className="font-medium">{supplier.phone}</p>
+            </div>
+          </div>
+
+          <div className="flex items-start space-x-3">
+            <Calendar className="h-5 w-5 text-white/70 mt-0.5" />
+            <div>
+              <p className="text-sm text-white/50">Application Date</p>
+              <p className="font-medium">{supplier.applicationDate}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-4 border-t border-white/10">
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="verification" className="border-white/10">
+              <AccordionTrigger className="text-white hover:text-white/80 hover:no-underline py-2">
+                <div className="flex items-center">
+                  <FileCheck className="mr-2 h-5 w-5" />
+                  <span>Verification Details</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="text-white/70 pt-2">
+                <div className="space-y-3">
+                  {supplier.verificationDetails.map((detail: any, index: number) => (
+                    <div key={index} className="flex items-start">
+                      {detail.status === "completed" ? (
+                        <CheckCircle size={16} className="text-green-500 mt-1 mr-2" />
+                      ) : detail.status === "in_progress" ? (
+                        <Clock size={16} className="text-blue-500 mt-1 mr-2" />
+                      ) : (
+                        <AlertCircle size={16} className="text-gray-400 mt-1 mr-2" />
+                      )}
+                      <div>
+                        <p className="font-medium text-white">{detail.name}</p>
+                        <p className="text-sm">{detail.description}</p>
+                        <div className="flex items-center mt-1">
+                          <StatusBadge status={detail.status} />
+                          {detail.status === "completed" && (
+                            <Button variant="ghost" size="sm" className="text-xs h-6 ml-2 text-white/70 hover:text-white">
+                              <DownloadCloud size={12} className="mr-1" />
+                              Document
+                            </Button>
+                          )}
                         </div>
-                        <Badge className={getStatusColor(step.status)}>
-                          {getStatusDisplayName(step.status)}
-                        </Badge>
                       </div>
-                    ))}
-                  </div>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </div>
-        </CardContent>
-        <CardFooter className="flex justify-between border-t border-white/10 pt-4">
-          {supplier.status === "pending" || supplier.status === "in_review" ? (
-            <>
-              <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
-                <FileText size={16} className="mr-2" /> View Documents
-              </Button>
-              <div className="space-x-2">
-                <Button variant="destructive" size="sm" className="bg-red-500 hover:bg-red-600">
-                  <XCircle size={16} className="mr-1" /> Reject
-                </Button>
-                <Button variant="default" size="sm" className="bg-green-500 hover:bg-green-600">
-                  <CheckCircle size={16} className="mr-1" /> Approve
-                </Button>
+                    </div>
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="product-categories" className="border-white/10">
+              <AccordionTrigger className="text-white hover:text-white/80 hover:no-underline py-2">
+                <div className="flex items-center">
+                  <Package className="mr-2 h-5 w-5" />
+                  <span>Product Categories</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="text-white/70 pt-2">
+                <div className="flex flex-wrap gap-2">
+                  {supplier.productCategories?.map((category: string, index: number) => (
+                    <div key={index} className="bg-white/10 px-2 py-1 rounded-full text-sm">
+                      {category}
+                    </div>
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="users" className="border-white/10">
+              <AccordionTrigger className="text-white hover:text-white/80 hover:no-underline py-2">
+                <div className="flex items-center">
+                  <Users className="mr-2 h-5 w-5" />
+                  <span>Associated Users</span>
+                </div>
+              </AccordionTrigger>
+              <AccordionContent className="text-white/70 pt-2">
+                <div className="space-y-3">
+                  {supplier.users?.map((user: any, index: number) => (
+                    <div key={index} className="flex items-center space-x-3">
+                      <div className="bg-white/10 h-8 w-8 rounded-full flex items-center justify-center">
+                        <User size={16} className="text-white" />
+                      </div>
+                      <div>
+                        <p className="font-medium text-white">{user.name}</p>
+                        <p className="text-sm">{user.role}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+      </CardContent>
+      <CardFooter className="flex flex-col space-y-3 pt-0">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="w-full bg-toreso-blue hover:bg-toreso-blue/90">
+              <FileCheck size={16} className="mr-2" />
+              Complete Verification
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="bg-zinc-900 text-white border-white/10">
+            <DialogHeader>
+              <DialogTitle>Complete Supplier Verification</DialogTitle>
+              <DialogDescription className="text-white/70">
+                Approve or reject this supplier's verification application.
+              </DialogDescription>
+            </DialogHeader>
+            <div className="space-y-4 py-4">
+              <div className="flex items-center space-x-3">
+                <Building size={24} className="text-white/70" />
+                <div>
+                  <p className="font-medium text-lg">{supplier.companyName}</p>
+                  <p className="text-sm text-white/70">{supplier.location}</p>
+                </div>
               </div>
-            </>
-          ) : supplier.status === "approved" ? (
-            <>
-              <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
-                <FileText size={16} className="mr-2" /> View Documents
+              <div className="bg-white/5 p-4 rounded-md">
+                <p className="text-sm">
+                  Please confirm that you have reviewed all verification documents and 
+                  are ready to make a decision on this supplier's application.
+                </p>
+              </div>
+            </div>
+            <DialogFooter className="flex flex-col sm:flex-row gap-3">
+              <Button 
+                variant="outline" 
+                className="sm:flex-1 border-red-500/20 text-red-500 hover:text-red-400 hover:bg-red-950/20"
+              >
+                <XCircle size={16} className="mr-2" />
+                Reject Application
               </Button>
-              <Button variant="default" className="bg-toreso-teal hover:bg-toreso-teal/90">
-                <Download size={16} className="mr-2" /> Download Certificate
+              <Button 
+                className="sm:flex-1 bg-green-600 hover:bg-green-700 text-white"
+              >
+                <CheckCircle size={16} className="mr-2" />
+                Approve Supplier
               </Button>
-            </>
-          ) : (
-            <>
-              <Button variant="outline" className="border-white/20 text-white hover:bg-white/10">
-                <FileText size={16} className="mr-2" /> View Documents
-              </Button>
-              <Button variant="default" className="bg-blue-500 hover:bg-blue-600">
-                <Clock size={16} className="mr-2" /> Reopen Case
-              </Button>
-            </>
-          )}
-        </CardFooter>
-      </Card>
-    </motion.div>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+        <Button variant="outline" className="w-full border-white/20 text-white hover:bg-white/10">
+          <Briefcase size={16} className="mr-2" />
+          View Product Catalog
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };

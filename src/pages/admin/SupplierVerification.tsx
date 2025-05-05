@@ -28,6 +28,12 @@ const SupplierVerification = () => {
 
   const selectedSupplierData = supplierVerifications.find(s => s.id === selectedSupplier) || null;
 
+  // Function to handle filter change from StatCards
+  const handleFilterByStatus = (status: string) => {
+    setActiveTab(status);
+    setSelectedSupplier(null); // Clear selected supplier when changing filters
+  };
+
   return (
     <div className="container mx-auto px-4 py-12">
       <motion.div 
@@ -48,7 +54,7 @@ const SupplierVerification = () => {
         transition={{ duration: 0.5, delay: 0.1 }}
         className="mb-8"
       >
-        <StatCards />
+        <StatCards onViewAll={handleFilterByStatus} />
       </motion.div>
 
       <motion.div 
