@@ -1,6 +1,5 @@
 
-import React from "react";
-import { Helmet } from "react-helmet";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Toaster } from "@/components/ui/toaster";
 
@@ -48,14 +47,48 @@ import Rfq from "@/pages/supplier/Rfq";
 import SupplierAnalytics from "@/pages/supplier/SupplierAnalytics";
 import Compliance from "@/pages/supplier/Compliance";
 
+// Document title utility
+const useDocumentTitle = (title: string) => {
+  useEffect(() => {
+    const previousTitle = document.title;
+    document.title = title;
+    
+    // Clean up when component unmounts
+    return () => {
+      document.title = previousTitle;
+    };
+  }, [title]);
+};
+
+// Title component to replace Helmet
+const DocumentTitle: React.FC<{title: string, description?: string}> = ({ title, description }) => {
+  useDocumentTitle(title);
+  
+  useEffect(() => {
+    // Set meta description if provided
+    if (description) {
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (metaDescription) {
+        metaDescription.setAttribute('content', description);
+      } else {
+        const newMeta = document.createElement('meta');
+        newMeta.name = 'description';
+        newMeta.content = description;
+        document.head.appendChild(newMeta);
+      }
+    }
+  }, [description]);
+  
+  return null;
+};
+
 function App() {
   return (
     <BrowserRouter>
-      <Helmet>
-        <meta charSet="utf-8" />
-        <title>TORESO - Digital Packaging Platform</title>
-        <meta name="description" content="Revolutionizing how packaging is sourced, verified, and managed across the supply chain" />
-      </Helmet>
+      <DocumentTitle 
+        title="TORESO - Digital Packaging Platform" 
+        description="Revolutionizing how packaging is sourced, verified, and managed across the supply chain" 
+      />
       <Toaster />
       <Routes>
         <Route path="/" element={<MainLayout />}>

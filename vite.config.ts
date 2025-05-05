@@ -25,7 +25,7 @@ export default defineConfig(({ mode }) => ({
   },
   build: {
     rollupOptions: {
-      external: [],
+      external: ['react-helmet'],
     }
   }
 }));
