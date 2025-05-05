@@ -22,5 +22,10 @@ export default defineConfig(({ mode }) => ({
   },
   optimizeDeps: {
     include: ['react-helmet']
+  },
+  build: {
+    rollupOptions: {
+      external: [],
+    }
   }
 }));
