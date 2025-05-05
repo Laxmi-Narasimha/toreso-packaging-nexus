@@ -88,7 +88,7 @@ const SimplePackagingIllustration = ({ className = "", variant = 'light' }: Simp
             animate={{ pathLength: 1 }}
             transition={{ duration: 0.8, delay: 1.2 }}
           />
-          <text x="225" y="40" fontSize="12" fill={colors.line} textAnchor="middle" y="130">Production</text>
+          <text x="225" textAnchor="middle" y="130" fontSize="12" fill={colors.line}>Production</text>
         </motion.g>
         
         {/* Moving boxes animation */}
@@ -143,7 +143,7 @@ const SimplePackagingIllustration = ({ className = "", variant = 'light' }: Simp
           <rect x="350" y="90" width="20" height="20" rx="1" fill={colors.background} stroke={colors.line} strokeWidth="1" />
           <circle cx="360" cy="115" r="5" stroke={colors.line} strokeWidth="1" fill="none" />
           <circle cx="390" cy="115" r="5" stroke={colors.line} strokeWidth="1" fill="none" />
-          <text x="380" y="40" fontSize="12" fill={colors.line} textAnchor="middle" y="130">Delivery</text>
+          <text x="380" textAnchor="middle" y="130" fontSize="12" fill={colors.line}>Delivery</text>
           
           {/* Animation for truck */}
           <motion.g
@@ -191,3 +191,4 @@ const SimplePackagingIllustration = ({ className = "", variant = 'light' }: Simp
 };
 
 export default SimplePackagingIllustration;
+
