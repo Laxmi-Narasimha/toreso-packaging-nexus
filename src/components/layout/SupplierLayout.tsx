@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
 import {
@@ -143,7 +144,7 @@ const SupplierLayout = () => {
         className={`fixed top-0 w-full z-50 transition-all duration-500 ${
           isScrolled 
             ? "bg-black/80 backdrop-blur-lg py-2" 
-            : "bg-transparent py-6"
+            : "bg-black/50 backdrop-blur-md py-6"
         }`}
       >
         <div className="container mx-auto px-4 md:px-8">
@@ -174,16 +175,20 @@ const SupplierLayout = () => {
                 <Link 
                   key={item.path} 
                   to={item.path}
-                  className={`minimal-nav-link flex items-center space-x-2 ${
-                    location.pathname === item.path ? "active" : ""
+                  className={`text-white opacity-80 hover:opacity-100 font-medium transition-colors relative ${
+                    location.pathname === item.path 
+                      ? "opacity-100 after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-toreso-teal" 
+                      : "hover:after:w-full after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-white/50 after:transition-all"
                   }`}
                 >
-                  <span>{item.title}</span>
-                  {item.badge && (
-                    <Badge variant="default" className="ml-1 bg-toreso-teal text-xs h-5 w-5 flex items-center justify-center p-0 rounded-full">
-                      {item.badge}
-                    </Badge>
-                  )}
+                  <span className="flex items-center">
+                    {item.title}
+                    {item.badge && (
+                      <Badge variant="default" className="ml-1 bg-toreso-teal text-xs h-5 w-5 flex items-center justify-center p-0 rounded-full">
+                        {item.badge}
+                      </Badge>
+                    )}
+                  </span>
                 </Link>
               ))}
               
@@ -193,7 +198,7 @@ const SupplierLayout = () => {
                   <Button 
                     variant="ghost" 
                     size="sm" 
-                    className="minimal-nav-link"
+                    className="text-white opacity-80 hover:opacity-100 font-medium"
                   >
                     More
                   </Button>
@@ -227,7 +232,7 @@ const SupplierLayout = () => {
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="pl-10 pr-4 py-2 bg-white/10 border-0 text-white w-40 lg:w-56 focus:bg-white/20 focus:outline-none"
+                  className="pl-10 pr-4 py-2 bg-white/10 border-0 text-white w-40 lg:w-56 focus:bg-white/20 focus:outline-none rounded"
                 />
               </div>
 
@@ -237,7 +242,7 @@ const SupplierLayout = () => {
                   <Button
                     variant="ghost"
                     size="icon"
-                    className="relative text-white"
+                    className="relative text-white hover:bg-white/10"
                   >
                     <Bell size={20} />
                     <span className="absolute -top-1 -right-1 bg-toreso-red text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
@@ -269,7 +274,7 @@ const SupplierLayout = () => {
                     ].map((notification, idx) => (
                       <DropdownMenuItem key={idx} className="py-3 px-4 cursor-pointer focus:bg-white/10">
                         <div>
-                          <p className="text-sm font-medium">{notification.title}</p>
+                          <p className="text-sm font-medium text-white">{notification.title}</p>
                           <p className="text-xs text-gray-400">{notification.description}</p>
                           <p className="text-xs text-gray-500 mt-1">{notification.time}</p>
                         </div>
@@ -289,27 +294,27 @@ const SupplierLayout = () => {
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="flex items-center text-white"
+                    className="flex items-center text-white hover:bg-white/10"
                   >
                     <Avatar className="h-8 w-8 mr-2 border border-white/20">
                       <AvatarImage src="/placeholder.svg" />
-                      <AvatarFallback>SP</AvatarFallback>
+                      <AvatarFallback className="bg-toreso-teal text-white">SP</AvatarFallback>
                     </Avatar>
                     <div className="text-left hidden md:block">
-                      <p className="text-sm font-medium">PackRight Ind.</p>
+                      <p className="text-sm font-medium text-white">PackRight Ind.</p>
                     </div>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="bg-black/90 text-white border-gray-800">
                   <DropdownMenuLabel>My Account</DropdownMenuLabel>
                   <DropdownMenuSeparator className="bg-gray-700" />
-                  <DropdownMenuItem className="focus:bg-white/10">
+                  <DropdownMenuItem className="focus:bg-white/10 text-white">
                     <User size={16} className="mr-2" /> Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-white/10">
+                  <DropdownMenuItem className="focus:bg-white/10 text-white">
                     <Building size={16} className="mr-2" /> Company Profile
                   </DropdownMenuItem>
-                  <DropdownMenuItem className="focus:bg-white/10">
+                  <DropdownMenuItem className="focus:bg-white/10 text-white">
                     <Settings size={16} className="mr-2" /> Settings
                   </DropdownMenuItem>
                   <DropdownMenuSeparator className="bg-gray-700" />
@@ -323,7 +328,7 @@ const SupplierLayout = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                className="lg:hidden text-white"
+                className="lg:hidden text-white hover:bg-white/10"
                 onClick={toggleMobileMenu}
               >
                 {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -363,7 +368,7 @@ const SupplierLayout = () => {
                     variant="ghost"
                     size="icon"
                     onClick={toggleMobileMenu}
-                    className="text-white"
+                    className="text-white hover:bg-white/10"
                   >
                     <X size={18} />
                   </Button>
@@ -374,7 +379,7 @@ const SupplierLayout = () => {
                 <div className="flex items-center space-x-3 py-3">
                   <Avatar>
                     <AvatarImage src="/placeholder.svg" />
-                    <AvatarFallback>SP</AvatarFallback>
+                    <AvatarFallback className="bg-toreso-teal text-white">SP</AvatarFallback>
                   </Avatar>
                   <div className="text-white">
                     <p className="font-medium">PackRight Industries</p>
@@ -393,7 +398,7 @@ const SupplierLayout = () => {
                     <input
                       type="text"
                       placeholder="Search..."
-                      className="pl-9 pr-4 py-2 bg-white/10 border-0 text-white w-full focus:bg-white/20"
+                      className="pl-9 pr-4 py-2 bg-white/10 border-0 text-white w-full focus:bg-white/20 focus:outline-none rounded"
                     />
                   </div>
                 </div>
@@ -409,11 +414,11 @@ const SupplierLayout = () => {
                       onClick={() => setMobileMenuOpen(false)}
                     >
                       <div className="flex items-center">
-                        <span className="mr-3">{item.icon}</span>
-                        <span>{item.title}</span>
+                        <span className="mr-3 text-toreso-teal">{item.icon}</span>
+                        <span className="text-white">{item.title}</span>
                       </div>
                       {item.badge && (
-                        <Badge variant="default" className="bg-toreso-teal">
+                        <Badge variant="default" className="bg-toreso-teal text-white">
                           {item.badge}
                         </Badge>
                       )}
@@ -425,7 +430,7 @@ const SupplierLayout = () => {
               <div className="border-t border-gray-800 p-4">
                 <Button
                   variant="ghost"
-                  className="w-full justify-start text-red-400"
+                  className="w-full justify-start text-red-400 hover:bg-white/10"
                 >
                   <LogOut size={18} className="mr-2" />
                   Logout
@@ -446,7 +451,7 @@ const SupplierLayout = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="text-4xl md:text-5xl lg:text-7xl font-display font-medium mb-6 tracking-tight"
+                className="text-4xl md:text-5xl lg:text-7xl font-display font-medium mb-6 tracking-tight text-white"
               >
                 Revolutionizing Packaging Supply
               </motion.h1>
@@ -470,7 +475,7 @@ const SupplierLayout = () => {
                 <Button className="bg-toreso-teal hover:bg-toreso-teal/90 text-white border-0 rounded-none py-6 px-8 text-lg">
                   Explore Platform
                 </Button>
-                <Button variant="outline" className="text-white border-white/20 hover:border-white/50 hover:bg-white/5 rounded-none py-6 px-8 text-lg">
+                <Button variant="contrast" className="text-white border-white/20 hover:border-white/50 hover:bg-white/5 rounded-none py-6 px-8 text-lg">
                   Watch Demo
                 </Button>
               </motion.div>

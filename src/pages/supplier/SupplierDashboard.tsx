@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -35,6 +35,8 @@ import {
   LineChart,
   Line,
 } from "recharts";
+import { motion, AnimatePresence } from "framer-motion";
+import { Button } from "@/components/ui/button";
 
 const SupplierDashboard = () => {
   // Sample data for charts
@@ -167,14 +169,22 @@ const SupplierDashboard = () => {
     },
   ];
 
+  // Animation for chart elements
+  const [chartAnimate, setChartAnimate] = useState(false);
+  
+  useEffect(() => {
+    // Start animation after component mounts
+    setChartAnimate(true);
+  }, []);
+
   // Video background
   const videoUrl = "https://player.vimeo.com/external/515912154.hd.mp4?s=f93d7c1904376355a35573502b082e28840203ad&profile_id=174&oauth2_token_id=57447761";
 
   return (
-    <div className="relative min-h-screen bg-gray-50">
+    <div className="relative min-h-screen bg-gray-900">
       {/* Video Background */}
       <div className="absolute inset-0 overflow-hidden -z-10">
-        <div className="absolute inset-0 bg-black/60 z-10"></div>
+        <div className="absolute inset-0 bg-black/70 bg-gradient-to-b from-black/50 to-black z-10"></div>
         <video
           className="absolute w-full h-full object-cover"
           autoPlay
@@ -188,248 +198,351 @@ const SupplierDashboard = () => {
       </div>
 
       <div className="container mx-auto px-4 py-8 pt-10 relative z-10">
-        <div className="mb-8">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-8">
           <h1 className="text-3xl font-bold mb-2 text-white">Supplier Dashboard</h1>
           <p className="text-gray-200">
             Welcome back, PackRight Industries! Here's your business overview.
           </p>
-        </div>
+        </motion.div>
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {stats.map((stat, index) => (
-            <Card key={index} className="bg-white/95 backdrop-blur">
-              <CardContent className="p-6">
-                <div className="flex justify-between items-center mb-4">
-                  <div className="rounded-full p-3 bg-gray-100">
-                    {stat.icon}
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+            >
+              <Card className="bg-black/50 backdrop-blur-lg border border-white/10 shadow-lg overflow-hidden">
+                <CardContent className="p-6">
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="rounded-full p-3 bg-white/10">
+                      {stat.icon}
+                    </div>
+                    <div className="flex items-center">
+                      {stat.trend === "up" ? (
+                        <TrendingUp className="h-5 w-5 text-green-500 mr-1" />
+                      ) : (
+                        <TrendingDown className="h-5 w-5 text-red-500 mr-1" />
+                      )}
+                      <span
+                        className={`text-sm ${
+                          stat.trend === "up" ? "text-green-500" : "text-red-500"
+                        }`}
+                      >
+                        {stat.change}
+                      </span>
+                    </div>
                   </div>
-                  <div className="flex items-center">
-                    {stat.trend === "up" ? (
-                      <TrendingUp className="h-5 w-5 text-green-500 mr-1" />
-                    ) : (
-                      <TrendingDown className="h-5 w-5 text-red-500 mr-1" />
-                    )}
-                    <span
-                      className={`text-sm ${
-                        stat.trend === "up" ? "text-green-500" : "text-red-500"
-                      }`}
-                    >
-                      {stat.change}
-                    </span>
+                  <div>
+                    <p className="text-sm font-medium text-gray-300">{stat.title}</p>
+                    <p className="text-3xl font-bold mt-2 text-white">{stat.value}</p>
+                    <p className="text-xs text-gray-400 mt-1">{stat.description}</p>
                   </div>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-gray-500">{stat.title}</p>
-                  <p className="text-3xl font-bold mt-2">{stat.value}</p>
-                  <p className="text-xs text-gray-500 mt-1">{stat.description}</p>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </motion.div>
           ))}
         </div>
 
         {/* Charts Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <Card className="bg-white/95 backdrop-blur">
-            <CardHeader>
-              <CardTitle>Monthly Performance</CardTitle>
-              <CardDescription>Orders and Revenue Trends</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={monthlyData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="name" />
-                    <YAxis yAxisId="left" orientation="left" />
-                    <YAxis
-                      yAxisId="right"
-                      orientation="right"
-                      domain={[0, 'dataMax + 10000']}
-                    />
-                    <Tooltip />
-                    <Legend />
-                    <Line
-                      yAxisId="left"
-                      type="monotone"
-                      dataKey="orders"
-                      stroke="#8884d8"
-                      activeDot={{ r: 8 }}
-                    />
-                    <Line
-                      yAxisId="right"
-                      type="monotone"
-                      dataKey="revenue"
-                      stroke="#00C49F"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-white/95 backdrop-blur">
-            <CardHeader>
-              <CardTitle>Product Performance</CardTitle>
-              <CardDescription>Sales distribution by product category</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="h-80">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={productPerformance}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={70}
-                      outerRadius={100}
-                      fill="#8884d8"
-                      dataKey="value"
-                      label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <Card className="bg-black/50 backdrop-blur-lg border border-white/10 shadow-lg h-full">
+              <CardHeader className="border-b border-white/10">
+                <CardTitle className="text-white">Monthly Performance</CardTitle>
+                <CardDescription className="text-gray-400">Orders and Revenue Trends</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="h-80">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart 
+                      data={monthlyData} 
+                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                     >
-                      {productPerformance.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                    <Legend layout="vertical" verticalAlign="middle" align="right" />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            </CardContent>
-          </Card>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.1)" />
+                      <XAxis 
+                        dataKey="name" 
+                        stroke="rgba(255,255,255,0.6)" 
+                        tick={{ fill: 'rgba(255,255,255,0.6)' }} 
+                      />
+                      <YAxis 
+                        yAxisId="left" 
+                        orientation="left" 
+                        stroke="rgba(255,255,255,0.6)" 
+                        tick={{ fill: 'rgba(255,255,255,0.6)' }}
+                      />
+                      <YAxis
+                        yAxisId="right"
+                        orientation="right"
+                        domain={[0, 'dataMax + 10000']}
+                        stroke="rgba(255,255,255,0.6)"
+                        tick={{ fill: 'rgba(255,255,255,0.6)' }}
+                      />
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: 'rgba(0,0,0,0.8)', 
+                          border: '1px solid rgba(255,255,255,0.2)', 
+                          borderRadius: '4px',
+                          color: 'white'
+                        }} 
+                        labelStyle={{ color: 'white' }}
+                        itemStyle={{ color: 'white' }}
+                      />
+                      <Legend wrapperStyle={{ color: 'white' }} />
+                      <Line
+                        yAxisId="left"
+                        type="monotone"
+                        dataKey="orders"
+                        stroke="#8884d8"
+                        strokeWidth={3}
+                        dot={{ r: 4, strokeWidth: 2 }}
+                        activeDot={{ r: 8 }}
+                        animationDuration={2000}
+                        animationEasing="ease-in-out"
+                      />
+                      <Line
+                        yAxisId="right"
+                        type="monotone"
+                        dataKey="revenue"
+                        stroke="#00C49F"
+                        strokeWidth={3}
+                        dot={{ r: 4, strokeWidth: 2 }}
+                        animationDuration={2000}
+                        animationEasing="ease-in-out"
+                        animationBegin={300}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            <Card className="bg-black/50 backdrop-blur-lg border border-white/10 shadow-lg h-full">
+              <CardHeader className="border-b border-white/10">
+                <CardTitle className="text-white">Product Performance</CardTitle>
+                <CardDescription className="text-gray-400">Sales distribution by product category</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="h-80">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={productPerformance}
+                        cx="50%"
+                        cy="50%"
+                        innerRadius={70}
+                        outerRadius={100}
+                        fill="#8884d8"
+                        dataKey="value"
+                        label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                        labelLine={{ stroke: 'rgba(255,255,255,0.3)' }}
+                        animationBegin={300}
+                        animationDuration={1500}
+                        animationEasing="ease-out"
+                      >
+                        {productPerformance.map((entry, index) => (
+                          <Cell 
+                            key={`cell-${index}`} 
+                            fill={COLORS[index % COLORS.length]} 
+                            stroke="rgba(0,0,0,0.3)"
+                            strokeWidth={1}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: 'rgba(0,0,0,0.8)', 
+                          border: '1px solid rgba(255,255,255,0.2)', 
+                          borderRadius: '4px',
+                          color: 'white'
+                        }}
+                        itemStyle={{ color: 'white' }}
+                      />
+                      <Legend 
+                        layout="vertical" 
+                        verticalAlign="middle" 
+                        align="right"
+                        wrapperStyle={{ color: 'white' }}
+                        formatter={(value, entry, index) => (
+                          <span style={{ color: 'white' }}>{value}</span>
+                        )}
+                      />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
 
         {/* Tasks and Orders Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <Card className="bg-white/95 backdrop-blur">
-            <CardHeader>
-              <CardTitle className="flex justify-between items-center">
-                <span>Pending Tasks</span>
-                <span className="text-sm bg-toreso-teal text-white px-2 py-1 rounded-full">
-                  {pendingTasks.length} tasks
-                </span>
-              </CardTitle>
-              <CardDescription>Tasks requiring your attention</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {pendingTasks.map((task) => (
-                  <div key={task.id} className="flex justify-between items-center p-3 border rounded-lg hover:bg-gray-50 transition-colors">
-                    <div className="flex items-start space-x-3">
-                      {task.type === "compliance" ? (
-                        <div className="p-2 rounded-full bg-red-100 text-red-600">
-                          <AlertTriangle size={20} />
-                        </div>
-                      ) : task.type === "rfq" ? (
-                        <div className="p-2 rounded-full bg-blue-100 text-blue-600">
-                          <FileText size={20} />
-                        </div>
-                      ) : task.type === "inventory" ? (
-                        <div className="p-2 rounded-full bg-green-100 text-green-600">
-                          <Package size={20} />
-                        </div>
-                      ) : (
-                        <div className="p-2 rounded-full bg-orange-100 text-orange-600">
-                          <ShoppingCart size={20} />
-                        </div>
-                      )}
-                      <div>
-                        <h4 className="font-medium text-gray-900">{task.title}</h4>
-                        <div className="flex items-center mt-1">
-                          <Calendar size={14} className="text-gray-400 mr-1" />
-                          <p className="text-xs text-gray-500">Due: {task.dueDate}</p>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+          >
+            <Card className="bg-black/50 backdrop-blur-lg border border-white/10 shadow-lg">
+              <CardHeader className="border-b border-white/10">
+                <CardTitle className="flex justify-between items-center text-white">
+                  <span>Pending Tasks</span>
+                  <span className="text-sm bg-toreso-teal text-black font-bold px-2 py-1 rounded-full">
+                    {pendingTasks.length} tasks
+                  </span>
+                </CardTitle>
+                <CardDescription className="text-gray-400">Tasks requiring your attention</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-4">
+                <div className="space-y-4">
+                  {pendingTasks.map((task, index) => (
+                    <motion.div 
+                      key={task.id} 
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: index * 0.1 }}
+                      className="flex justify-between items-center p-3 border border-white/10 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+                    >
+                      <div className="flex items-start space-x-3">
+                        {task.type === "compliance" ? (
+                          <div className="p-2 rounded-full bg-red-900/30 text-red-400">
+                            <AlertTriangle size={20} />
+                          </div>
+                        ) : task.type === "rfq" ? (
+                          <div className="p-2 rounded-full bg-blue-900/30 text-blue-400">
+                            <FileText size={20} />
+                          </div>
+                        ) : task.type === "inventory" ? (
+                          <div className="p-2 rounded-full bg-green-900/30 text-green-400">
+                            <Package size={20} />
+                          </div>
+                        ) : (
+                          <div className="p-2 rounded-full bg-orange-900/30 text-orange-400">
+                            <ShoppingCart size={20} />
+                          </div>
+                        )}
+                        <div>
+                          <h4 className="font-medium text-white">{task.title}</h4>
+                          <div className="flex items-center mt-1">
+                            <Calendar size={14} className="text-gray-400 mr-1" />
+                            <p className="text-xs text-gray-400">Due: {task.dueDate}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <span 
-                      className={`text-xs px-2 py-1 rounded-full ${
-                        task.priority === "High" 
-                          ? "bg-red-100 text-red-600" 
-                          : task.priority === "Medium"
-                          ? "bg-yellow-100 text-yellow-600"
-                          : "bg-blue-100 text-blue-600"
-                      }`}
-                    >
-                      {task.priority}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
+                      <span 
+                        className={`text-xs px-2 py-1 rounded-full ${
+                          task.priority === "High" 
+                            ? "bg-red-900/30 text-red-400" 
+                            : task.priority === "Medium"
+                            ? "bg-yellow-900/30 text-yellow-400"
+                            : "bg-blue-900/30 text-blue-400"
+                        }`}
+                      >
+                        {task.priority}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
 
-          <Card className="bg-white/95 backdrop-blur">
-            <CardHeader>
-              <CardTitle>Recent Orders</CardTitle>
-              <CardDescription>Latest customer orders</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm">
-                  <thead>
-                    <tr className="text-left border-b">
-                      <th className="pb-2 font-medium">Order ID</th>
-                      <th className="pb-2 font-medium">Buyer</th>
-                      <th className="pb-2 font-medium">Amount</th>
-                      <th className="pb-2 font-medium">Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {recentOrders.map((order) => (
-                      <tr key={order.id} className="border-b last:border-0">
-                        <td className="py-3">
-                          <div className="font-medium">{order.id}</div>
-                          <div className="text-xs text-gray-500">{order.date}</div>
-                        </td>
-                        <td className="py-3">
-                          <div className="font-medium">{order.buyerName}</div>
-                          <div className="text-xs text-gray-500 truncate max-w-[150px]">
-                            {order.products}
-                          </div>
-                        </td>
-                        <td className="py-3 font-medium">{order.amount}</td>
-                        <td className="py-3">
-                          <span 
-                            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                              order.status === "Processing" 
-                                ? "bg-yellow-100 text-yellow-800"
-                                : order.status === "Shipped" 
-                                ? "bg-blue-100 text-blue-800"
-                                : "bg-green-100 text-green-800"
-                            }`}
-                          >
-                            {order.status === "Processing" && (
-                              <svg className="h-1.5 w-1.5 mr-1 fill-yellow-500" viewBox="0 0 6 6" aria-hidden="true">
-                                <circle cx="3" cy="3" r="3" />
-                              </svg>
-                            )}
-                            {order.status === "Shipped" && (
-                              <svg className="h-1.5 w-1.5 mr-1 fill-blue-500" viewBox="0 0 6 6" aria-hidden="true">
-                                <circle cx="3" cy="3" r="3" />
-                              </svg>
-                            )}
-                            {order.status === "Delivered" && (
-                              <svg className="h-1.5 w-1.5 mr-1 fill-green-500" viewBox="0 0 6 6" aria-hidden="true">
-                                <circle cx="3" cy="3" r="3" />
-                              </svg>
-                            )}
-                            {order.status}
-                          </span>
-                        </td>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+          >
+            <Card className="bg-black/50 backdrop-blur-lg border border-white/10 shadow-lg">
+              <CardHeader className="border-b border-white/10">
+                <CardTitle className="text-white">Recent Orders</CardTitle>
+                <CardDescription className="text-gray-400">Latest customer orders</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-4">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm">
+                    <thead>
+                      <tr className="text-left border-b border-white/10">
+                        <th className="pb-2 font-medium text-gray-300">Order ID</th>
+                        <th className="pb-2 font-medium text-gray-300">Buyer</th>
+                        <th className="pb-2 font-medium text-gray-300">Amount</th>
+                        <th className="pb-2 font-medium text-gray-300">Status</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="mt-4 text-center">
-                <a href="/supplier/orders" className="text-toreso-teal text-sm font-medium hover:underline">
-                  View all orders →
-                </a>
-              </div>
-            </CardContent>
-          </Card>
+                    </thead>
+                    <tbody>
+                      {recentOrders.map((order, index) => (
+                        <motion.tr 
+                          key={order.id} 
+                          className="border-b border-white/10 last:border-0"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3, delay: 0.2 + (index * 0.1) }}
+                        >
+                          <td className="py-3 text-white">
+                            <div className="font-medium">{order.id}</div>
+                            <div className="text-xs text-gray-400">{order.date}</div>
+                          </td>
+                          <td className="py-3 text-white">
+                            <div className="font-medium">{order.buyerName}</div>
+                            <div className="text-xs text-gray-400 truncate max-w-[150px]">
+                              {order.products}
+                            </div>
+                          </td>
+                          <td className="py-3 font-medium text-white">{order.amount}</td>
+                          <td className="py-3">
+                            <span 
+                              className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                                order.status === "Processing" 
+                                  ? "bg-yellow-900/30 text-yellow-400"
+                                  : order.status === "Shipped" 
+                                  ? "bg-blue-900/30 text-blue-400"
+                                  : "bg-green-900/30 text-green-400"
+                              }`}
+                            >
+                              {order.status === "Processing" && (
+                                <span className="h-1.5 w-1.5 mr-1 rounded-full bg-yellow-400"></span>
+                              )}
+                              {order.status === "Shipped" && (
+                                <span className="h-1.5 w-1.5 mr-1 rounded-full bg-blue-400"></span>
+                              )}
+                              {order.status === "Delivered" && (
+                                <span className="h-1.5 w-1.5 mr-1 rounded-full bg-green-400"></span>
+                              )}
+                              {order.status}
+                            </span>
+                          </td>
+                        </motion.tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div className="mt-4 text-center">
+                  <Button variant="glass" asChild className="text-sm">
+                    <a href="/supplier/orders">
+                      <span>View all orders</span>
+                      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path>
+                      </svg>
+                    </a>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
         </div>
       </div>
     </div>

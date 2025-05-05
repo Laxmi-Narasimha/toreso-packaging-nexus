@@ -13,7 +13,7 @@ const TabsList = React.forwardRef<
   <TabsPrimitive.List
     ref={ref}
     className={cn(
-      "inline-flex h-10 items-center justify-center rounded-md bg-white/5 backdrop-blur-sm p-1 text-white relative",
+      "inline-flex h-10 items-center justify-center rounded-md bg-black/30 backdrop-blur-lg p-1 text-white relative",
       className
     )}
     {...props}
@@ -45,7 +45,7 @@ const TabsTrigger = React.forwardRef<
       initial={{ opacity: 0 }}
       whileHover={{ opacity: 1 }}
       transition={{ duration: 0.2 }}
-      style={{ background: "rgba(255, 255, 255, 0.05)" }}
+      style={{ background: "rgba(255, 255, 255, 0.1)" }}
     />
   </TabsPrimitive.Trigger>
 ))
