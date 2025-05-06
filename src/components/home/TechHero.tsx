@@ -1,4 +1,3 @@
-
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -26,7 +25,7 @@ const TechHero: React.FC<TechHeroProps> = ({ showUserSelector = false }) => {
   return (
     <motion.div
       ref={containerRef}
-      className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden pt-20 pb-24"
+      className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden"
       style={{ opacity, y, scale }}
     >
       {/* Background video */}
@@ -36,17 +35,18 @@ const TechHero: React.FC<TechHeroProps> = ({ showUserSelector = false }) => {
           loop
           muted
           playsInline
+          preload="auto"
           className="absolute w-full h-full object-cover"
-          poster="https://images.unsplash.com/photo-1635776062127-a1120566f75b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2532&q=80"
+          poster="/images/hero-poster.jpg"
         >
-          <source src="https://videos.pexels.com/video-files/7955998/7955998-uhd_2560_1440_25fps.mp4" type="video/mp4" />
+          <source src="/videos/hero-background.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
         <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 relative z-10 text-center">
+      <div className="container mx-auto px-4 relative z-10 text-center mt-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Card,
@@ -33,6 +32,8 @@ import {
   Percent,
   BarChart4,
   PieChart,
+  Mail,
+  Edit,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

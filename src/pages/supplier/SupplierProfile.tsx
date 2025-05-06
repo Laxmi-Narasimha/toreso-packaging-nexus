@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import {
   Card,
@@ -487,7 +486,7 @@ const SupplierProfile = () => {
                           <p className="text-gray-300">Monthly Capacity</p>
                           <p className="text-white font-medium">{companyInfo.production.capacity}</p>
                         </div>
-                        <Progress value={75} className="h-2 bg-white/10" indicatorColor="bg-toreso-teal" />
+                        <Progress value={75} className="h-2 bg-white/10" indicatorClassName="bg-toreso-teal" />
                       </div>
                       
                       <div>
@@ -580,21 +579,21 @@ const SupplierProfile = () => {
                             <span className="text-gray-300 text-sm">Environmental Impact</span>
                             <span className="text-white text-sm">90/100</span>
                           </div>
-                          <Progress value={90} className="h-2 bg-white/10" indicatorColor="bg-green-500" />
+                          <Progress value={90} className="h-2 bg-white/10" indicatorClassName="bg-green-500" />
                         </div>
                         <div>
                           <div className="flex justify-between mb-1">
                             <span className="text-gray-300 text-sm">Resource Efficiency</span>
                             <span className="text-white text-sm">85/100</span>
                           </div>
-                          <Progress value={85} className="h-2 bg-white/10" indicatorColor="bg-blue-500" />
+                          <Progress value={85} className="h-2 bg-white/10" indicatorClassName="bg-blue-500" />
                         </div>
                         <div>
                           <div className="flex justify-between mb-1">
                             <span className="text-gray-300 text-sm">Social Responsibility</span>
                             <span className="text-white text-sm">80/100</span>
                           </div>
-                          <Progress value={80} className="h-2 bg-white/10" indicatorColor="bg-purple-500" />
+                          <Progress value={80} className="h-2 bg-white/10" indicatorClassName="bg-purple-500" />
                         </div>
                       </div>
                     </div>
@@ -646,14 +645,14 @@ const SupplierProfile = () => {
                           <div className="p-3 bg-white/5 rounded-md">
                             <p className="text-sm text-gray-400">Renewable energy usage</p>
                             <div className="flex items-center">
-                              <Progress value={45} className="h-2 bg-white/10 flex-grow mr-3" indicatorColor="bg-yellow-500" />
+                              <Progress value={45} className="h-2 bg-white/10 flex-grow mr-3" indicatorClassName="bg-yellow-500" />
                               <span className="text-white">45%</span>
                             </div>
                           </div>
                           <div className="p-3 bg-white/5 rounded-md">
                             <p className="text-sm text-gray-400">Energy efficiency improvement</p>
                             <div className="flex items-center">
-                              <Progress value={25} className="h-2 bg-white/10 flex-grow mr-3" indicatorColor="bg-green-500" />
+                              <Progress value={25} className="h-2 bg-white/10 flex-grow mr-3" indicatorClassName="bg-green-500" />
                               <span className="text-white">25%</span>
                             </div>
                           </div>
