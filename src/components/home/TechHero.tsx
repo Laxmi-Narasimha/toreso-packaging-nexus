@@ -28,25 +28,27 @@ const TechHero: React.FC<TechHeroProps> = ({ showUserSelector = false }) => {
       className="relative min-h-screen flex flex-col justify-center items-center overflow-hidden"
       style={{ opacity, y, scale }}
     >
-      {/* Background video */}
+      {/* Background video with fallback */}
       <div className="absolute inset-0 z-0 overflow-hidden">
-        {/* Fallback gradient background */}
+        {/* Fallback gradient background - always visible */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 w-full h-full"></div>
         
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          preload="auto"
-          className="absolute w-full h-full object-cover"
-          poster="/images/hero-poster.jpg"
-        >
-          <source src="/videos/hero-background.mp4" type="video/mp4" />
-          <source src="/videos/hero-background.mp4.mov" type="video/quicktime" />
-          Your browser does not support the video tag.
-        </video>
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
+        {/* Optional video overlay that plays when available */}
+        <div className="absolute inset-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="absolute w-full h-full object-cover opacity-70"
+          >
+            <source src="/videos/hero-background.mp4" type="video/mp4" />
+          </video>
+        </div>
+        
+        {/* Overlay for better text contrast */}
+        <div className="absolute inset-0 bg-black/40 backdrop-blur-[1px]"></div>
       </div>
 
       {/* Content */}
