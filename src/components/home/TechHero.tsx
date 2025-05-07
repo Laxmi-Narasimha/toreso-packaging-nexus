@@ -30,6 +30,9 @@ const TechHero: React.FC<TechHeroProps> = ({ showUserSelector = false }) => {
     >
       {/* Background video */}
       <div className="absolute inset-0 z-0 overflow-hidden">
+        {/* Fallback gradient background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-blue-900 via-purple-900 to-indigo-900 w-full h-full"></div>
+        
         <video
           autoPlay
           loop
@@ -40,6 +43,7 @@ const TechHero: React.FC<TechHeroProps> = ({ showUserSelector = false }) => {
           poster="/images/hero-poster.jpg"
         >
           <source src="/videos/hero-background.mp4" type="video/mp4" />
+          <source src="/videos/hero-background.mp4.mov" type="video/quicktime" />
           Your browser does not support the video tag.
         </video>
         <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>

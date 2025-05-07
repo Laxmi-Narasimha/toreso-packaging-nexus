@@ -1,4 +1,3 @@
-
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
@@ -26,6 +25,16 @@ export default defineConfig(({ mode }) => ({
   build: {
     rollupOptions: {
       external: ['react-helmet'],
+      output: {
+        manualChunks: undefined,
+        assetFileNames: (assetInfo) => {
+          let extType = assetInfo.name.split('.').at(1);
+          if (/mp4|mov|webm|ogg/i.test(extType)) {
+            extType = 'videos';
+          }
+          return `assets/${extType}/[name]-[hash][extname]`;
+        },
+      }
     }
   }
 }));
