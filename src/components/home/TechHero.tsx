@@ -42,7 +42,7 @@ const TechHero: React.FC<TechHeroProps> = ({ showUserSelector = false }) => {
           <source src="/videos/hero-background.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
-        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+        <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]"></div>
       </div>
 
       {/* Content */}
@@ -57,10 +57,10 @@ const TechHero: React.FC<TechHeroProps> = ({ showUserSelector = false }) => {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
-            className="flex items-center justify-center"
+            className="flex items-center justify-center mb-6"
           >
-            <span className="inline-flex items-center bg-white/10 backdrop-blur-sm rounded-full px-4 py-1.5 text-sm text-white/90 mb-6">
-              <span className="w-2 h-2 rounded-full bg-green-400 mr-2 animate-pulse"></span>
+            <span className="inline-flex items-center bg-blue-500/10 backdrop-blur-sm rounded-full px-4 py-1.5 text-sm text-blue-300 border border-blue-500/30">
+              <span className="w-2 h-2 rounded-full bg-blue-400 mr-2 animate-pulse"></span>
               Next-Generation Packaging Solutions
             </span>
           </motion.div>
@@ -69,7 +69,7 @@ const TechHero: React.FC<TechHeroProps> = ({ showUserSelector = false }) => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-purple-100 to-purple-300"
+            className="text-5xl md:text-7xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-blue-500 to-purple-600"
           >
             Revolutionize Your Packaging Procurement
           </motion.h1>
@@ -92,17 +92,16 @@ const TechHero: React.FC<TechHeroProps> = ({ showUserSelector = false }) => {
             {!showSelector ? (
               <>
                 <Button
-                  variant="techPrimary"
                   size="xl"
-                  className="rounded-full"
+                  className="rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:shadow-lg hover:shadow-blue-500/30 transition-all duration-300 transform hover:scale-105"
                   onClick={() => setShowSelector(true)}
                 >
                   Get Started<ArrowRight className="ml-2 h-5 w-5" />
                 </Button>
                 <Button
-                  variant="techOutline"
+                  variant="outline"
                   size="xl"
-                  className="rounded-full"
+                  className="rounded-full text-white border-white/30 hover:bg-white/10 hover:border-white/50 transition-all duration-300 transform hover:scale-105"
                 >
                   <PlayCircle className="mr-2 h-5 w-5" />
                   Watch Demo
@@ -149,19 +148,19 @@ const TechHero: React.FC<TechHeroProps> = ({ showUserSelector = false }) => {
               
               {/* Floating elements */}
               <motion.div 
-                className="absolute -top-8 -right-8 bg-white/10 backdrop-blur-lg p-4 rounded-lg border border-white/20 shadow-xl"
+                className="absolute -top-8 -right-8 bg-white/10 backdrop-blur-lg p-4 rounded-lg border border-blue-500/20 shadow-xl"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.2, duration: 0.5 }}
               >
                 <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 rounded-full bg-green-400"></div>
+                  <div className="w-3 h-3 rounded-full bg-blue-400"></div>
                   <span className="text-white font-medium">Real-time analytics</span>
                 </div>
               </motion.div>
               
               <motion.div 
-                className="absolute bottom-20 -left-8 bg-white/10 backdrop-blur-lg p-4 rounded-lg border border-white/20 shadow-xl hidden md:block"
+                className="absolute bottom-20 -left-8 bg-white/10 backdrop-blur-lg p-4 rounded-lg border border-purple-500/20 shadow-xl hidden md:block"
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 1.4, duration: 0.5 }}
@@ -183,9 +182,9 @@ const TechHero: React.FC<TechHeroProps> = ({ showUserSelector = false }) => {
         transition={{ duration: 1, delay: 1, repeat: Infinity, repeatType: "reverse" }}
         className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-10"
       >
-        <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
+        <div className="w-6 h-10 border-2 border-blue-400/30 rounded-full flex justify-center">
           <motion.div
-            className="w-1.5 h-1.5 bg-white/70 rounded-full mt-2"
+            className="w-1.5 h-1.5 bg-blue-400/70 rounded-full mt-2"
             animate={{ y: [0, 15, 0] }}
             transition={{ duration: 1.5, repeat: Infinity }}
           />
